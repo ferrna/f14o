@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="background-container"></div>
+    <div class="cursor"></div>
+    <div class='btn-fullscreen' id='fullscreen-mode'>
+      <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true' focusable='false' width='1.4em' height='1.4em' style='-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);' preserveAspectRatio='xMidYMid meet' viewBox='0 0 17 17'>
+       <g fill='currentColor' fill-rule='evenodd'>
+        <path d='M3 5h12v8H3z'/>
+        <path d='M3.918 14.938H1v-2.876h1v1.98h1.918v.896z'/>
+        <path d='M17 14.938h-2.938v-.896H16v-1.984h1v2.88z'/>
+        <path d='M17 5.917h-1v-1.95h-1.943v-.946H17v2.896z'/>
+        <path d='M2 5.938H1V3h2.938v.938H2v2z'/>
+       </g>
+      </svg>
+     </div>
+    <div id="intro-screen">
+      <h2 id="intro-title" class="expanded">fernando's portfolio</h2>
+    </div>
+    <main>
+        <div id="hero-wrapper">
+          <div id="hero-background"></div>
+          <!--<div id="hero-background-container">
+            <canvas id="hero-canvas"></canvas>
+          </div>-->
+          <div id="hero-container">
+            <header id="header-left-container">
+              <div id="header-left-content"><h2>Portfolio&nbsp;<small>2024</small>.</h2></div>
+            </header>
+            <header id="header-container">
+              <div id="header-content"><button>Projects</button><div class="header-btn_separator">/</div><button>About</button></div>
+            </header>
+            <div class="hero-text">
+                <div class="hero-title expanded">
+                  <!--<h1>Fernando<span>&nbsp;</span></h1>
+                  <h1><span>&nbsp;</span>Arriondo</h1>-->
+                  <h1>Fernando<span>&nbsp;</span>Arriondo</h1>
+                </div>
+                <div class="hero-subtitle">
+                    <h3>Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
+                </div>
+                <div id="hero-worm"><div></div></div>
+            </div>
+            <!--<div class="hero-image-container">
+              <div class="hero-image">
+                <img src="media/hero/hero-image.jpg" alt="Hero Image">
+              </div>
+            </div>-->
+            <!--<div class="scroll-mouse-container">
+              <div class="scroll-mouse"></div>
+              <p>Scroll</p>
+            </div>-->
+          </div>
+        </div>
+        <section id="about">
+          <div id="about-container">
+            <div id="about-text">
+              <div id="about-title">
+                <h2>About</h2>
+              </div>
+              <div id="about-content">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+              </div>
+            </div>
+            <div id="about-services">
+              <div class="about-service"><h2>Front end</h2></div>
+              <div class="about-service"><h2>Back end</h2></div>
+              <div class="about-service"><h2>Full stack</h2></div>
+            </div>
+          </div>
+        </section>
+        <section id="technologies">
+          <div class="tech-title-container">
+            <h2 class="tech-title">Technologies</h2>
+          </div>
+          <div class="tech-icons-container">
+            <div class="tech-icons">
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-atom"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-sass"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-javascript"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-aws"></use>
+              </svg>
+
+              <!-- Duplicate set of icons -->
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-atom"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-sass"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-javascript"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-aws"></use>
+              </svg>
+
+              <!-- ...Duplicate set of icons -->
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-atom"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-sass"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-javascript"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use>
+              </svg>
+              <svg class="icon">
+                <use xlink:href="media/si-sprite.svg#si-dev-aws"></use>
+              </svg>
+            </div>
+          </div>
+        </section>
+        <section id="projects">
+          <h2 id="projects-title">Selected<span>&nbsp;</span>Projects</h2>
+          <div id="projects-container">
+            <div class="projects-slide">
+              <a href="project-details.html">
+                <div class="project-image-holder">
+                  <div>
+                    <div class="overlay-container">
+                      <button class="follow-button">View</button>
+                    </div>
+                  </div>
+                </div>
+                <img src="media/projects/1.png" alt="Project 1">
+              </a>
+            </div>
+            <div class="projects-slide">
+              <a href="project-details.html">
+                <div class="project-image-holder">
+                  <div>
+                    <div class="overlay-container">
+                      <button class="follow-button">View</button>
+                    </div>
+                  </div>
+                </div>
+                <img src="media/projects/1.png" alt="Project 1">
+              </a>
+            </div>
+          </div>
+        </section>
+        <!--<section id="projects-carousel">
+            <div class="carousel-container">
+                <div class="carousel-slide">
+                    <div class="project-background" style="background-image: url('media/projects/project1.png');"></div>
+                    <div class="project-info">
+                      <h2 class="project-title">Project 1</h2>
+                      <p class="project-description">Description of Project 1</p>
+                      <div class="project-technologies">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                      </div>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <div class="project-background" style="background-image: url('media/projects/project1.png');"></div>
+                    <div class="project-info">
+                      <h2 class="project-title">Project 1</h2>
+                      <p class="project-description">Description of Project 1</p>
+                      <div class="project-technologies">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                      </div>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <div class="project-background" style="background-image: url('media/projects/project1.png');"></div>
+                    <div class="project-info">
+                      <h2 class="project-title">Project 1</h2>
+                      <p class="project-description">Description of Project 1</p>
+                      <div class="project-technologies">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-button prev">&lt;</button>
+            <button class="carousel-button next">&gt;</button>
+        </section>-->
+        <section id="contact">
+          <div id="contact-container">
+            <h2 id="contact-title">Contact</h2>
+          </div>
+        </section>
+    </main>
+    <script src="js/bundle.js"></script>
+</body>
+</html>

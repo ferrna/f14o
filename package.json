@@ -1,0 +1,32 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js/main.js",
+  "scripts": {
+    "start": "live-server dist --port=3000",
+    "build:js": "rollup -c",
+    "build:html": "cp src/*.html dist/",
+    "build:sass": "sass src/scss/main.scss dist/css/main.css",
+    "build:fonts": "cp src/fonts/* dist/fonts/",
+    "build": "npm run build:js && npm run build:html && npm run build:sass && npm run build:fonts",
+    "dev": "npm run build && npm start",
+    "watch": "npm run build && npx concurrently \"npm run start\" \"sass src/scss/main.scss dist/css/main.css --watch\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "concurrently": "^6.5.1",
+    "live-server": "^1.2.2",
+    "rollup": "^4.24.0",
+    "sass": "^1.79.5"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "jquery": "^3.7.1",
+    "three": "^0.169.0"
+  }
+}

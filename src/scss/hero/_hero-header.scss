@@ -1,0 +1,43 @@
+#header-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    grid-column: 2 / 3;
+    padding-right: 2rem;
+}
+
+#header-left-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 1rem;
+    grid-column: 1 / 2;
+}
+
+#header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+        cursor: pointer;
+        font-size: 1.25rem;
+    }
+}
+
+.header-btn_separator {
+    color: $text-color;
+    opacity: 0.6;
+    padding: 0 1rem;
+}
+
+#header-left-content {
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 400;
+        margin: 0;
+    }
+}

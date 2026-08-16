@@ -1,0 +1,104 @@
+#technologies {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 3rem 4rem 3rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tech-title-container {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+$tech-title-before-width: 50px;
+$tech-title-before-height: 1px;
+
+.tech-title {
+  font-size: 1.6rem;
+  padding-left: calc(1rem + $tech-title-before-width);
+  padding-right: 4rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: calc(50% - $tech-title-before-height);
+    left: 0;
+    width: $tech-title-before-width;
+    height: $tech-title-before-height;
+    z-index: 2;
+    background-color: $white;
+  }
+}
+
+// Tech icons
+$tech-icons-width: 40px;
+$tech-icons-height: 40px;
+$tech-icons-margin: 1.6rem;
+$n-of-icons: 7;
+$scroll-speed: 10s;
+$tech-icons-set-width: calc(-1 * (calc($tech-icons-width * $n-of-icons + $tech-icons-margin * $n-of-icons)));
+
+.tech-icons-container {
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, $colorBg, transparent);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, $colorBg, transparent);
+  }
+}
+
+.tech-icons {
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  animation: scroll $scroll-speed linear infinite;
+  
+  img {
+    flex-shrink: 0;
+    width: $tech-icons-width;
+    height: $tech-icons-height;
+    margin-left: $tech-icons-margin;
+    object-fit: contain;
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX($tech-icons-set-width); /* Move left by half of the icon set's width */
+  }
+}
+
+
+.icon {
+  flex-shrink: 0;
+    width: $tech-icons-width;
+    height: $tech-icons-height;
+    margin-left: $tech-icons-margin;
+    fill: $white;
+}

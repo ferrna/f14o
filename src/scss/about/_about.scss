@@ -1,0 +1,50 @@
+#about {
+    width: 100%;
+    margin: 4rem 0;
+}
+
+#about-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+///////
+
+#about-title {
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    background-color: rgba(red($text-color), green($text-color), blue($text-color), 0.05);
+    padding: 0.2rem 2rem;
+    border-radius: 3px 3px 0 0;
+    border-bottom: 1px solid $text-color;
+}
+
+#about-content {
+    padding: 0 2rem;
+    p {
+        margin: 0;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+        font-size: 1.05rem;
+    }
+}
+
+////////
+
+#about-services {
+}
+
+.about-service {
+    background-color: rgba(red($text-color), green($text-color), blue($text-color), 0.05);
+    padding: 0.2rem 2rem;
+    border-radius: 3px 3px 0 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid $text-color;
+
+    h2 {
+        text-decoration: underline;
+    }
+}

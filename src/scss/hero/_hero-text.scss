@@ -1,0 +1,97 @@
+//@keyframes hero-title-expand {
+//    from { width: 0; }
+//    to { width: 100%; }
+//}
+//.hero-title.expanded, .hero-subtitle.expanded {
+//    animation: hero-title-expand 0.5s ease-out forwards;
+//    animation-delay: 2s;
+//}
+
+//$hero-title-size: max(5.125rem,min(6.8vw + 2rem,18rem) * 0.8);
+$hero-title-size: 4.6rem;
+$font-hero-title: $font-family;
+
+@keyframes worm-tilt {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#hero-worm {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/media/worm.png) center center no-repeat;
+    &:hover {
+        animation: worm-tilt 0.1s ease-in-out forwards;
+    }
+    div {
+        width: 100%;
+        height: 100%;
+        background: url(/media/noise.png) repeat;
+        //filter: brightness(50%) contrast(150%);
+        filter: invert(100%);
+        opacity: 0.5;
+        border-radius: 0 0 1rem 1rem;
+        //position: relative;
+        //&::before {
+        //    content: '';
+        //    position: absolute;
+        //    top: 0;
+        //    left: 0;
+        //    width: 100%;
+        //    height: 100%;
+        //    z-index: 100;
+        //    filter: invert(100%);
+        //    background: linear-gradient(to bottom, transparent 80%, $colorBg 95%);
+        //}
+    }
+}
+
+.hero-text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    grid-row: 2 / 4;
+    grid-column: 1 / 3;
+}
+
+.hero-title, .hero-subtitle {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    min-width: 15ch;
+    align-items: end;
+    margin: 0;
+}
+
+.hero-title {
+    margin-top: 2rem;
+    margin-bottom: calc(-1 * $hero-title-size * 0.4);
+}
+
+.hero-title span {
+    text-wrap: nowrap;
+    //-0.32rem
+    margin-left: 0rem;
+    font-size: $hero-title-size;
+    font-weight: 600;
+    line-height: normal;
+    overflow: visible;
+    font-family: $font-hero-title;
+}
+.hero-subtitle span {
+    font-size: 4.6rem;
+    line-height: 1;
+    line-height: 0.9;
+    font-weight: 400;
+    line-height: normal;
+    font-family: $font-hero-title;
+
+}
