@@ -61,6 +61,19 @@ $font-hero-title: $font-family;
     grid-column: 1 / 3;
 }
 
+.hero-text-lines {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#hero-wrapper.is-about .hero-text-lines {
+    align-self: flex-start;
+    padding-left: 1rem;
+}
+
 .hero-title, .hero-subtitle {
     position: relative;
     z-index: 100;

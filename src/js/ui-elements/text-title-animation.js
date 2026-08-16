@@ -105,11 +105,12 @@ function splitText(target) {
   document.addEventListener('DOMContentLoaded', () => {
     const titleElement = document.querySelector('.hero-title');
     const subtitleElement = document.querySelector('.hero-subtitle');
+    const titleDelay = document.getElementById('intro-screen') ? 1.6 : 0.25;
     if (titleElement) {
-        gsap.effects.clipTitle(titleElement, { delay: 1.6 });
+        gsap.effects.clipTitle(titleElement, { delay: titleDelay });
     }
     if (subtitleElement) {
-        gsap.effects.clipTitle(subtitleElement, { delay: 1.6 });
+        gsap.effects.clipTitle(subtitleElement, { delay: titleDelay });
     }
     const projectsTitle = document.querySelector('#projects-title');
     const projects = document.querySelector('#projects');

@@ -28,10 +28,15 @@ export function t(key, lang = currentLang) {
   return dict[key] ?? translations.en[key] ?? key;
 }
 
-function isProjectView() {
+function currentViewName() {
+  const stateView = window.history.state && window.history.state.view;
+  if (stateView) return stateView;
+  if (document.body.dataset.page) return document.body.dataset.page;
   const viewProject = document.querySelector('#view-project');
-  if (viewProject) return !viewProject.hidden;
-  return Boolean(document.querySelector('#project-details-container'));
+  if (viewProject && !viewProject.hidden) return 'project';
+  const viewAbout = document.querySelector('#view-about');
+  if (viewAbout && !viewAbout.hidden) return 'about';
+  return 'home';
 }
 
 function applyAttributeTranslations(el, lang) {
@@ -43,7 +48,13 @@ function applyAttributeTranslations(el, lang) {
 }
 
 function updateDocumentTitle() {
-  document.title = t(isProjectView() ? 'meta.projectTitle' : 'meta.homeTitle');
+  const view = currentViewName();
+  const titleKey = view === 'project'
+    ? 'meta.projectTitle'
+    : view === 'about'
+      ? 'meta.aboutTitle'
+      : 'meta.homeTitle';
+  document.title = t(titleKey);
 }
 
 function updateLangSwitchers(root) {

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Fernando Arriondo</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="media/favicon_io/favicon.ico">
+    <link rel="manifest" href="media/favicon_io/site.webmanifest">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body data-page="about">
+    <div id="background-container"></div>
+    <div class="cursor"></div>
+    <div class='btn-fullscreen' id='fullscreen-mode' data-i18n-attr="aria-label:ui.fullscreen">
+      <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true' focusable='false' width='1.4em' height='1.4em' style='-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);' preserveAspectRatio='xMidYMid meet' viewBox='0 0 17 17'>
+       <g fill='currentColor' fill-rule='evenodd'>
+        <path d='M3 5h12v8H3z'/>
+        <path d='M3.918 14.938H1v-2.876h1v1.98h1.918v.896z'/>
+        <path d='M17 14.938h-2.938v-.896H16v-1.984h1v2.88z'/>
+        <path d='M17 5.917h-1v-1.95h-1.943v-.946H17v2.896z'/>
+        <path d='M2 5.938H1V3h2.938v.938H2v2z'/>
+       </g>
+      </svg>
+     </div>
+    <main>
+        <div id="hero-wrapper" class="is-about">
+          <div id="hero-background"></div>
+          <div id="hero-container">
+            <header id="header-left-container">
+              <div id="header-left-content"><h2><span data-i18n="header.portfolio">Portfolio</span>&nbsp;<small>2024</small>.</h2></div>
+            </header>
+            <header id="header-container">
+              <div id="header-content">
+                <button type="button" data-nav="projects" data-i18n="nav.projects">Projects</button>
+                <div class="header-btn_separator">/</div>
+                <button type="button" data-nav="about" class="is-active" data-i18n="nav.about" aria-current="page">About</button>
+                <div class="header-btn_separator">/</div>
+                <div class="lang-switcher" data-lang-switcher>
+                  <button type="button" data-lang="en" data-i18n-attr="aria-label:lang.en">EN</button>
+                  <span class="lang-switcher-sep">/</span>
+                  <button type="button" data-lang="es" data-i18n-attr="aria-label:lang.es">ES</button>
+                </div>
+              </div>
+            </header>
+            <div class="hero-text">
+                <div class="hero-text-lines">
+                  <div class="hero-title expanded">
+                    <h1>Fernando<span>&nbsp;</span>Arriondo</h1>
+                  </div>
+                  <div class="hero-subtitle">
+                      <h3 data-i18n-html="hero.subtitle">Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
+                  </div>
+                </div>
+                <div id="hero-worm"><div></div></div>
+            </div>
+            <div class="hero-image-container" data-about-portrait>
+              <div class="hero-image">
+                <img src="media/009-46216da324-LTE-233e9.jpg" alt="Fernando Arriondo" data-i18n-attr="alt:about.photoAlt">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="home-page" hidden></div>
+        <div id="view-about">
+          <section id="about">
+            <p class="about-ghost" aria-hidden="true" data-i18n="about.ghost">about</p>
+            <div id="about-container">
+              <div class="about-intro">
+                <p class="about-kicker">
+                  <span class="about-kicker-mark" aria-hidden="true"></span>
+                  <span data-i18n="about.kicker">A note</span>
+                </p>
+                <p class="about-lead" data-i18n="about.lead">I make products you can feel — and the code that keeps them standing.</p>
+              </div>
+              <div class="about-body">
+                <p data-i18n="about.body">Full stack, from the first interface sketch to the systems that hold state, motion, and data. I care about the quiet details: how something loads, how it answers, how it stays clear when it gets complex.</p>
+                <p data-i18n="about.body2">This page is the short version. The work is in the projects.</p>
+              </div>
+              <div class="about-roles">
+                <article class="about-role" data-role="front">
+                  <span class="about-role-index">01</span>
+                  <h2 data-i18n="about.frontend">Front end</h2>
+                  <p data-i18n="about.frontendBody">Type, motion, and the space between clicks.</p>
+                </article>
+                <article class="about-role" data-role="back">
+                  <span class="about-role-index">02</span>
+                  <h2 data-i18n="about.backend">Back end</h2>
+                  <p data-i18n="about.backendBody">APIs, data, and the logic you never see.</p>
+                </article>
+                <article class="about-role" data-role="full">
+                  <span class="about-role-index">03</span>
+                  <h2 data-i18n="about.fullstack">Full stack</h2>
+                  <p data-i18n="about.fullstackBody">One piece. No handoff in the middle.</p>
+                </article>
+              </div>
+              <div class="about-footer">
+                <span data-i18n="about.meta">Selected work · Full stack</span>
+                <span>2024</span>
+              </div>
+            </div>
+          </section>
+        </div>
+    </main>
+    <script src="js/bundle.js"></script>
+</body>
+</html>

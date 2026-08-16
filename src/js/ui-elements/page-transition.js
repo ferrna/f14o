@@ -45,7 +45,7 @@ function rectOf(el) {
   };
 }
 
-function fetchMain(url) {
+function fetchPart(url, selector = 'main') {
   return fetch(url)
     .then((response) => {
       if (!response.ok) {
@@ -55,15 +55,21 @@ function fetchMain(url) {
     })
     .then((html) => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
+      const part = doc.querySelector(selector);
       const main = doc.querySelector('main');
-      if (!main) {
-        throw new Error('Loaded page is missing a main element');
+      const node = part || main;
+      if (!node) {
+        throw new Error('Loaded page is missing the requested content');
       }
       return {
-        html: main.innerHTML,
+        html: node.innerHTML,
         title: doc.title,
       };
     });
+}
+
+function fetchMain(url) {
+  return fetchPart(url, 'main');
 }
 
 function waitForImage(img) {
@@ -114,6 +120,16 @@ function createFixedClone(image, rect) {
   return clone;
 }
 
+function pageSlots(main) {
+  return {
+    main,
+    viewHome: main.querySelector('#view-home'),
+    viewProject: main.querySelector('#view-project'),
+    viewAbout: main.querySelector('#view-about'),
+    homePage: main.querySelector('#home-page'),
+  };
+}
+
 export function ensureViews() {
   const main = document.querySelector('main');
   if (!main) return null;
@@ -121,7 +137,7 @@ export function ensureViews() {
   let viewHome = main.querySelector('#view-home');
   let viewProject = main.querySelector('#view-project');
   if (viewHome && viewProject) {
-    return { main, viewHome, viewProject };
+    return pageSlots(main);
   }
 
   const isProject = Boolean(main.querySelector('#project-details-container'));
@@ -137,11 +153,132 @@ export function ensureViews() {
   other.hidden = true;
   main.appendChild(other);
 
-  return {
-    main,
-    viewHome: main.querySelector('#view-home'),
-    viewProject: main.querySelector('#view-project'),
-  };
+  return pageSlots(main);
+}
+
+function ensureAboutSlot(viewHome) {
+  let about = document.querySelector('#view-about');
+  if (about) return about;
+  if (!viewHome) return null;
+  about = document.createElement('div');
+  about.id = 'view-about';
+  about.hidden = true;
+  about.setAttribute('aria-hidden', 'true');
+  const hero = viewHome.querySelector('#hero-wrapper');
+  if (hero) {
+    hero.insertAdjacentElement('afterend', about);
+  } else {
+    viewHome.appendChild(about);
+  }
+  return about;
+}
+
+function ensureHomePage(viewHome) {
+  let homePage = document.querySelector('#home-page');
+  if (homePage) return homePage;
+  if (!viewHome) return null;
+  homePage = document.createElement('div');
+  homePage.id = 'home-page';
+  const hero = viewHome.querySelector('#hero-wrapper');
+  const about = viewHome.querySelector('#view-about');
+  if (hero) {
+    hero.insertAdjacentElement('afterend', homePage);
+  } else if (about) {
+    viewHome.insertBefore(homePage, about);
+  } else {
+    viewHome.appendChild(homePage);
+  }
+  return homePage;
+}
+
+function isAboutVisible() {
+  const about = document.querySelector('#view-about');
+  return Boolean(about && !about.hidden);
+}
+
+function setNavActive(view) {
+  document.querySelectorAll('[data-nav]').forEach((button) => {
+    const active = (view === 'about' && button.dataset.nav === 'about')
+      || (view === 'home' && button.dataset.nav === 'projects');
+    button.classList.toggle('is-active', active);
+    if (active) {
+      button.setAttribute('aria-current', 'page');
+    } else {
+      button.removeAttribute('aria-current');
+    }
+  });
+}
+
+function setHeroAboutLayout(visible, { immediate = false } = {}) {
+  const hero = document.querySelector('#hero-wrapper');
+  const movers = document.querySelectorAll('.hero-text-lines');
+  if (!hero) return Promise.resolve();
+
+  const apply = () => hero.classList.toggle('is-about', visible);
+
+  if (immediate || prefersReducedMotion() || !movers.length) {
+    apply();
+    gsap.set(movers, { x: 0 });
+    return Promise.resolve();
+  }
+
+  const starts = [...movers].map((el) => el.getBoundingClientRect().left);
+  apply();
+  movers.forEach((el, index) => {
+    gsap.set(el, { x: starts[index] - el.getBoundingClientRect().left });
+  });
+  return gsap.to(movers, {
+    x: 0,
+    duration: 0.55,
+    ease: 'power2.out',
+    overwrite: 'auto',
+  });
+}
+
+function setAboutPortrait(visible, { immediate = false } = {}) {
+  const portrait = document.querySelector('[data-about-portrait]');
+  document.body.dataset.page = visible ? 'about' : (document.body.dataset.page === 'project' ? 'project' : 'home');
+
+  const layout = setHeroAboutLayout(visible, { immediate });
+  if (!portrait) return layout;
+
+  if (visible) {
+    portrait.hidden = false;
+    portrait.removeAttribute('hidden');
+    if (immediate || prefersReducedMotion()) {
+      gsap.set(portrait, { opacity: 1, scale: 1 });
+      return layout;
+    }
+    return Promise.all([
+      layout,
+      gsap.fromTo(portrait, { opacity: 0, scale: 0.92 }, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.55,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      }),
+    ]);
+  }
+
+  if (immediate || prefersReducedMotion()) {
+    gsap.set(portrait, { opacity: 0 });
+    portrait.hidden = true;
+    return layout;
+  }
+  return Promise.all([
+    layout,
+    gsap.to(portrait, {
+      opacity: 0,
+      scale: 0.96,
+      duration: 0.35,
+      ease: 'power2.inOut',
+      overwrite: 'auto',
+      onComplete: () => {
+        portrait.hidden = true;
+      },
+    }),
+  ]);
 }
 
 function showView(view) {
@@ -286,11 +423,18 @@ export async function goToProject({ image, url, updateHistory = true }) {
 
 export async function goToHome({ url = 'index.html', scrollToProjects = false, updateHistory = true } = {}) {
   if (state.busy) return;
+
+  const views = ensureViews();
+  const onProject = Boolean(views && views.viewProject && !views.viewProject.hidden);
+  if (!onProject && isAboutVisible()) {
+    await goHomeFromAbout({ scrollToProjects, updateHistory });
+    return;
+  }
+
   teardownHandoff();
   restoreHandoffToHome();
   state.busy = true;
 
-  const views = ensureViews();
   if (!views) {
     window.location.href = scrollToProjects ? `${url}#projects` : url;
     return;
@@ -302,9 +446,10 @@ export async function goToHome({ url = 'index.html', scrollToProjects = false, u
 
   try {
     if (!viewHome.innerHTML.trim()) {
-      const page = await fetchMain(url);
+      const page = await fetchPart(url, '#view-home');
       viewHome.innerHTML = page.html;
       applyTranslations(viewHome);
+      bindSiteNav(viewHome);
     }
 
     if (viewHome.dataset.slidesReady !== 'true') {
@@ -366,6 +511,9 @@ export async function goToHome({ url = 'index.html', scrollToProjects = false, u
       clone.remove();
     }
 
+    document.body.dataset.page = 'home';
+    setNavActive('home');
+    setAboutPortrait(false, { immediate: true });
     const homeTitle = t('meta.homeTitle');
     if (updateHistory) {
       setHistory('home', url, homeTitle);
@@ -414,12 +562,178 @@ async function ensureHomeView() {
   const views = ensureViews();
   if (!views) return null;
   if (!views.viewHome.innerHTML.trim()) {
-    const page = await fetchMain('index.html');
+    const page = await fetchPart('index.html', '#view-home');
     views.viewHome.innerHTML = page.html;
     applyTranslations(views.viewHome);
+    bindSiteNav(views.viewHome);
     document.dispatchEvent(new CustomEvent('home-view-ready'));
   }
   return views;
+}
+
+async function fillHomePage(homePage) {
+  if (!homePage || homePage.innerHTML.trim()) return homePage;
+  const page = await fetchPart('index.html', '#home-page');
+  homePage.innerHTML = page.html;
+  applyTranslations(homePage);
+  document.dispatchEvent(new CustomEvent('home-view-ready'));
+  return homePage;
+}
+
+async function fillAbout(about) {
+  if (!about || about.innerHTML.trim()) return about;
+  const page = await fetchPart('about.html', '#view-about');
+  about.innerHTML = page.html;
+  applyTranslations(about);
+  return about;
+}
+
+async function goHomeFromAbout({ scrollToProjects = false, updateHistory = true } = {}) {
+  if (state.busy) return;
+  state.busy = true;
+  document.body.classList.add('is-page-transitioning');
+
+  try {
+    const views = ensureViews();
+    const homePage = ensureHomePage(views && views.viewHome);
+    const about = document.querySelector('#view-about');
+    await fillHomePage(homePage);
+
+    const fadeOutAbout = prefersReducedMotion() || !about
+      ? Promise.resolve()
+      : gsap.to(about, { opacity: 0, duration: 0.35, ease: 'power2.inOut' });
+
+    await Promise.all([fadeOutAbout, setAboutPortrait(false)]);
+
+    if (about) {
+      hideView(about);
+      gsap.set(about, { opacity: 1 });
+    }
+    if (homePage) {
+      showView(homePage);
+      if (!prefersReducedMotion()) {
+        gsap.fromTo(homePage, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+      }
+    }
+
+    document.body.dataset.page = 'home';
+    setNavActive('home');
+    if (scrollToProjects) {
+      const projects = document.querySelector('#projects');
+      window.scrollTo({
+        top: projects ? projects.offsetTop : 0,
+        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+      });
+    }
+
+    const homeTitle = t('meta.homeTitle');
+    if (updateHistory) {
+      setHistory('home', 'index.html', homeTitle);
+    } else {
+      document.title = homeTitle;
+    }
+  } catch (error) {
+    window.location.href = scrollToProjects ? 'index.html#projects' : 'index.html';
+    return;
+  } finally {
+    document.body.classList.remove('is-page-transitioning');
+    state.busy = false;
+  }
+}
+
+export async function goToAbout({ updateHistory = true } = {}) {
+  if (state.busy) return;
+  if (isAboutVisible()) return;
+
+  const views = ensureViews();
+  if (!views) {
+    window.location.href = 'about.html';
+    return;
+  }
+
+  teardownHandoff();
+  restoreHandoffToHome();
+  state.busy = true;
+  document.body.classList.add('is-page-transitioning');
+
+  try {
+    const about = ensureAboutSlot(views.viewHome);
+    const homePage = document.querySelector('#home-page');
+    if (!about) {
+      window.location.href = 'about.html';
+      return;
+    }
+
+    await fillAbout(about);
+
+    const fadeOutHome = prefersReducedMotion() || !homePage
+      ? Promise.resolve()
+      : gsap.to(homePage, { opacity: 0, duration: 0.35, ease: 'power2.inOut' });
+
+    await Promise.all([fadeOutHome, setAboutPortrait(true)]);
+
+    if (homePage) {
+      hideView(homePage);
+      gsap.set(homePage, { opacity: 1 });
+    }
+
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    showView(about);
+    const incoming = [...about.querySelectorAll('#about-container > *')];
+    if (prefersReducedMotion()) {
+      gsap.set(incoming, { opacity: 1, y: 0 });
+    } else {
+      gsap.set(incoming, { opacity: 0, y: 16 });
+      fadeElements(incoming, { to: 1, y: 0, delay: 0.05 });
+    }
+
+    document.body.dataset.page = 'about';
+    setNavActive('about');
+    const aboutTitle = t('meta.aboutTitle');
+    if (updateHistory) {
+      setHistory('about', 'about.html', aboutTitle);
+    } else {
+      document.title = aboutTitle;
+    }
+  } catch (error) {
+    window.location.href = 'about.html';
+    return;
+  } finally {
+    document.body.classList.remove('is-page-transitioning');
+    state.busy = false;
+  }
+}
+
+export function bindSiteNav(root = document) {
+  root.querySelectorAll('[data-nav="about"]').forEach((button) => {
+    if (button.dataset.bound === 'true') return;
+    button.dataset.bound = 'true';
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      goToAbout();
+    });
+  });
+
+  root.querySelectorAll('[data-nav="projects"]').forEach((button) => {
+    if (button.dataset.bound === 'true') return;
+    button.dataset.bound = 'true';
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const homePage = document.querySelector('#home-page');
+      const onHome = homePage && !homePage.hidden && !isAboutVisible();
+      if (onHome) {
+        const projects = document.querySelector('#projects');
+        if (projects) {
+          projects.scrollIntoView({
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+            block: 'start',
+          });
+        }
+        return;
+      }
+      goToHome({ scrollToProjects: true });
+    });
+  });
 }
 
 function getHandoffNodes(viewHome) {
@@ -594,6 +908,8 @@ async function commitHandoff() {
   if (state.fromImage) {
     state.fromImage.style.visibility = '';
   }
+  document.body.dataset.page = 'home';
+  setNavActive('home');
   setHistory('home', 'index.html', t('meta.homeTitle'));
 
   if (title) {
@@ -648,17 +964,34 @@ export async function prepareProjectHandoff() {
   document.body.classList.add('is-handoff-armed');
 }
 
+function detectInitialView() {
+  const path = window.location.pathname;
+  if (path.includes('project-details') || document.querySelector('#project-details-container')) {
+    return 'project';
+  }
+  if (path.includes('about') || (isAboutVisible() && document.querySelector('#home-page')?.hidden)) {
+    return 'about';
+  }
+  return 'home';
+}
+
 export function initPageTransitions() {
   const views = ensureViews();
   bindProjectChrome();
+  bindSiteNav();
 
-  const initialView = document.querySelector('#project-details-container') ? 'project' : 'home';
+  const initialView = detectInitialView();
   if (!window.history.state || !window.history.state.view) {
     window.history.replaceState({ view: initialView }, document.title);
   }
 
   if (initialView === 'project') {
     prepareProjectHandoff();
+  } else if (initialView === 'about') {
+    setAboutPortrait(true, { immediate: true });
+    setNavActive('about');
+  } else {
+    setNavActive('home');
   }
 
   window.addEventListener('popstate', (event) => {
@@ -670,7 +1003,12 @@ export function initPageTransitions() {
       }
       return;
     }
-    if (views && !views.viewHome.hidden) {
+    if (view === 'about') {
+      goToAbout({ updateHistory: false });
+      return;
+    }
+    const onHome = views && views.viewProject && views.viewProject.hidden && !isAboutVisible();
+    if (onHome) {
       return;
     }
     goToHome({ updateHistory: false });

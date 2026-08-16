@@ -40,9 +40,9 @@
             </header>
             <header id="header-container">
               <div id="header-content">
-                <button type="button" data-i18n="nav.projects">Projects</button>
+                <button type="button" data-nav="projects" class="is-active" data-i18n="nav.projects" aria-current="page">Projects</button>
                 <div class="header-btn_separator">/</div>
-                <button type="button" data-i18n="nav.about">About</button>
+                <button type="button" data-nav="about" data-i18n="nav.about">About</button>
                 <div class="header-btn_separator">/</div>
                 <div class="lang-switcher" data-lang-switcher>
                   <button type="button" data-lang="en" data-i18n-attr="aria-label:lang.en">EN</button>
@@ -52,44 +52,26 @@
               </div>
             </header>
             <div class="hero-text">
-                <div class="hero-title expanded">
-                  <!--<h1>Fernando<span>&nbsp;</span></h1>
-                  <h1><span>&nbsp;</span>Arriondo</h1>-->
-                  <h1>Fernando<span>&nbsp;</span>Arriondo</h1>
-                </div>
-                <div class="hero-subtitle">
-                    <h3 data-i18n-html="hero.subtitle">Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
+                <div class="hero-text-lines">
+                  <div class="hero-title expanded">
+                    <!--<h1>Fernando<span>&nbsp;</span></h1>
+                    <h1><span>&nbsp;</span>Arriondo</h1>-->
+                    <h1>Fernando<span>&nbsp;</span>Arriondo</h1>
+                  </div>
+                  <div class="hero-subtitle">
+                      <h3 data-i18n-html="hero.subtitle">Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
+                  </div>
                 </div>
                 <div id="hero-worm"><div></div></div>
             </div>
-            <!--<div class="hero-image-container">
+            <div class="hero-image-container" data-about-portrait hidden>
               <div class="hero-image">
-                <img src="media/hero/hero-image.jpg" alt="Hero Image">
+                <img src="media/009-46216da324-LTE-233e9.jpg" alt="Fernando Arriondo" data-i18n-attr="alt:about.photoAlt">
               </div>
-            </div>-->
-            <!--<div class="scroll-mouse-container">
-              <div class="scroll-mouse"></div>
-              <p>Scroll</p>
-            </div>-->
+            </div>
           </div>
         </div>
-        <section id="about">
-          <div id="about-container">
-            <div id="about-text">
-              <div id="about-title">
-                <h2 data-i18n="about.title">About</h2>
-              </div>
-              <div id="about-content">
-                <p data-i18n="about.body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
-              </div>
-            </div>
-            <div id="about-services">
-              <div class="about-service"><h2 data-i18n="about.frontend">Front end</h2></div>
-              <div class="about-service"><h2 data-i18n="about.backend">Back end</h2></div>
-              <div class="about-service"><h2 data-i18n="about.fullstack">Full stack</h2></div>
-            </div>
-          </div>
-        </section>
+        <div id="home-page">
         <section id="technologies">
           <div class="tech-title-container">
             <h2 class="tech-title" data-i18n="tech.title">Technologies</h2>
@@ -242,6 +224,8 @@
             <h2 id="contact-title" data-i18n="contact.title">Contact</h2>
           </div>
         </section>
+        </div>
+        <div id="view-about" hidden></div>
     </main>
     <script src="js/bundle.js"></script>
 </body>
