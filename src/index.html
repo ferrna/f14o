@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Web Page</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="media/favicon_io/favicon.ico">
+    <link rel="manifest" href="media/favicon_io/site.webmanifest">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <div id="background-container"></div>
     <div class="cursor"></div>
-    <div class='btn-fullscreen' id='fullscreen-mode'>
+    <div class='btn-fullscreen' id='fullscreen-mode' data-i18n-attr="aria-label:ui.fullscreen">
       <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true' focusable='false' width='1.4em' height='1.4em' style='-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);' preserveAspectRatio='xMidYMid meet' viewBox='0 0 17 17'>
        <g fill='currentColor' fill-rule='evenodd'>
         <path d='M3 5h12v8H3z'/>
@@ -21,7 +26,7 @@
       </svg>
      </div>
     <div id="intro-screen">
-      <h2 id="intro-title" class="expanded">fernando's portfolio</h2>
+      <h2 id="intro-title" class="expanded" data-i18n="intro.title">fernando's portfolio</h2>
     </div>
     <main>
         <div id="hero-wrapper">
@@ -31,10 +36,20 @@
           </div>-->
           <div id="hero-container">
             <header id="header-left-container">
-              <div id="header-left-content"><h2>Portfolio&nbsp;<small>2024</small>.</h2></div>
+              <div id="header-left-content"><h2><span data-i18n="header.portfolio">Portfolio</span>&nbsp;<small>2024</small>.</h2></div>
             </header>
             <header id="header-container">
-              <div id="header-content"><button>Projects</button><div class="header-btn_separator">/</div><button>About</button></div>
+              <div id="header-content">
+                <button type="button" data-i18n="nav.projects">Projects</button>
+                <div class="header-btn_separator">/</div>
+                <button type="button" data-i18n="nav.about">About</button>
+                <div class="header-btn_separator">/</div>
+                <div class="lang-switcher" data-lang-switcher>
+                  <button type="button" data-lang="en" data-i18n-attr="aria-label:lang.en">EN</button>
+                  <span class="lang-switcher-sep">/</span>
+                  <button type="button" data-lang="es" data-i18n-attr="aria-label:lang.es">ES</button>
+                </div>
+              </div>
             </header>
             <div class="hero-text">
                 <div class="hero-title expanded">
@@ -43,7 +58,7 @@
                   <h1>Fernando<span>&nbsp;</span>Arriondo</h1>
                 </div>
                 <div class="hero-subtitle">
-                    <h3>Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
+                    <h3 data-i18n-html="hero.subtitle">Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
                 </div>
                 <div id="hero-worm"><div></div></div>
             </div>
@@ -62,22 +77,22 @@
           <div id="about-container">
             <div id="about-text">
               <div id="about-title">
-                <h2>About</h2>
+                <h2 data-i18n="about.title">About</h2>
               </div>
               <div id="about-content">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+                <p data-i18n="about.body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
               </div>
             </div>
             <div id="about-services">
-              <div class="about-service"><h2>Front end</h2></div>
-              <div class="about-service"><h2>Back end</h2></div>
-              <div class="about-service"><h2>Full stack</h2></div>
+              <div class="about-service"><h2 data-i18n="about.frontend">Front end</h2></div>
+              <div class="about-service"><h2 data-i18n="about.backend">Back end</h2></div>
+              <div class="about-service"><h2 data-i18n="about.fullstack">Full stack</h2></div>
             </div>
           </div>
         </section>
         <section id="technologies">
           <div class="tech-title-container">
-            <h2 class="tech-title">Technologies</h2>
+            <h2 class="tech-title" data-i18n="tech.title">Technologies</h2>
           </div>
           <div class="tech-icons-container">
             <div class="tech-icons">
@@ -152,18 +167,18 @@
           </div>
         </section>
         <section id="projects">
-          <h2 id="projects-title">Selected<span>&nbsp;</span>Projects</h2>
+          <h2 id="projects-title" data-i18n-html="projects.selectedTitle">Selected<span>&nbsp;</span>Projects</h2>
           <div id="projects-container">
             <div class="projects-slide">
               <a href="project-details.html">
                 <div class="project-image-holder">
                   <div>
                     <div class="overlay-container">
-                      <button class="follow-button">View</button>
+                      <button class="follow-button" data-i18n="projects.view">View</button>
                     </div>
                   </div>
                 </div>
-                <img src="media/projects/1.png" alt="Project 1">
+                <img src="media/projects/1.png" alt="Project 1" data-i18n-attr="alt:projects.imageAlt">
               </a>
             </div>
             <div class="projects-slide">
@@ -171,11 +186,11 @@
                 <div class="project-image-holder">
                   <div>
                     <div class="overlay-container">
-                      <button class="follow-button">View</button>
+                      <button class="follow-button" data-i18n="projects.view">View</button>
                     </div>
                   </div>
                 </div>
-                <img src="media/projects/1.png" alt="Project 1">
+                <img src="media/projects/1.png" alt="Project 1" data-i18n-attr="alt:projects.imageAlt">
               </a>
             </div>
           </div>
@@ -224,7 +239,7 @@
         </section>-->
         <section id="contact">
           <div id="contact-container">
-            <h2 id="contact-title">Contact</h2>
+            <h2 id="contact-title" data-i18n="contact.title">Contact</h2>
           </div>
         </section>
     </main>

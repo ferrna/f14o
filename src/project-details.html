@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web Page</title>
+    <title>Project — Fernando Arriondo</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="media/favicon_io/favicon.ico">
+    <link rel="manifest" href="media/favicon_io/site.webmanifest">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <div id="background-container"></div>
     <div class="cursor"></div>
-    <div class='btn-fullscreen' id='fullscreen-mode'>
+    <div class='btn-fullscreen' id='fullscreen-mode' data-i18n-attr="aria-label:ui.fullscreen">
       <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true' focusable='false' width='1.4em' height='1.4em' style='-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);' preserveAspectRatio='xMidYMid meet' viewBox='0 0 17 17'>
        <g fill='currentColor' fill-rule='evenodd'>
         <path d='M3 5h12v8H3z'/>
@@ -21,18 +26,105 @@
       </svg>
      </div>
     <main>
-      <div id="project-details-container">
-        <img id="project-main-image" src="media/projects/1.png" alt="Project Image">
-        <section id="projects">
-          <div class="projects-container">
-            <div class="projects-slide">
-              <a href="project-details.html">
-                <img src="media/projects/1.png" alt="Project 1">
-              </a>
+      <article id="project-details-container">
+        <div class="project-hero-bar">
+          <button type="button" class="project-back" data-project-back data-project-fade data-i18n="project.back">← Projects</button>
+          <div class="lang-switcher" data-lang-switcher>
+            <button type="button" data-lang="en" data-i18n-attr="aria-label:lang.en">EN</button>
+            <span class="lang-switcher-sep">/</span>
+            <button type="button" data-lang="es" data-i18n-attr="aria-label:lang.es">ES</button>
+          </div>
+        </div>
+        <div class="project-layout">
+          <div class="project-layout-spacer" aria-hidden="true"></div>
+          <div class="project-layout-main">
+            <div class="project-main-tabs" data-project-tabs>
+              <div class="project-tab-list" role="tablist">
+                <button type="button" class="project-tab is-active" role="tab" aria-selected="true" data-tab="overview" data-i18n="project.tabOverview">Project</button>
+                <button type="button" class="project-tab" role="tab" aria-selected="false" data-tab="features" data-i18n="project.tabFeatures">Features</button>
+              </div>
+              <section class="project-tab-panel is-active" data-tab-panel="overview">
+                <img id="project-main-image" src="media/projects/1.png" alt="Project Image" data-i18n-attr="alt:project.imageAlt">
+                <div class="project-info" data-project-fade>
+                  <p class="project-meta" data-i18n="project.meta">2024 — Product design / Full stack</p>
+                  <h1 class="project-title" data-i18n="project.title">Selected Project</h1>
+                  <p class="project-description" data-i18n="project.description">
+                    A focused case study for a product built end to end: interface, motion, and the systems behind it.
+                    Replace this copy with the real story, role, and outcome when the project content is ready.
+                  </p>
+                  <ul class="project-tags">
+                    <li>JavaScript</li>
+                    <li>GSAP</li>
+                    <li>Three.js</li>
+                  </ul>
+                </div>
+              </section>
+              <section class="project-tab-panel" data-tab-panel="features" hidden>
+                <div class="project-features" data-project-features>
+                  <article class="project-feature is-active" data-feature>
+                    <p class="project-feature-index">01</p>
+                    <h3 class="project-feature-title" data-i18n="project.feature1Title">Search</h3>
+                    <div class="project-feature-detail">
+                      <img src="media/projects/1.png" alt="" data-i18n-attr="alt:project.feature1Title">
+                      <p data-i18n="project.feature1Body">Find products quickly with filters that stay out of the way until they are needed.</p>
+                    </div>
+                  </article>
+                  <article class="project-feature" data-feature>
+                    <p class="project-feature-index">02</p>
+                    <h3 class="project-feature-title" data-i18n="project.feature2Title">Catalog</h3>
+                    <div class="project-feature-detail">
+                      <img src="media/projects/2.png" alt="" data-i18n-attr="alt:project.feature2Title">
+                      <p data-i18n="project.feature2Body">A clear grid for categories and products, built to stay readable on any screen.</p>
+                    </div>
+                  </article>
+                  <article class="project-feature" data-feature>
+                    <p class="project-feature-index">03</p>
+                    <h3 class="project-feature-title" data-i18n="project.feature3Title">Checkout</h3>
+                    <div class="project-feature-detail">
+                      <img src="media/projects/3.png" alt="" data-i18n-attr="alt:project.feature3Title">
+                      <p data-i18n="project.feature3Body">A short path from cart to confirmation, with the state of the order always visible.</p>
+                    </div>
+                  </article>
+                  <article class="project-feature" data-feature>
+                    <p class="project-feature-index">04</p>
+                    <h3 class="project-feature-title" data-i18n="project.feature4Title">Account</h3>
+                    <div class="project-feature-detail">
+                      <img src="media/projects/1.png" alt="" data-i18n-attr="alt:project.feature4Title">
+                      <p data-i18n="project.feature4Body">Orders, addresses, and preferences in one place so returning users move faster.</p>
+                    </div>
+                  </article>
+                </div>
+              </section>
             </div>
           </div>
+          <aside class="project-layout-aside" data-project-fade>
+            <div class="project-copy">
+              <h2 data-i18n="project.overviewTitle">Overview</h2>
+              <p data-i18n="project.overviewBody">
+                The brief, the constraint, and what the product needed to do.
+                This column is for the longer read: context, process, and decisions.
+              </p>
+            </div>
+            <div class="project-copy">
+              <h2 data-i18n="project.roleTitle">Role</h2>
+              <p data-i18n="project.roleBody">
+                Direction, front-end implementation, and motion. Replace this copy with the real case study
+                when the project content is ready.
+              </p>
+            </div>
+            <div class="project-copy">
+              <h2 data-i18n="project.notesTitle">Notes</h2>
+              <p data-i18n="project.notesBody">
+                Stack choices, trade-offs, and what you would do differently next time.
+                Keep this as supporting detail so the middle column stays the entry point.
+              </p>
+            </div>
+          </aside>
+        </div>
+        <section class="project-handoff" data-project-fade>
+          <div data-projects-handoff></div>
         </section>
-      </div>
+      </article>
     </main>
     <script src="js/bundle.js"></script>
 </body>

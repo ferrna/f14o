@@ -1,15 +1,8 @@
-import { pageTransition } from '../ui-elements/page-transition.js';
-import { gsap } from 'gsap';
+import { bindProjectChrome } from '../ui-elements/page-transition.js';
+import { initProjectFeatures } from './project-features.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    gsap.set(document.body, { autoAlpha: 0 });
-    
-    const transitionImage = document.querySelector('.transition-image');
-    if (transitionImage) {
-        document.body.appendChild(transitionImage);
-    }
-  
-    pageTransition.onEnter(document.body, () => {
-        // Any initialization code for the project detail page
-    });
-});
+export function initProjectDetails() {
+  if (!document.querySelector('#project-details-container')) return;
+  bindProjectChrome();
+  initProjectFeatures();
+}
