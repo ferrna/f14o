@@ -1,3 +1,5 @@
+// Archived home projects grid behavior.
+// Restore with `src/js/projects/projects-grid.html` and `_project-grid.scss`.
 import { goToProject } from '../ui-elements/page-transition.js';
 
 export class ProjectsSlides {

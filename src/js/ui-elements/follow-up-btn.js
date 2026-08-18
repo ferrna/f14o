@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.overlay-container');
     const followButton = document.querySelector('.follow-button');
+    if (!container || !followButton) return;
   
     container.addEventListener('mousemove', (e) => {
       const rect = container.getBoundingClientRect(); // Get container bounds

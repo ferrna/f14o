@@ -2,6 +2,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { applyTranslations, t } from '../i18n/i18n.js';
 import { initProjectFeatures } from '../projects/project-features.js';
+import { playHelloWorm, resetHelloWorm, restoreHomeHero } from '../about/hello-worm.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -236,49 +237,8 @@ function setHeroAboutLayout(visible, { immediate = false } = {}) {
 }
 
 function setAboutPortrait(visible, { immediate = false } = {}) {
-  const portrait = document.querySelector('[data-about-portrait]');
   document.body.dataset.page = visible ? 'about' : (document.body.dataset.page === 'project' ? 'project' : 'home');
-
-  const layout = setHeroAboutLayout(visible, { immediate });
-  if (!portrait) return layout;
-
-  if (visible) {
-    portrait.hidden = false;
-    portrait.removeAttribute('hidden');
-    if (immediate || prefersReducedMotion()) {
-      gsap.set(portrait, { opacity: 1, scale: 1 });
-      return layout;
-    }
-    return Promise.all([
-      layout,
-      gsap.fromTo(portrait, { opacity: 0, scale: 0.92 }, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.55,
-        ease: 'power2.out',
-        overwrite: 'auto',
-      }),
-    ]);
-  }
-
-  if (immediate || prefersReducedMotion()) {
-    gsap.set(portrait, { opacity: 0 });
-    portrait.hidden = true;
-    return layout;
-  }
-  return Promise.all([
-    layout,
-    gsap.to(portrait, {
-      opacity: 0,
-      scale: 0.96,
-      duration: 0.35,
-      ease: 'power2.inOut',
-      overwrite: 'auto',
-      onComplete: () => {
-        portrait.hidden = true;
-      },
-    }),
-  ]);
+  return setHeroAboutLayout(visible, { immediate });
 }
 
 function showView(view) {
@@ -458,7 +418,8 @@ export async function goToHome({ url = 'index.html', scrollToProjects = false, u
 
     const original = state.fromImage && viewHome.contains(state.fromImage)
       ? state.fromImage
-      : viewHome.querySelector('.projects-slide img');
+      : viewHome.querySelector('.carouselhero .slide.active img')
+        || viewHome.querySelector('.projects-slide img');
 
     if (original) {
       original.style.visibility = 'hidden';
@@ -603,7 +564,9 @@ async function goHomeFromAbout({ scrollToProjects = false, updateHistory = true 
       ? Promise.resolve()
       : gsap.to(about, { opacity: 0, duration: 0.35, ease: 'power2.inOut' });
 
+    resetHelloWorm({ showHome: false });
     await Promise.all([fadeOutAbout, setAboutPortrait(false)]);
+    restoreHomeHero();
 
     if (about) {
       hideView(about);
@@ -679,6 +642,7 @@ export async function goToAbout({ updateHistory = true } = {}) {
 
     window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     showView(about);
+    playHelloWorm();
     const incoming = [...about.querySelectorAll('#about-container > *')];
     if (prefersReducedMotion()) {
       gsap.set(incoming, { opacity: 1, y: 0 });
@@ -764,6 +728,9 @@ function restoreHandoffToHome({ resetTitle = true } = {}) {
   if (resetTitle) {
     setProjectsTitleMode(false);
   }
+  requestAnimationFrame(() => {
+    window.dispatchEvent(new Event('resize'));
+  });
 }
 
 function teardownHandoff() {
@@ -962,6 +929,9 @@ export async function prepareProjectHandoff() {
 
   bindHandoffInput();
   document.body.classList.add('is-handoff-armed');
+  requestAnimationFrame(() => {
+    window.dispatchEvent(new Event('resize'));
+  });
 }
 
 function detectInitialView() {
@@ -997,7 +967,9 @@ export function initPageTransitions() {
   window.addEventListener('popstate', (event) => {
     const view = event.state && event.state.view;
     if (view === 'project') {
-      const image = state.fromImage || document.querySelector('.projects-slide img');
+      const image = state.fromImage
+        || document.querySelector('.carouselhero .slide.active img')
+        || document.querySelector('.projects-slide img');
       if (image) {
         goToProject({ image, url: window.location.href, updateHistory: false });
       }

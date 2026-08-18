@@ -1,6 +1,7 @@
 function setupParallax() {
     const heroImage = document.querySelector('.hero-image img');
     const container = document.querySelector('.hero-image-container');
+    if (!heroImage || !container || container.closest('#header-left-content')) return;
     let containerTop = container.offsetTop;
     let containerHeight = container.offsetHeight;
     let windowHeight = window.innerHeight;

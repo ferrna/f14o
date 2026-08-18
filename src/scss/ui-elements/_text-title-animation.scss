@@ -1,0 +1,35 @@
+.hero-title .char,
+.hero-subtitle .char {
+    display: inline-block;
+    will-change: transform, opacity;
+}
+
+#header-left-content {
+    .char {
+        display: inline-block;
+        will-change: opacity, text-shadow;
+    }
+
+    small .char {
+        font-size: inherit;
+        font-weight: inherit;
+    }
+}
+
+body.is-awaiting-intro {
+    .hero-image,
+    #hero-worm,
+    #hello-worm,
+    .hero-stars,
+    .hero-title,
+    .hero-subtitle,
+    #technologies,
+    #header-left-content,
+    #header-content {
+        opacity: 0;
+    }
+}
+
+body:not(.intro-done) .tech-icons {
+    animation-play-state: paused;
+}

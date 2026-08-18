@@ -1,21 +1,35 @@
 #technologies {
   display: flex;
-  align-items: center;
-  overflow: hidden;
-  padding: 3rem 4rem 3rem 4rem;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: visible;
+  padding: 3rem 4rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.tech-title-container {
-  flex: 0 0 auto;
+.tech-toggle {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  text-align: left;
+  cursor: default;
+}
+
+#technologies.is-label-in .tech-toggle {
+  cursor: pointer;
 }
 
 $tech-title-before-width: 50px;
 $tech-title-before-height: 1px;
+
+.tech-title-container {
+  display: none;
+}
 
 .tech-title {
   font-size: 1.6rem;
@@ -33,6 +47,23 @@ $tech-title-before-height: 1px;
     z-index: 2;
     background-color: $white;
   }
+}
+
+.tech-label {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 0.7rem 0 0 auto;
+  padding: 0 0.15rem;
+  font-size: 1.15rem;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  line-height: 1.2;
+  text-align: center;
+  color: $text-color;
+  opacity: 0;
+  text-shadow: 0 0 8px rgba($green, 0.4), 0 0 18px rgba($green, 0.18);
+  transition: text-shadow 0.35s ease;
 }
 
 // Tech icons
@@ -57,6 +88,7 @@ $tech-icons-set-width: calc(-1 * (calc($tech-icons-width * $n-of-icons + $tech-i
     width: 100px;
     height: 100%;
     z-index: 2;
+    pointer-events: none;
   }
 
   &::before {
@@ -75,7 +107,7 @@ $tech-icons-set-width: calc(-1 * (calc($tech-icons-width * $n-of-icons + $tech-i
   flex-wrap: nowrap;
   white-space: nowrap;
   animation: scroll $scroll-speed linear infinite;
-  
+
   img {
     flex-shrink: 0;
     width: $tech-icons-width;
@@ -90,15 +122,65 @@ $tech-icons-set-width: calc(-1 * (calc($tech-icons-width * $n-of-icons + $tech-i
     transform: translateX(0);
   }
   100% {
-    transform: translateX($tech-icons-set-width); /* Move left by half of the icon set's width */
+    transform: translateX($tech-icons-set-width);
   }
 }
 
-
 .icon {
   flex-shrink: 0;
-    width: $tech-icons-width;
-    height: $tech-icons-height;
-    margin-left: $tech-icons-margin;
-    fill: $white;
+  width: $tech-icons-width;
+  height: $tech-icons-height;
+  margin-left: $tech-icons-margin;
+  fill: $white;
+  transition: filter 0.35s ease;
+}
+
+#technologies.is-label-in .tech-toggle:hover .tech-label,
+#technologies.is-label-in .tech-toggle:focus-visible .tech-label,
+#technologies.is-open .tech-label {
+  text-shadow: 0 0 10px $green, 0 0 24px rgba($green, 0.55);
+}
+
+#technologies.is-label-in .tech-toggle:hover .icon,
+#technologies.is-label-in .tech-toggle:focus-visible .icon,
+#technologies.is-open .icon {
+  filter: drop-shadow(0 0 6px rgba($green, 0.75));
+}
+
+.tech-details {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.5s ease, opacity 0.4s ease 0.08s;
+  pointer-events: none;
+}
+
+#technologies.is-open .tech-details {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tech-details-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.tech-details-inner p {
+  margin: 1.1rem 0 0;
+  max-width: 42rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  color: $text-color;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-icons {
+    animation: none;
+  }
+
+  .tech-details {
+    transition: none;
+  }
 }

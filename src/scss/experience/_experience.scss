@@ -1,0 +1,315 @@
+$experience-title-before-width: 50px;
+$experience-title-before-height: 1px;
+
+#experience {
+    overflow: hidden;
+    padding: 4rem 4rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+#experience-title {
+    font-size: 1.6rem;
+    padding-left: calc(1rem + $experience-title-before-width);
+    padding-right: 4rem;
+    margin: 0 0 3.5rem;
+    position: relative;
+
+    &:not(.is-in) {
+        opacity: 0;
+        transform: translateY(0.85rem);
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: calc(50% - $experience-title-before-height);
+        left: 0;
+        width: $experience-title-before-width;
+        height: $experience-title-before-height;
+        z-index: 2;
+        background-color: $white;
+    }
+}
+
+.experience-timeline {
+    --line-x: -50%;
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0.85rem;
+        bottom: 0.85rem;
+        left: 50%;
+        width: 1px;
+        background: rgba($text-color, 0.14);
+        transform: translateX(var(--line-x)) scaleY(0);
+        transform-origin: center top;
+        pointer-events: none;
+        transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    &.is-drawn::before {
+        transform: translateX(var(--line-x)) scaleY(1);
+    }
+}
+
+.experience-item {
+    --accent: #{$green};
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 2.4rem minmax(0, 1fr);
+    grid-template-areas:
+        "dates node ."
+        "role node body"
+        "company node body";
+    column-gap: 1.75rem;
+    row-gap: 0.4rem;
+    align-items: start;
+    padding: 2.1rem 0;
+
+    &[data-accent="yellow"] {
+        --accent: #{$yellow};
+    }
+
+    &[data-accent="blue"] {
+        --accent: #{$blue};
+    }
+
+    &:first-child {
+        padding-top: 0;
+    }
+
+    &:last-child {
+        padding-bottom: 0;
+    }
+
+    &:not(.is-in) {
+        opacity: 0;
+        transform: translate3d(0, 1.75rem, 0);
+        pointer-events: none;
+    }
+
+    &.is-in {
+        pointer-events: auto;
+    }
+}
+
+.experience-item-dates {
+    grid-area: dates;
+    margin: 0;
+    text-align: right;
+    font-size: 0.72rem;
+    line-height: 1.2;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    transition: color 0.4s ease;
+}
+
+.experience-item-role {
+    grid-area: role;
+    position: relative;
+    display: inline-block;
+    justify-self: end;
+    margin: 0;
+    font-size: clamp(1.35rem, 2.6vw, 2rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    text-align: right;
+    transition: color 0.4s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0.06em;
+        width: 100%;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: right center;
+        transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+}
+
+.experience-item-company {
+    grid-area: company;
+    margin: 0;
+    text-align: right;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    opacity: 0.42;
+    transition: color 0.4s ease, opacity 0.4s ease;
+}
+
+.experience-item-node {
+    grid-area: node;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    min-height: 1.2em;
+}
+
+.experience-marker {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 0.85rem;
+    height: 0.85rem;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    background: $colorBg;
+    box-shadow: 0 0 0 6px $colorBg;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0.28rem;
+        height: 0.28rem;
+        border-radius: 50%;
+        background: var(--accent);
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 45%, transparent);
+        transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+    }
+}
+
+.experience-item-body {
+    grid-area: body;
+    margin: 0;
+    max-width: 38ch;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    opacity: 0.72;
+    transition: color 0.4s ease, opacity 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .experience-item.is-in {
+        transition: opacity 0.4s ease;
+    }
+
+    .experience-timeline.is-hovering .experience-item.is-in {
+        opacity: 0.28;
+    }
+
+    .experience-timeline.is-hovering .experience-item.is-in.is-active {
+        opacity: 1;
+
+        .experience-item-dates,
+        .experience-item-role,
+        .experience-item-company,
+        .experience-item-body {
+            color: $text-color;
+            opacity: 1;
+        }
+
+        .experience-item-role::after {
+            background: $text-color;
+            transform: scaleX(1);
+        }
+
+        .experience-marker {
+            border-color: $text-color;
+            box-shadow:
+                0 0 0 6px $colorBg,
+                0 0 18px rgba($text-color, 0.22);
+        }
+
+        .experience-marker::after {
+            background: $text-color;
+            transform: translate(-50%, -50%) scale(1.15);
+            box-shadow: 0 0 12px rgba($text-color, 0.4);
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #experience {
+        padding: 2.5rem 1.25rem 3.5rem;
+    }
+
+    #experience-title {
+        margin-bottom: 2.25rem;
+        padding-right: 0;
+    }
+
+    .experience-timeline {
+        --line-x: 0;
+
+        &::before {
+            left: 0.42rem;
+        }
+    }
+
+    .experience-item {
+        grid-template-columns: 0.85rem minmax(0, 1fr);
+        grid-template-areas:
+            "node dates"
+            "node role"
+            "node company"
+            ". body";
+        column-gap: 1.15rem;
+        padding: 1.75rem 0;
+    }
+
+    .experience-item-dates,
+    .experience-item-role,
+    .experience-item-company {
+        text-align: left;
+    }
+
+    .experience-item-role {
+        justify-self: start;
+
+        &::after {
+            transform-origin: left center;
+        }
+    }
+
+    .experience-item-node {
+        align-self: start;
+        padding-top: 0.05rem;
+        justify-content: flex-start;
+    }
+
+    .experience-item-body {
+        max-width: none;
+        padding-top: 0.45rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #experience-title:not(.is-in),
+    .experience-item:not(.is-in) {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+    }
+
+    .experience-timeline::before {
+        transform: translateX(var(--line-x)) scaleY(1);
+    }
+
+    .experience-item.is-in,
+    .experience-item-role,
+    .experience-item-role::after,
+    .experience-item-dates,
+    .experience-item-company,
+    .experience-item-body,
+    .experience-marker,
+    .experience-marker::after,
+    .experience-timeline::before {
+        transition: none;
+    }
+}
