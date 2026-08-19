@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 
 const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const SOURCE = '<h1>hello world!</h1>';
+const SOURCE = "<h1>fernando's portfolio</h1>";
 const FOLDS = [
   { x: 154 / 210, y: 95 / 358 },
   { x: 71 / 210, y: 155 / 358 },
@@ -119,23 +119,10 @@ function settle(el) {
   startIdle(visual);
 }
 
-function hideHomeHero(immediate) {
-  const lines = document.querySelector('#hero-wrapper .hero-text-lines');
-  const worm = document.getElementById('hero-worm');
-  const duration = immediate || REDUCE_MOTION ? 0 : 0.35;
-  gsap.to([lines, worm].filter(Boolean), {
-    opacity: 0,
-    duration,
-    ease: 'power2.out',
-    overwrite: 'auto',
-  });
-}
-
 export function restoreHomeHero(immediate) {
   const lines = document.querySelector('#hero-wrapper .hero-text-lines');
-  const worm = document.getElementById('hero-worm');
   const duration = immediate || REDUCE_MOTION ? 0 : 0.4;
-  gsap.to([lines, worm].filter(Boolean), {
+  gsap.to(lines, {
     opacity: 1,
     duration,
     ease: 'power2.out',
@@ -161,12 +148,11 @@ export function prepareHelloWorm() {
   return el;
 }
 
-export function playHelloWorm({ delay = 0 } = {}) {
+export function playHelloWorm({ delay = 0, onImage = null } = {}) {
   const el = prepareHelloWorm();
   if (!el) return null;
 
   kill();
-  hideHomeHero(REDUCE_MOTION);
   el.dataset.state = 'playing';
   gsap.set(el, { opacity: 0 });
 
@@ -178,6 +164,7 @@ export function playHelloWorm({ delay = 0 } = {}) {
 
   if (REDUCE_MOTION) {
     settle(el);
+    if (onImage) onImage();
     return null;
   }
 
@@ -296,6 +283,9 @@ export function playHelloWorm({ delay = 0 } = {}) {
     filter: 'blur(0px)',
     duration: 0.9,
     ease: 'power2.out',
+    onStart: () => {
+      if (onImage) onImage();
+    },
   }, imageAt);
 
   tl.to(path, {

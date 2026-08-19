@@ -49,61 +49,49 @@ function reveal(elements) {
   });
 }
 
-function isAboutIntro() {
-  return document.body.dataset.page === 'about'
-    || document.querySelector('#hero-wrapper')?.classList.contains('is-about');
-}
-
 export function prepareHomeIntro() {
   const image = document.querySelector('.hero-image');
-  const worm = document.getElementById('hero-worm');
   const title = document.querySelector('.hero-title');
   const subtitle = document.querySelector('.hero-subtitle');
   const tech = document.querySelector('#technologies .tech-icons-container');
   const brand = document.querySelector('#header-left-content h2');
   const nav = document.querySelector('#header-content');
-  const about = isAboutIntro();
 
   const titleChars = splitChars(title);
   const subtitleChars = splitChars(subtitle);
   const brandChars = splitChars(brand);
 
   if (REDUCE_MOTION) {
-    reveal([image, worm, title, subtitle, tech, brand, nav, ...titleChars, ...subtitleChars, ...brandChars]);
-    if (about) {
-      gsap.set([title, subtitle, worm].filter(Boolean), { opacity: 0 });
-      playHelloWorm();
-    }
+    reveal([image, title, subtitle, tech, brand, nav, ...titleChars, ...subtitleChars, ...brandChars]);
+    playHelloWorm();
     document.body.classList.remove('is-awaiting-intro');
     document.body.classList.add('intro-done');
     document.dispatchEvent(new CustomEvent('intro-done'));
-    return { reduced: true, about, titleChars, subtitleChars, brandChars, image, worm, tech, nav };
+    return { reduced: true, titleChars, subtitleChars, brandChars, image, tech, nav };
   }
 
   gsap.set(image, { opacity: 0, scale: 0.82, filter: 'blur(16px)' });
-  gsap.set(worm, { opacity: 0 });
   gsap.set(nav, { opacity: 0, y: -8 });
   gsap.set(tech, { xPercent: 72, opacity: 0 });
   gsap.set([title, subtitle, brand], { opacity: 1 });
   gsap.set([...titleChars, ...subtitleChars], { opacity: 0, x: -18 });
   gsap.set(brandChars, { opacity: 0, y: 8, textShadow: GLOW_OFF });
-  if (about) {
-    gsap.set([title, subtitle, worm].filter(Boolean), { opacity: 0 });
-  }
 
   document.body.classList.remove('is-awaiting-intro');
 
-  return { reduced: false, about, titleChars, subtitleChars, brandChars, image, worm, tech, nav };
+  return { reduced: false, titleChars, subtitleChars, brandChars, image, tech, nav };
 }
 
-function revealChars(tl, chars, at, stagger) {
-  tl.to(chars, {
+function revealChars(chars, stagger) {
+  if (!chars.length) return;
+  gsap.to(chars, {
     opacity: 1,
     x: 0,
     duration: 0.4,
     stagger,
     ease: 'power3.out',
-  }, at);
+    overwrite: 'auto',
+  });
 }
 
 export function playHomeIntro(prepared, { delay = 0 } = {}) {
@@ -116,7 +104,7 @@ export function playHomeIntro(prepared, { delay = 0 } = {}) {
 
   document.body.dataset.introPlayed = 'true';
 
-  const { image, worm, tech, nav, titleChars, subtitleChars, brandChars, about } = ctx;
+  const { image, tech, nav, titleChars, subtitleChars, brandChars } = ctx;
   const tl = gsap.timeline({
     delay,
     defaults: { ease: 'power3.out' },
@@ -142,21 +130,13 @@ export function playHomeIntro(prepared, { delay = 0 } = {}) {
 
   const nameAt = image ? 0.52 : 0.06;
 
-  if (about) {
-    playHelloWorm({ delay: delay + nameAt - 0.08 });
-  } else {
-    if (worm) {
-      tl.to(worm, { opacity: 1, duration: 0.5, ease: 'power2.out' }, nameAt - 0.08);
-    }
-
-    if (titleChars.length) {
-      revealChars(tl, titleChars, nameAt, 0.04);
-    }
-
-    if (subtitleChars.length) {
-      revealChars(tl, subtitleChars, nameAt + 0.28, 0.028);
-    }
-  }
+  playHelloWorm({
+    delay: delay + nameAt - 0.08,
+    onImage: () => {
+      revealChars(titleChars, 0.04);
+      window.setTimeout(() => revealChars(subtitleChars, 0.028), 220);
+    },
+  });
 
   const techAt = nameAt + Math.max(titleChars.length * 0.04, 0.2) + 0.45;
 

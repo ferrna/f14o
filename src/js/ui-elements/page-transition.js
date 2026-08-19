@@ -2,7 +2,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { applyTranslations, t } from '../i18n/i18n.js';
 import { initProjectFeatures } from '../projects/project-features.js';
-import { playHelloWorm, resetHelloWorm, restoreHomeHero } from '../about/hello-worm.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -564,9 +563,7 @@ async function goHomeFromAbout({ scrollToProjects = false, updateHistory = true 
       ? Promise.resolve()
       : gsap.to(about, { opacity: 0, duration: 0.35, ease: 'power2.inOut' });
 
-    resetHelloWorm({ showHome: false });
     await Promise.all([fadeOutAbout, setAboutPortrait(false)]);
-    restoreHomeHero();
 
     if (about) {
       hideView(about);
@@ -642,7 +639,6 @@ export async function goToAbout({ updateHistory = true } = {}) {
 
     window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     showView(about);
-    playHelloWorm();
     const incoming = [...about.querySelectorAll('#about-container > *')];
     if (prefersReducedMotion()) {
       gsap.set(incoming, { opacity: 1, y: 0 });

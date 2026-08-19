@@ -74,21 +74,15 @@ export function initExperience() {
 
   ScrollTrigger.create({
     trigger: section,
-    start: 'top 55%',
+    start: 'top 70%',
     once: true,
     onEnter: () => {
       revealTitle(title);
       timeline?.classList.add('is-drawn');
+      items.forEach((item, index) => {
+        gsap.delayedCall(0.16 + index * 0.24, () => revealItem(item));
+      });
     },
-  });
-
-  items.forEach((item) => {
-    ScrollTrigger.create({
-      trigger: item,
-      start: 'top 50%',
-      once: true,
-      onEnter: () => revealItem(item),
-    });
   });
 
   document.addEventListener('intro-done', () => ScrollTrigger.refresh(), { once: true });

@@ -14,17 +14,6 @@
 <body class="is-awaiting-intro">
     <div id="background-container"></div>
     <div class="cursor"></div>
-    <div class='btn-fullscreen' id='fullscreen-mode' data-i18n-attr="aria-label:ui.fullscreen">
-      <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true' focusable='false' width='1.4em' height='1.4em' style='-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);' preserveAspectRatio='xMidYMid meet' viewBox='0 0 17 17'>
-       <g fill='currentColor' fill-rule='evenodd'>
-        <path d='M3 5h12v8H3z'/>
-        <path d='M3.918 14.938H1v-2.876h1v1.98h1.918v.896z'/>
-        <path d='M17 14.938h-2.938v-.896H16v-1.984h1v2.88z'/>
-        <path d='M17 5.917h-1v-1.95h-1.943v-.946H17v2.896z'/>
-        <path d='M2 5.938H1V3h2.938v.938H2v2z'/>
-       </g>
-      </svg>
-     </div>
     <div id="intro-screen">
       <h2 id="intro-title" class="expanded" data-i18n="intro.title">fernando's portfolio</h2>
     </div>
@@ -64,29 +53,14 @@
         </header>
         <div id="hero-wrapper">
           <div id="hero-background"></div>
-          <div class="hero-stars" data-hero-stars aria-hidden="true"></div>
           <!--<div id="hero-background-container">
             <canvas id="hero-canvas"></canvas>
           </div>-->
           <div id="hero-container">
             <div class="hero-text">
-                <div class="hero-text-lines">
-                  <div class="hero-title expanded">
-                    <!--<h1>Fernando<span>&nbsp;</span></h1>
-                    <h1><span>&nbsp;</span>Arriondo</h1>-->
-                    <h1>Fernando<span>&nbsp;</span>Arriondo</h1>
-                  </div>
-                  <div class="hero-subtitle">
-                      <h3 data-i18n-html="hero.subtitle">Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
-                  </div>
-                </div>
-                <div id="hero-worm">
-                  <img class="hero-worm-img" src="media/worm.png" alt="">
-                  <div class="hero-worm-noise"></div>
-                </div>
                 <div id="hello-worm" data-hello-worm aria-hidden="true">
                   <div class="hello-worm-stage">
-                    <p class="hello-worm-code" data-hello-code>&lt;h1&gt;hello world!&lt;/h1&gt;</p>
+                    <p class="hello-worm-code" data-hello-code>&lt;h1&gt;fernando's portfolio&lt;/h1&gt;</p>
                     <div class="hello-worm-visual">
                       <svg class="hello-worm-svg" viewBox="0 0 210 358" preserveAspectRatio="xMidYMid meet">
                         <defs>
@@ -100,9 +74,16 @@
                       </svg>
                       <div class="hello-worm-image">
                         <img src="media/worm.png" alt="">
-                        <div class="hello-worm-noise"></div>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="hero-text-lines">
+                  <div class="hero-title expanded">
+                    <h1>Fernando<span>&nbsp;</span>Arriondo</h1>
+                  </div>
+                  <div class="hero-subtitle">
+                      <h3 data-i18n-html="hero.subtitle">Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
                   </div>
                 </div>
             </div>
@@ -241,12 +222,6 @@
               </div>
               <div class="slide-container">
                 <div class="slide-container-inner" data-carousel-touch>
-                  <button type="button" class="ampliar-button" data-carousel-expand>
-                    <span data-i18n="projects.expand">Expand</span>
-                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path d="M6.69325 9.36016L3.16659 12.8935V11.8335C3.16659 11.6567 3.09635 11.4871 2.97132 11.3621C2.8463 11.2371 2.67673 11.1668 2.49992 11.1668C2.32311 11.1668 2.15354 11.2371 2.02851 11.3621C1.90349 11.4871 1.83325 11.6567 1.83325 11.8335V14.5002C1.83431 14.5873 1.85242 14.6733 1.88659 14.7535C1.95424 14.9164 2.08369 15.0458 2.24659 15.1135C2.32673 15.1477 2.4128 15.1658 2.49992 15.1668H5.16658C5.3434 15.1668 5.51297 15.0966 5.63799 14.9716C5.76301 14.8465 5.83325 14.677 5.83325 14.5002C5.83325 14.3234 5.76301 14.1538 5.63799 14.0288C5.51297 13.9037 5.3434 13.8335 5.16658 13.8335H4.10659L7.63992 10.3068C7.76545 10.1813 7.83598 10.011 7.83598 9.8335C7.83598 9.65596 7.76545 9.4857 7.63992 9.36016C7.51438 9.23463 7.34412 9.1641 7.16658 9.1641C6.98905 9.1641 6.81879 9.23463 6.69325 9.36016ZM4.10659 3.16683H5.16658C5.3434 3.16683 5.51297 3.09659 5.63799 2.97157C5.76301 2.84654 5.83325 2.67697 5.83325 2.50016C5.83325 2.32335 5.76301 2.15378 5.63799 2.02876C5.51297 1.90373 5.3434 1.8335 5.16658 1.8335H2.49992C2.4128 1.83455 2.32673 1.85267 2.24659 1.88683C2.08369 1.95448 1.95424 2.08393 1.88659 2.24683C1.85242 2.32698 1.83431 2.41304 1.83325 2.50016V5.16683C1.83325 5.34364 1.90349 5.51321 2.02851 5.63823C2.15354 5.76326 2.32311 5.8335 2.49992 5.8335C2.67673 5.8335 2.8463 5.76326 2.97132 5.63823C3.09635 5.51321 3.16659 5.34364 3.16659 5.16683V4.10683L6.69325 7.64016C6.75523 7.70265 6.82896 7.75224 6.9102 7.78609C6.99144 7.81994 7.07858 7.83736 7.16658 7.83736C7.25459 7.83736 7.34173 7.81994 7.42297 7.78609C7.50421 7.75224 7.57794 7.70265 7.63992 7.64016C7.7024 7.57819 7.752 7.50445 7.78585 7.42321C7.81969 7.34197 7.83712 7.25484 7.83712 7.16683C7.83712 7.07882 7.81969 6.99168 7.78585 6.91044C7.752 6.82921 7.7024 6.75547 7.63992 6.6935L4.10659 3.16683ZM14.4999 11.1668C14.3231 11.1668 14.1535 11.2371 14.0285 11.3621C13.9035 11.4871 13.8333 11.6567 13.8333 11.8335V12.8935L10.3066 9.36016C10.181 9.23463 10.0108 9.1641 9.83325 9.1641C9.65572 9.1641 9.48545 9.23463 9.35992 9.36016C9.23438 9.4857 9.16386 9.65596 9.16386 9.8335C9.16386 10.011 9.23438 10.1813 9.35992 10.3068L12.8933 13.8335H11.8333C11.6564 13.8335 11.4869 13.9037 11.3618 14.0288C11.2368 14.1538 11.1666 14.3234 11.1666 14.5002C11.1666 14.677 11.2368 14.8465 11.3618 14.9716C11.4869 15.0966 11.6564 15.1668 11.8333 15.1668H14.4999C14.587 15.1658 14.6731 15.1477 14.7533 15.1135C14.9162 15.0458 15.0456 14.9164 15.1133 14.7535C15.1474 14.6733 15.1655 14.5873 15.1666 14.5002V11.8335C15.1666 11.6567 15.0963 11.4871 14.9713 11.3621C14.8463 11.2371 14.6767 11.1668 14.4999 11.1668ZM15.1133 2.24683C15.0456 2.08393 14.9162 1.95448 14.7533 1.88683C14.6731 1.85267 14.587 1.83455 14.4999 1.8335H11.8333C11.6564 1.8335 11.4869 1.90373 11.3618 2.02876C11.2368 2.15378 11.1666 2.32335 11.1666 2.50016C11.1666 2.67697 11.2368 2.84654 11.3618 2.97157C11.4869 3.09659 11.6564 3.16683 11.8333 3.16683H12.8933L9.35992 6.6935C9.29743 6.75547 9.24784 6.82921 9.21399 6.91044C9.18014 6.99168 9.16272 7.07882 9.16272 7.16683C9.16272 7.25484 9.18014 7.34197 9.21399 7.42321C9.24784 7.50445 9.29743 7.57819 9.35992 7.64016C9.42189 7.70265 9.49563 7.75224 9.57687 7.78609C9.65811 7.81994 9.74524 7.83736 9.83325 7.83736C9.92126 7.83736 10.0084 7.81994 10.0896 7.78609C10.1709 7.75224 10.2446 7.70265 10.3066 7.64016L13.8333 4.10683V5.16683C13.8333 5.34364 13.9035 5.51321 14.0285 5.63823C14.1535 5.76326 14.3231 5.8335 14.4999 5.8335C14.6767 5.8335 14.8463 5.76326 14.9713 5.63823C15.0963 5.51321 15.1666 5.34364 15.1666 5.16683V2.50016C15.1655 2.41304 15.1474 2.32698 15.1133 2.24683Z" fill="currentColor"/>
-                    </svg>
-                  </button>
                   <div class="carouselhero__slides-slides" data-carousel-track>
                     <div class="slide projects-slide">
                       <a href="project-details.html">

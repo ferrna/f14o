@@ -6,7 +6,6 @@ import { setHelloWormVisible } from '../about/hello-worm.js';
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const STAR_COUNT = 90;
 const GUIDE_DURATION = 1.05;
 
 let started = false;
@@ -16,72 +15,17 @@ let wheelAcc = 0;
 let wheelReset = 0;
 let touchY = 0;
 
-function createStars(root) {
-  if (!root || root.dataset.starsReady === 'true') {
-    return [...(root?.querySelectorAll('.hero-star') || [])];
-  }
-
-  const frag = document.createDocumentFragment();
-  for (let i = 0; i < STAR_COUNT; i += 1) {
-    const star = document.createElement('span');
-    const size = 1 + Math.random() * 2.4;
-    star.className = 'hero-star';
-    const inBulge = Math.random() > 0.7;
-    star.style.left = inBulge
-      ? `${22 + Math.random() * 56}%`
-      : `${6 + Math.random() * 88}%`;
-    star.style.top = inBulge
-      ? `${76 + Math.random() * 20}%`
-      : `${6 + Math.random() * 68}%`;
-    star.style.setProperty('--size', `${size}px`);
-    star.style.setProperty('--delay', `${Math.random() * 2.6}s`);
-    star.dataset.dir = i % 2 === 0 ? '-1' : '1';
-    star.dataset.dist = String(140 + Math.random() * 280);
-    star.dataset.drift = String((Math.random() - 0.5) * 90);
-    frag.appendChild(star);
-  }
-  root.appendChild(frag);
-  root.dataset.starsReady = 'true';
-  return [...root.querySelectorAll('.hero-star')];
-}
-
-function applyStars(progress, starEls) {
-  starEls.forEach((star) => {
-    const dir = Number(star.dataset.dir);
-    const dist = Number(star.dataset.dist);
-    const drift = Number(star.dataset.drift);
-    if (progress <= 0.02) {
-      star.style.animationPlayState = 'running';
-      gsap.set(star, { clearProps: 'transform,x,y,opacity' });
-      return;
-    }
-    star.style.animationPlayState = 'paused';
-    gsap.set(star, {
-      y: dir * dist * progress,
-      x: drift * progress,
-      opacity: 1 - progress,
-    });
-  });
-}
-
 function setCompact(on, { immediate = false } = {}) {
   const duration = immediate || REDUCE_MOTION ? 0 : 0.55;
-  const worm = document.getElementById('hero-worm');
   const title = document.querySelector('[data-header-title]');
   const mark = document.querySelector('[data-header-mark]');
   const photo = document.querySelector('.hero-image');
   const titleLines = document.querySelector('.hero-text-lines');
-  const aboutHero = document.querySelector('#hero-wrapper')?.classList.contains('is-about');
 
   document.body.classList.toggle('is-hero-passed', on);
 
-  if (aboutHero) {
-    setHelloWormVisible(!on, { immediate });
-    gsap.to([worm, titleLines].filter(Boolean), { opacity: 0, duration, ease: 'power2.out', overwrite: 'auto' });
-  } else {
-    gsap.to(worm, { opacity: on ? 0 : 1, duration, ease: 'power2.out', overwrite: 'auto' });
-    gsap.to(titleLines, { opacity: on ? 0 : 1, duration, ease: 'power2.out', overwrite: 'auto' });
-  }
+  setHelloWormVisible(!on, { immediate });
+  gsap.to(titleLines, { opacity: on ? 0 : 1, duration, ease: 'power2.out', overwrite: 'auto' });
   gsap.to(title, {
     opacity: on ? 0 : 1,
     duration: duration * 0.7,
@@ -260,23 +204,13 @@ function onKeyDown(event) {
 
 export function initHeroScroll() {
   const hero = document.querySelector('#hero-wrapper');
-  const starRoot = document.querySelector('[data-hero-stars]');
   if (!hero || started) return;
   started = true;
 
-  const stars = createStars(starRoot);
   const mark = document.querySelector('[data-header-mark]');
   if (mark) {
     gsap.set(mark, { opacity: 0, visibility: 'hidden' });
   }
-
-  ScrollTrigger.create({
-    trigger: hero,
-    start: 'top top+=40',
-    end: 'bottom top+=80',
-    scrub: 0.55,
-    onUpdate: (self) => applyStars(self.progress, stars),
-  });
 
   ScrollTrigger.create({
     trigger: hero,

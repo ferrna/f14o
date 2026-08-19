@@ -9,7 +9,6 @@ import { initTechSlider } from './technologies/tech-slider.js';
 import { initExperience } from './experience/experience.js';
 
 // UI elements
-import './ui-elements/fullscreen.js';
 import './ui-elements/cursor.js';
 import './ui-elements/follow-up-btn.js';
 

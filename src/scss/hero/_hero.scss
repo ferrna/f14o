@@ -4,8 +4,8 @@
 @import './_hero-header.scss';
 
 #hero-wrapper {
-    height: calc(80vh - 5rem);
-    min-height: 28rem;
+    height: calc(100dvh - 5rem);
+    min-height: 0;
     width: 100%;
     margin: 0;
     position: relative;

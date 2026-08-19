@@ -7,7 +7,7 @@ document.addEventListener("mousemove", (e) => {
     curs.style.top = y - 25 + "px";
 }); 
 
-let menuEls = document.querySelectorAll(".btn-fullscreen, #logo");
+let menuEls = document.querySelectorAll("#logo");
 menuEls.forEach((el) => {
   el.addEventListener("mouseenter", () => {
     setTimeout(() => {
