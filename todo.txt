@@ -5,3 +5,6 @@ en mobile añadir el efecto en scroll del hero de about me como en captura
 estilos contacto como en capturas
 -que aparezca el logo en loader de a poco como en captura
 layout detalle proyecto como en captura
+
+
+mover about me a home, entre experiencia y contacto

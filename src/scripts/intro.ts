@@ -46,7 +46,7 @@ export async function initIntro(): Promise<void> {
   const chars = name ? splitChars(name) : [];
   const late = Array.from(document.querySelectorAll<HTMLElement>('[data-intro-fade]'));
 
-  if (sculpture) gsap.set(sculpture, { opacity: 0, scale: 0.92 });
+  if (sculpture) gsap.set(sculpture, { opacity: 0, scale: 0.88 });
   if (chars.length) gsap.set(chars, { opacity: 0, xPercent: -18 });
   if (late.length) gsap.set(late, { opacity: 0, y: 10 });
   if (lines.length) gsap.set(lines, { yPercent: 110, clipPath: 'inset(100% 0 0 0)' });
@@ -99,7 +99,7 @@ function waitForAssets(sculpture: HTMLElement | null): Promise<unknown> {
 
 /**
  * La barra avanza hasta 90% mientras se espera y completa al resolverse.
- * Desde 70% el worm asoma detrás del velo.
+ * El worm crece con el porcentaje desde el arranque, no en el tramo final.
  */
 function runMeter(
   bar: HTMLElement | null,
@@ -116,23 +116,21 @@ function runMeter(
       if (bar) bar.style.transform = `scaleX(${t / 100})`;
       if (value) value.textContent = `${Math.round(t)}%`;
 
+      // Desde 8%: ease-out para que se lea pronto y siga llenándose hasta el 100.
       if (sculpture) {
-        if (t < 70) {
-          gsap.set(sculpture, { opacity: 0, scale: 0.92 });
-        } else {
-          const k = (t - 70) / 30;
-          gsap.set(sculpture, { opacity: k, scale: 0.92 + 0.08 * k });
-        }
+        const k = gsap.utils.clamp(0, 1, (t - 8) / 92);
+        const eased = 1 - (1 - k) * (1 - k);
+        gsap.set(sculpture, { opacity: eased, scale: 0.88 + 0.12 * eased });
       }
 
       if (veil) {
-        veil.style.opacity = t < 50 ? '1' : String(1 - ((t - 50) / 50) * 0.88);
+        veil.style.opacity = t < 10 ? '1' : String(1 - ((t - 10) / 90) * 0.88);
       }
     };
 
     const crawl = gsap.to(progress, {
       value: 90,
-      duration: 1.5,
+      duration: 2,
       ease: EASE.linear,
       onUpdate: paint,
     });
@@ -141,8 +139,8 @@ function runMeter(
       crawl.kill();
       gsap.to(progress, {
         value: 100,
-        duration: 0.35,
-        ease: EASE.micro,
+        duration: 0.8,
+        ease: EASE.outSoft,
         onUpdate: paint,
         onComplete: () => resolve(),
       });
