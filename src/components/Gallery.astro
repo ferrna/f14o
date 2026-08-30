@@ -1,0 +1,128 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  items: Array<{ src: ImageMetadata; caption: string }>;
+}
+
+const { items } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="gallery" data-gallery aria-roledescription="carousel">
+      <div class="gallery__viewport" data-gallery-viewport data-cursor-drag>
+        <ul class="gallery__track" data-gallery-track>
+          {items.map((item, i) => (
+            <li class="gallery__slide" data-gallery-slide data-index={i}>
+              <Image src={item.src} alt={item.caption} widths={[720, 1200]} sizes="(max-width: 760px) 84vw, 60vw" loading={i === 0 ? 'eager' : 'lazy'} />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="gallery__bar">
+        <p class="gallery__caption" data-gallery-caption>
+          Fig. 01 — {items[0]?.caption}
+        </p>
+        <p class="gallery__counter" data-gallery-counter>
+          01 / {String(items.length).padStart(2, '0')}
+        </p>
+      </div>
+
+      <div class="gallery__progress" aria-hidden="true">
+        <span class="gallery__progress-bar" data-gallery-progress />
+      </div>
+    </section>
+  )
+}
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .gallery {
+    margin-top: clamp(3rem, 8vh, 6rem);
+  }
+
+  .gallery__viewport {
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+
+    &[data-dragging='true'] {
+      cursor: grabbing;
+    }
+  }
+
+  .gallery__track {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    will-change: transform;
+  }
+
+  // Las piezas laterales pierden foco y contraste: esa profundidad de campo
+  // es lo que convierte la tira en una escena y no en una grilla.
+  .gallery__slide {
+    flex: 0 0 auto;
+    width: min(60vw, 780px);
+    opacity: 0.55;
+    filter: blur(3px);
+    transform: scale(0.92);
+    transition:
+      opacity $dur-base $ease-out-soft,
+      filter $dur-base $ease-out-soft,
+      transform $dur-base $ease-out-soft;
+
+    :global(img) {
+      width: 100%;
+      height: auto;
+      border: 1px solid rgba(237, 227, 212, 0.45);
+      border-radius: 2px;
+      box-shadow: 0 30px 70px rgba(13, 11, 10, 0.6);
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+  }
+
+  .gallery__slide[data-current='true'] {
+    opacity: 1;
+    filter: none;
+    transform: scale(1);
+  }
+
+  .gallery__bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .gallery__caption,
+  .gallery__counter {
+    @include mono(0.66rem);
+    color: $c-subtle;
+  }
+
+  .gallery__progress {
+    height: 1px;
+    margin-top: 0.9rem;
+    background-color: $c-hairline;
+  }
+
+  .gallery__progress-bar {
+    display: block;
+    height: 100%;
+    background-color: $c-cream;
+    transform-origin: left center;
+    transition: transform $dur-base $ease-out-soft;
+  }
+
+  @media (max-width: 760px) {
+    .gallery__slide {
+      width: 84vw;
+    }
+  }
+</style>

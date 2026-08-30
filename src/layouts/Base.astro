@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.scss';
 import SiteHeader from '../components/SiteHeader.astro';
 import Cursor from '../components/Cursor.astro';
@@ -13,11 +14,11 @@ interface Props {
 }
 
 const { title, description, lang = 'en', routeLabel = '' } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <!doctype html>
-<html lang={lang} data-route-label={routeLabel}>
+<html lang={lang} data-route-label={routeLabel} style={`--noise-url: url('${base}/media/noise.png')`}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,6 +32,8 @@ const base = import.meta.env.BASE_URL;
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+
+    <ClientRouter />
   </head>
 
   <body>
@@ -47,7 +50,10 @@ const base = import.meta.env.BASE_URL;
 
     <script>
       import { initMotion } from '../scripts/motion';
-      initMotion();
+
+      // Con ClientRouter, astro:page-load cubre tanto la carga inicial como
+      // cada navegación posterior.
+      document.addEventListener('astro:page-load', initMotion);
     </script>
   </body>
 </html>

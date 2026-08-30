@@ -90,7 +90,12 @@ const telemetry = ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'];
     :global(img) {
       width: 100%;
       height: auto;
-      filter: drop-shadow(0 24px 48px rgba(13, 11, 10, 0.55));
+      // Recoloreo provisorio del asset heredado a obsidiana: se desatura y
+      // se oscurece conservando los brillos especulares, y el filo violeta
+      // se simula con una sombra que sigue el alfa de la silueta.
+      filter: grayscale(1) brightness(0.32) contrast(1.55)
+        drop-shadow(0 0 7px rgba(123, 97, 255, 0.55)) drop-shadow(0 0 22px rgba(123, 97, 255, 0.22))
+        drop-shadow(0 22px 44px rgba(13, 11, 10, 0.6));
     }
   }
 

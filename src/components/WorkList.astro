@@ -1,0 +1,188 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const projects = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="work" id="work">
+  <header class="work__head">
+    <p class="work__kicker"><span class="work__dot" aria-hidden="true"></span>02 / Selected work</p>
+    <p class="work__count">{String(projects.length).padStart(2, '0')} projects</p>
+  </header>
+
+  <ul class="work__list" data-work-list>
+    {
+      projects.map((project) => (
+        <li class="work__row" data-work-row>
+          <a class="work__link" href={`${base}/work/${project.id}`} data-cursor-project>
+            <span class="work__index">{String(project.data.order).padStart(3, '0')}</span>
+            <span class="work__title" style={`view-transition-name: title-${project.id}`}>
+              {project.data.title}
+            </span>
+            <span class="work__meta">
+              <span class="work__category">{project.data.category}</span>
+              <span class="work__year">{project.data.year}</span>
+            </span>
+          </a>
+          <span class="work__rule" data-rule aria-hidden="true" />
+          <div class="work__thumb" data-work-thumb aria-hidden="true">
+            <Image src={project.data.cover} alt="" widths={[420]} sizes="420px" loading="lazy" />
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="work__hint">Scroll · Click to open case</p>
+</section>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .work {
+    position: relative;
+    z-index: $z-content;
+    padding: $space-section $space-page;
+  }
+
+  .work__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(2.5rem, 6vh, 5rem);
+  }
+
+  .work__kicker {
+    @include mono(0.68rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: $c-muted;
+  }
+
+  .work__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  .work__count {
+    @include mono(0.68rem);
+    color: $c-subtle;
+  }
+
+  .work__row {
+    position: relative;
+  }
+
+  .work__link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: clamp(1rem, 4vw, 3rem);
+    padding: clamp(1.1rem, 2.6vh, 2rem) 0;
+  }
+
+  .work__index {
+    @include mono(0.7rem);
+    color: $c-subtle;
+    transition: color $dur-micro $ease-micro;
+  }
+
+  .work__title {
+    @include display(clamp(1.9rem, 5.4vw, 4rem));
+    color: $c-muted;
+    transition:
+      color $dur-short $ease-out-soft,
+      transform $dur-short $ease-out-soft;
+    transform-origin: left center;
+  }
+
+  .work__meta {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(0.75rem, 2vw, 2rem);
+  }
+
+  .work__category,
+  .work__year {
+    @include mono(0.68rem);
+    color: $c-subtle;
+    transition: color $dur-micro $ease-micro;
+  }
+
+  .work__rule {
+    display: block;
+    height: 1px;
+    background-color: $c-hairline;
+    transform-origin: left center;
+  }
+
+  // El thumbnail sigue al puntero: sólo existe cuando la fila está activa.
+  .work__thumb {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 260px;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform;
+
+    :global(img) {
+      width: 100%;
+      height: auto;
+      border: 1px solid rgba(237, 227, 212, 0.55);
+      border-radius: 2px;
+      box-shadow: 0 24px 60px rgba(13, 11, 10, 0.65);
+    }
+  }
+
+  // Cuando una fila se activa, las demás bajan de contraste: la atención
+  // se dirige apagando el resto, no encendiendo la elegida.
+  .work__list[data-hovering='true'] .work__row:not([data-active]) .work__title {
+    color: rgba(168, 156, 140, 0.35);
+  }
+
+  .work__row[data-active] {
+    .work__index {
+      color: $c-violet;
+    }
+
+    .work__title {
+      color: $c-cream-bright;
+      transform: translateX(clamp(8px, 1vw, 18px));
+    }
+
+    .work__category,
+    .work__year {
+      color: $c-muted;
+    }
+  }
+
+  .work__hint {
+    @include mono(0.62rem);
+    margin-top: clamp(2rem, 5vh, 4rem);
+    color: $c-subtle;
+    opacity: 0.72;
+  }
+
+  @media (max-width: 760px) {
+    .work__link {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .work__meta {
+      order: -1;
+    }
+
+    .work__thumb {
+      display: none;
+    }
+  }
+</style>

@@ -11,7 +11,7 @@ const OUT = '.attic/shots';
 const ROUTES = [
   { name: 'home', path: '/' },
   { name: 'about', path: '/about' },
-  { name: 'work-detail', path: '/work/beer-distribution' },
+  { name: 'work-detail', path: '/work/product-experience' },
   { name: '404', path: '/no-existe' },
 ];
 
@@ -42,6 +42,8 @@ for (const viewport of VIEWPORTS) {
       continue;
     }
 
+    // La barra de dev de Astro no forma parte del diseño.
+    await page.addStyleTag({ content: 'astro-dev-toolbar { display: none !important; }' });
     await page.waitForTimeout(400);
     const file = `${OUT}/${route.name}-${viewport.name}.png`;
     await page.screenshot({ path: file, fullPage: route.name !== '404' });

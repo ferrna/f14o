@@ -51,7 +51,9 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: url('/media/noise.png');
+  // La URL llega desde el layout porque sólo ahí se conoce la ruta base
+  // con la que GitHub Pages sirve el sitio.
+  background-image: var(--noise-url);
   background-repeat: repeat;
   opacity: 0.035;
 }

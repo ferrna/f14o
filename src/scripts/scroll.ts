@@ -29,6 +29,12 @@ export function initSmoothScroll(): Lenis | null {
 
 export const getLenis = (): Lenis | null => lenis;
 
+/** Tras navegar, la vista nueva tiene que empezar arriba y sin inercia previa. */
+export function resetScroll(): void {
+  lenis?.scrollTo(0, { immediate: true });
+  lenis?.resize();
+}
+
 export function scrollTo(target: string | HTMLElement): void {
   if (lenis) {
     lenis.scrollTo(target, { duration: 1.1 });
