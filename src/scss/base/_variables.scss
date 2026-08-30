@@ -2,17 +2,40 @@
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
 $accent-color: #e74c3c;
-//$text-color: #333333;
 $text-color: #fffce1;
-//$colorBg: #171a19;
-//$colorBg: #222a30;
-$colorBg: #0e100f;
+$text-muted: rgba(#fffce1, 0.7);
+$text-subtle: rgba(#fffce1, 0.45);
 
+$colorBg: #0c0e0e;
+$colorBg-surface: #131716;
+$colorBg-elevated: #191f1d;
 
 $green: #abff84;
+$green-glow: rgba(171, 255, 132, 0.35);
 $yellow: #e0a458;
 $red: #d9594c;
 $blue: #00bae2;
+$purple-deep: #7e57c2;
+$purple-mid: #9b72cf;
+$purple-light: #c9a0ea;
+$purple-pink: #ff9cd3;
+$purple-glow: rgba(155, 114, 207, 0.2);
+
+$border-subtle: rgba(255, 252, 225, 0.08);
+$border-medium: rgba(255, 252, 225, 0.14);
+$border-green: rgba(171, 255, 132, 0.35);
+$border-purple: rgba(155, 114, 207, 0.25);
+
+// Layout and rhythm
+$layout-wide: 1400px;
+$layout-content: 1200px;
+$layout-gutter: clamp(1.25rem, 4vw, 4rem);
+$section-space: clamp(5rem, 9vw, 8.5rem);
+$content-measure: 42rem;
+
+// Motion
+$ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+$ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
 // Grayscale
 $white: #ffffff;
@@ -24,6 +47,6 @@ $black: #000000;
 $transparent: transparent;
 
 // Font families
-$font-family: 'safiro-medium', sans-serif;
-$font-secondary: 'Helvetica Neue', Helvetica, sans-serif;
+$font-family: 'safiro-medium', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+$font-secondary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $font-agoka: 'agoka', sans-serif;

@@ -11,9 +11,14 @@
     <link rel="manifest" href="media/favicon_io/site.webmanifest">
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body>
+<body data-page="project">
     <div id="background-container"></div>
-    <div class="cursor"></div>
+    <div class="cursor" data-cursor>
+      <div class="cursor-dot"></div>
+      <div class="cursor-ring">
+        <span class="cursor-label" data-cursor-label></span>
+      </div>
+    </div>
     <main>
       <article id="project-details-container">
         <div class="project-hero-bar">
@@ -25,7 +30,6 @@
           </div>
         </div>
         <div class="project-layout">
-          <div class="project-layout-spacer" aria-hidden="true"></div>
           <div class="project-layout-main">
             <div class="project-main-tabs" data-project-tabs>
               <div class="project-tab-list" role="tablist">
@@ -33,10 +37,12 @@
                 <button type="button" class="project-tab" role="tab" aria-selected="false" data-tab="features" data-i18n="project.tabFeatures">Features</button>
               </div>
               <section class="project-tab-panel is-active" data-tab-panel="overview">
-                <img id="project-main-image" src="media/projects/1.png" alt="Project Image" data-i18n-attr="alt:project.imageAlt">
+                <div class="project-main-visual" data-project-visual>
+                  <img id="project-main-image" src="media/projects/1.png" alt="Project Image" data-i18n-attr="alt:project.imageAlt">
+                </div>
                 <div class="project-info" data-project-fade>
                   <p class="project-meta" data-i18n="project.meta">2024 — Product design / Full stack</p>
-                  <h1 class="project-title" data-i18n="project.title">Selected Project</h1>
+                  <h1 class="project-title" data-i18n="project.title" tabindex="-1">Selected Project</h1>
                   <p class="project-description" data-i18n="project.description">
                     A focused case study for a product built end to end: interface, motion, and the systems behind it.
                     Replace this copy with the real story, role, and outcome when the project content is ready.

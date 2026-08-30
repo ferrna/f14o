@@ -101,58 +101,70 @@ function splitText(target) {
     extendTimeline: true,
   });
   
-  // Usage
-  document.addEventListener('DOMContentLoaded', () => {
-    const projectsTitle = document.querySelector('#projects-title');
-    const projects = document.querySelector('#projects');
-    if (projectsTitle) {
-      //gsap.effects.clipTitle(projectsTitle, {
-      //  delay: 0,
-      //  scrollTrigger: {
-      //    trigger: projectsTitle,
-      //    start: "top bottom-=100",
-      //    //endTrigger: projects,
-      //    end: "bottom top",
-      //    pinSpacing: false,
-      //    pin: true,
-      //    toggleActions: "play none none reset"
-      //  }
-      //});
-      // First ScrollTrigger for the animation
-      const animationTrigger = ScrollTrigger.create({
-        trigger: projectsTitle,
-        start: "top bottom", // Starts animation when the top of projectsTitle reaches the bottom of the viewport
-        onEnter: () => gsap.effects.clipTitle(projectsTitle, { delay: 0 }),
-        toggleActions: "play none none reset" // This ensures the animation only happens once
-      });
+function initSectionHeadings(root = document) {
+  root.querySelectorAll('.section-heading').forEach((heading) => {
+    if (heading.dataset.headingReady === 'true') return;
+    heading.dataset.headingReady = 'true';
 
-      // Second ScrollTrigger for pinning
-      ScrollTrigger.create({
-        trigger: projectsTitle,
-        start: "top top", // Starts pinning when the top of projectsTitle reaches the top of the viewport
-        endTrigger: projects,
-        end: "bottom top", // Ends pinning when the bottom of projects reaches the top of the viewport
-        pin: true,
-        pinSpacing: false,
-        onUpdate: self => {
-          // Calculate the progress of the scroll through the projects section
-          const progress = self.progress;
-          
-          // Start fading out when we're 80% through the projects section
-          if (progress > 0.8) {
-            const fadeOutProgress = (progress - 0.8) / 0.2; // This will go from 0 to 1 in the last 20% of the scroll
-            gsap.to(projectsTitle, {
-              opacity: 1 - fadeOutProgress,
-              duration: 0.1 // Make the fade quick and responsive to scroll
-            });
-          } else {
-            // Ensure full opacity when not in the fade-out zone
-            gsap.to(projectsTitle, {
-              opacity: 1,
-              duration: 0.1
-            });
-          }
-        }
+    const backdrop = heading.querySelector('.section-heading__backdrop') || heading.querySelector('.section-heading__display');
+    const kicker = heading.querySelector('.section-heading__kicker');
+    const title = heading.querySelector('.section-heading__title') || heading.querySelector('.section-heading__label');
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    if (backdrop) {
+      gsap.fromTo(backdrop, {
+        opacity: 0,
+        x: -24,
+      }, {
+        opacity: 0.75,
+        x: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 88%',
+          once: true,
+        },
+      });
+    }
+
+    if (kicker) {
+      gsap.fromTo(kicker, {
+        opacity: 0,
+        y: 10,
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 88%',
+          once: true,
+        },
+      });
+    }
+
+    if (title) {
+      gsap.fromTo(title, {
+        opacity: 0,
+        y: 14,
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        delay: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 88%',
+          once: true,
+        },
       });
     }
   });
+}
+
+document.addEventListener('DOMContentLoaded', () => initSectionHeadings());
+document.addEventListener('home-view-ready', () => initSectionHeadings());

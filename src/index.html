@@ -13,7 +13,12 @@
 </head>
 <body class="is-awaiting-intro">
     <div id="background-container"></div>
-    <div class="cursor"></div>
+    <div class="cursor" data-cursor>
+      <div class="cursor-dot"></div>
+      <div class="cursor-ring">
+        <span class="cursor-label" data-cursor-label></span>
+      </div>
+    </div>
     <div id="intro-screen">
       <h2 id="intro-title" class="expanded" data-i18n="intro.title">fernando's portfolio</h2>
     </div>
@@ -53,11 +58,12 @@
         </header>
         <div id="hero-wrapper">
           <div id="hero-background"></div>
-          <!--<div id="hero-background-container">
-            <canvas id="hero-canvas"></canvas>
-          </div>-->
           <div id="hero-container">
             <div class="hero-text">
+                <div class="hero-status-pill" data-hero-status>
+                  <span class="hero-status-dot"></span>
+                  <span data-i18n="hero.availability">Available for selected projects</span>
+                </div>
                 <div id="hello-worm" data-hello-worm aria-hidden="true">
                   <div class="hello-worm-stage">
                     <p class="hello-worm-code" data-hello-code>&lt;h1&gt;fernando's portfolio&lt;/h1&gt;</p>
@@ -85,137 +91,147 @@
                   <div class="hero-subtitle">
                       <h3 data-i18n-html="hero.subtitle">Full<span>&nbsp;</span>Stack<span>&nbsp;</span>Developer</h3>
                   </div>
+                  <p class="hero-tagline" data-i18n="hero.tagline">I craft immersive digital experiences through code & creative engineering.</p>
+                </div>
+                <div class="hero-footer-bar">
+                  <a href="#technologies" class="hero-explore-btn" data-hero-explore>
+                    <span class="hero-explore-circle">↓</span>
+                    <span data-i18n="hero.explore">View selected work</span>
+                  </a>
+                  <div class="hero-meta-bar">
+                    <span data-i18n="hero.location">Buenos Aires // Remote worldwide</span>
+                  </div>
                 </div>
             </div>
           </div>
         </div>
         <div id="home-page">
-        <section id="technologies">
-          <button type="button" class="tech-toggle" data-tech-toggle aria-expanded="false" aria-controls="tech-details" data-i18n-attr="aria-label:tech.toggle">
-            <div class="tech-icons-container">
-              <div class="tech-icons">
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-atom"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-sass"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-javascript"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-aws"></use>
-              </svg>
-
-              <!-- Duplicate set of icons -->
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-atom"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-sass"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-javascript"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-aws"></use>
-              </svg>
-
-              <!-- ...Duplicate set of icons -->
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-atom"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-sass"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-javascript"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use>
-              </svg>
-              <svg class="icon">
-                <use xlink:href="media/si-sprite.svg#si-dev-aws"></use>
-              </svg>
-              </div>
+        <section id="technologies" class="editorial-section">
+          <h2 class="section-heading" data-i18n-attr="aria-label:tech.title">
+            <span class="section-heading__backdrop" data-i18n="tech.title" aria-hidden="true">Technologies</span>
+            <span class="section-heading__kicker" data-i18n="tech.kicker">01 // STACK & TECH</span>
+            <span class="section-heading__title" data-i18n="tech.title">Technologies</span>
+          </h2>
+          <div class="tech-card">
+            <div class="tech-card-header">
+              <span class="tech-card-badge">Core Tooling & Frameworks</span>
+              <span class="tech-card-status">Production Stack</span>
             </div>
-          </button>
-          <div class="tech-details" id="tech-details" data-tech-panel>
-            <div class="tech-details-inner">
-              <p data-i18n="tech.body">JavaScript on the surface, Node behind it, Sass for type and color, AWS when it has to stay up. Atom for the daily work; CoffeeScript in the older pieces. The stack is whatever keeps the product clear and standing.</p>
+            <button type="button" class="tech-toggle" data-tech-toggle aria-expanded="false" aria-controls="tech-details" data-i18n-attr="aria-label:tech.toggle">
+              <div class="tech-icons-container">
+                <div class="tech-icons">
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-atom"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-sass"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-javascript"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-aws"></use></svg>
+                  <!-- Duplicates for seamless loop -->
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-atom"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-sass"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-javascript"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-aws"></use></svg>
+                  <!-- Additional loop items -->
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-atom"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-coffeescript"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-nodejs_small"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-sass"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-javascript"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-javascript_1"></use></svg>
+                  <svg class="icon"><use xlink:href="media/si-sprite.svg#si-dev-aws"></use></svg>
+                </div>
+              </div>
+            </button>
+            <div class="tech-card-action">
+              <span>Stack Philosophy</span>
+              <span class="tech-toggle-chevron">▼</span>
+            </div>
+            <div class="tech-details" id="tech-details" data-tech-panel>
+              <div class="tech-details-inner">
+                <p data-i18n="tech.body">JavaScript on the surface, Node behind it, Sass for type and color, AWS when it has to stay up. Atom for the daily work; CoffeeScript in the older pieces. The stack is whatever keeps the product clear and standing.</p>
+                <div class="tech-pill-grid">
+                  <span class="tech-pill">TypeScript</span>
+                  <span class="tech-pill">Node.js / Express</span>
+                  <span class="tech-pill">React & Vue</span>
+                  <span class="tech-pill">GSAP / Creative Motion</span>
+                  <span class="tech-pill">AWS & Cloud Infrastructure</span>
+                  <span class="tech-pill">PostgreSQL & Redis</span>
+                  <span class="tech-pill">Sass / CSS Systems</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
-        <section id="experience">
-          <h2 id="experience-title" data-i18n="experience.title">Work & Experience</h2>
+        <section id="experience" class="editorial-section">
+          <h2 id="experience-title" class="section-heading" data-i18n-attr="aria-label:experience.title">
+            <span class="section-heading__backdrop" data-i18n="experience.title" aria-hidden="true">Work & Experience</span>
+            <span class="section-heading__kicker" data-i18n="experience.kicker">02 // EXPERIENCE</span>
+            <span class="section-heading__title" data-i18n="experience.title">Work & Experience</span>
+          </h2>
           <ol class="experience-timeline">
             <li>
               <article class="experience-item" data-accent="green">
-                <p class="experience-item-dates" data-i18n="experience.item1.dates">2023 — Present</p>
-                <h3 class="experience-item-role" data-i18n="experience.item1.role">Senior Full Stack Engineer</h3>
-                <p class="experience-item-company" data-i18n="experience.item1.company">Digital Innovations Studio</p>
+                <div class="experience-meta-col">
+                  <p class="experience-item-dates" data-i18n="experience.item1.dates">2023 — Present</p>
+                  <p class="experience-item-company" data-i18n="experience.item1.company">Digital Innovations Studio</p>
+                </div>
                 <div class="experience-item-node" aria-hidden="true">
                   <span class="experience-marker"></span>
                 </div>
-                <p class="experience-item-body" data-i18n="experience.item1.body">End-to-end work on microservice SaaS platforms. Page latency down by 45%, queries tighter, the product still easy to feel.</p>
+                <div class="experience-content-col">
+                  <h3 class="experience-item-role" data-i18n="experience.item1.role">Senior Full Stack Engineer</h3>
+                  <p class="experience-item-body" data-i18n="experience.item1.body">End-to-end work on microservice SaaS platforms. Page latency down by 45%, queries tighter, the product still easy to feel.</p>
+                </div>
               </article>
             </li>
             <li>
               <article class="experience-item" data-accent="yellow">
-                <p class="experience-item-dates" data-i18n="experience.item2.dates">2021 — 2023</p>
-                <h3 class="experience-item-role" data-i18n="experience.item2.role">Full Stack Developer</h3>
-                <p class="experience-item-company" data-i18n="experience.item2.company">E-Commerce & Media Solutions</p>
+                <div class="experience-meta-col">
+                  <p class="experience-item-dates" data-i18n="experience.item2.dates">2021 — 2023</p>
+                  <p class="experience-item-company" data-i18n="experience.item2.company">E-Commerce & Media Solutions</p>
+                </div>
                 <div class="experience-item-node" aria-hidden="true">
                   <span class="experience-marker"></span>
                 </div>
-                <p class="experience-item-body" data-i18n="experience.item2.body">Modular storefronts, custom checkout paths, and headless CMS architectures for international commerce clients.</p>
+                <div class="experience-content-col">
+                  <h3 class="experience-item-role" data-i18n="experience.item2.role">Full Stack Developer</h3>
+                  <p class="experience-item-body" data-i18n="experience.item2.body">Modular storefronts, custom checkout paths, and headless CMS architectures for international commerce clients.</p>
+                </div>
               </article>
             </li>
             <li>
               <article class="experience-item" data-accent="blue">
-                <p class="experience-item-dates" data-i18n="experience.item3.dates">2019 — 2021</p>
-                <h3 class="experience-item-role" data-i18n="experience.item3.role">Frontend Developer</h3>
-                <p class="experience-item-company" data-i18n="experience.item3.company">Creative Agency Co.</p>
+                <div class="experience-meta-col">
+                  <p class="experience-item-dates" data-i18n="experience.item3.dates">2019 — 2021</p>
+                  <p class="experience-item-company" data-i18n="experience.item3.company">Creative Agency Co.</p>
+                </div>
                 <div class="experience-item-node" aria-hidden="true">
                   <span class="experience-marker"></span>
                 </div>
-                <p class="experience-item-body" data-i18n="experience.item3.body">Responsive web apps in Vue and React — accessibility as a given, performance that holds across browsers.</p>
+                <div class="experience-content-col">
+                  <h3 class="experience-item-role" data-i18n="experience.item3.role">Frontend Developer</h3>
+                  <p class="experience-item-body" data-i18n="experience.item3.body">Responsive web apps in Vue and React — accessibility as a given, performance that holds across browsers.</p>
+                </div>
               </article>
             </li>
           </ol>
         </section>
-        <section id="projects">
-          <h2 id="projects-title" data-i18n-html="projects.selectedTitle">Selected<span>&nbsp;</span>Projects</h2>
+        <section id="projects" class="editorial-section">
+          <h2 id="projects-title" class="section-heading" aria-label="Selected Projects" data-i18n-attr="aria-label:projects.selectedTitlePlain">
+            <span class="section-heading__backdrop" data-projects-title-display data-i18n="projects.selectedTitlePlain" aria-hidden="true">Selected Projects</span>
+            <span class="section-heading__kicker" data-i18n="projects.kicker">03 // PORTFOLIO</span>
+            <span class="section-heading__title" data-projects-title-label data-i18n="projects.selectedTitlePlain">Selected Projects</span>
+          </h2>
           <div class="carouselhero" data-carousel-hero>
             <div class="carouselhero__slides">
               <div class="slide-button">
                 <button type="button" data-carousel-prev data-i18n-attr="aria-label:projects.prev">
-                  <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M22.6973 23.9997L29.7773 16.9197C30.1498 16.5449 30.3589 16.038 30.3589 15.5097C30.3589 14.9813 30.1498 14.4744 29.7773 14.0997C29.5914 13.9122 29.3702 13.7634 29.1265 13.6619C28.8828 13.5603 28.6213 13.5081 28.3573 13.5081C28.0933 13.5081 27.8319 13.5603 27.5882 13.6619C27.3444 13.7634 27.1232 13.9122 26.9373 14.0997L18.4573 22.5797C18.2699 22.7656 18.1211 22.9868 18.0195 23.2305C17.918 23.4742 17.8657 23.7356 17.8657 23.9997C17.8657 24.2637 17.918 24.5251 18.0195 24.7688C18.1211 25.0125 18.2699 25.2337 18.4573 25.4197L26.9373 33.9997C27.1242 34.185 27.3458 34.3317 27.5895 34.4312C27.8332 34.5307 28.0941 34.5812 28.3573 34.5797C28.6205 34.5812 28.8815 34.5307 29.1251 34.4312C29.3688 34.3317 29.5904 34.185 29.7773 33.9997C30.1498 33.6249 30.3589 33.118 30.3589 32.5897C30.3589 32.0613 30.1498 31.5544 29.7773 31.1797L22.6973 23.9997Z" fill="currentColor"/>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"></polyline>
                   </svg>
                 </button>
               </div>
@@ -225,21 +241,45 @@
                     <div class="slide projects-slide">
                       <a href="project-details.html">
                         <div class="slide-image">
-                          <img src="media/projects/1.png" alt="Project 1" data-i18n-attr="alt:projects.item1.alt">
+                          <img src="media/projects/1.png" alt="Product experience" data-i18n-attr="alt:projects.item1.alt">
+                        </div>
+                        <div class="slide-caption">
+                          <div class="slide-caption-meta">
+                            <span class="slide-caption__index">01</span>
+                            <h3 class="slide-caption__title" data-i18n="projects.item1.title">Product experience</h3>
+                            <span class="slide-caption__category" data-i18n="projects.item1.category">Web Application · Design System</span>
+                          </div>
+                          <span class="slide-caption__action"><span data-i18n="projects.view">View</span> Case Study ↗</span>
                         </div>
                       </a>
                     </div>
                     <div class="slide projects-slide">
                       <a href="project-details.html">
                         <div class="slide-image">
-                          <img src="media/projects/2.png" alt="Project 2" data-i18n-attr="alt:projects.item2.alt">
+                          <img src="media/projects/2.png" alt="Commerce platform" data-i18n-attr="alt:projects.item2.alt">
+                        </div>
+                        <div class="slide-caption">
+                          <div class="slide-caption-meta">
+                            <span class="slide-caption__index">02</span>
+                            <h3 class="slide-caption__title" data-i18n="projects.item2.title">Commerce platform</h3>
+                            <span class="slide-caption__category" data-i18n="projects.item2.category">E-Commerce · Headless Architecture</span>
+                          </div>
+                          <span class="slide-caption__action"><span data-i18n="projects.view">View</span> Case Study ↗</span>
                         </div>
                       </a>
                     </div>
                     <div class="slide projects-slide">
                       <a href="project-details.html">
                         <div class="slide-image">
-                          <img src="media/projects/3.png" alt="Project 3" data-i18n-attr="alt:projects.item3.alt">
+                          <img src="media/projects/3.png" alt="Digital ecosystem" data-i18n-attr="alt:projects.item3.alt">
+                        </div>
+                        <div class="slide-caption">
+                          <div class="slide-caption-meta">
+                            <span class="slide-caption__index">03</span>
+                            <h3 class="slide-caption__title" data-i18n="projects.item3.title">Digital ecosystem</h3>
+                            <span class="slide-caption__category" data-i18n="projects.item3.category">Creative Development · Motion</span>
+                          </div>
+                          <span class="slide-caption__action"><span data-i18n="projects.view">View</span> Case Study ↗</span>
                         </div>
                       </a>
                     </div>
@@ -248,8 +288,8 @@
               </div>
               <div class="slide-button">
                 <button type="button" data-carousel-next data-i18n-attr="aria-label:projects.next">
-                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M29.6599 22.5797L21.1799 14.0997C20.994 13.9122 20.7728 13.7634 20.529 13.6619C20.2853 13.5603 20.0239 13.5081 19.7599 13.5081C19.4959 13.5081 19.2345 13.5603 18.9907 13.6619C18.747 13.7634 18.5258 13.9122 18.3399 14.0997C17.9674 14.4744 17.7583 14.9813 17.7583 15.5097C17.7583 16.038 17.9674 16.5449 18.3399 16.9197L25.4199 23.9997L18.3399 31.0797C17.9674 31.4544 17.7583 31.9613 17.7583 32.4897C17.7583 33.018 17.9674 33.5249 18.3399 33.8997C18.5268 34.085 18.7484 34.2317 18.9921 34.3312C19.2357 34.4307 19.4967 34.4812 19.7599 34.4797C20.0231 34.4812 20.284 34.4307 20.5277 34.3312C20.7714 34.2317 20.993 34.085 21.1799 33.8997L29.6599 25.4197C29.8473 25.2337 29.9961 25.0125 30.0977 24.7688C30.1992 24.5251 30.2515 24.2637 30.2515 23.9997C30.2515 23.7356 30.1992 23.4742 30.0977 23.2305C29.9961 22.9868 29.8473 22.7656 29.6599 22.5797Z" fill="currentColor"/>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6"></polyline>
                   </svg>
                 </button>
               </div>
@@ -257,51 +297,61 @@
             <div class="carouselhero__thumbnails" data-carousel-dots></div>
           </div>
         </section>
-        <!--<section id="projects-carousel">
-            <div class="carousel-container">
-                <div class="carousel-slide">
-                    <div class="project-background" style="background-image: url('media/projects/project1.png');"></div>
-                    <div class="project-info">
-                      <h2 class="project-title">Project 1</h2>
-                      <p class="project-description">Description of Project 1</p>
-                      <div class="project-technologies">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
-                      </div>
-                    </div>
-                </div>
-                <div class="carousel-slide">
-                    <div class="project-background" style="background-image: url('media/projects/project1.png');"></div>
-                    <div class="project-info">
-                      <h2 class="project-title">Project 1</h2>
-                      <p class="project-description">Description of Project 1</p>
-                      <div class="project-technologies">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
-                      </div>
-                    </div>
-                </div>
-                <div class="carousel-slide">
-                    <div class="project-background" style="background-image: url('media/projects/project1.png');"></div>
-                    <div class="project-info">
-                      <h2 class="project-title">Project 1</h2>
-                      <p class="project-description">Description of Project 1</p>
-                      <div class="project-technologies">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-button prev">&lt;</button>
-            <button class="carousel-button next">&gt;</button>
-        </section>-->
-        <section id="contact">
+        <section id="contact" class="editorial-section">
           <div id="contact-container">
-            <h2 id="contact-title" data-i18n="contact.title">Contact</h2>
+            <h2 id="contact-title" class="section-heading" data-i18n-attr="aria-label:contact.title">
+              <span class="section-heading__backdrop" data-i18n="contact.title" aria-hidden="true">Contact</span>
+              <span class="section-heading__kicker" data-i18n="contact.kicker">04 // GET IN TOUCH</span>
+              <span class="section-heading__title" data-i18n="contact.title">Contact</span>
+            </h2>
+            <div class="contact-card">
+              <div class="contact-header">
+                <div class="contact-status">
+                  <span class="contact-status-dot"></span>
+                  <span data-i18n="contact.status">Available for new projects</span>
+                </div>
+                <h3 class="contact-headline" data-i18n="contact.heading">Let's build something exceptional.</h3>
+                <p class="contact-sub" data-i18n="contact.sub">Available for selected full-stack engineering, creative development, and high-performance digital products.</p>
+              </div>
+              <div class="contact-actions-grid">
+                <div class="contact-email-card">
+                  <div>
+                    <p class="contact-email-label">Direct Communication</p>
+                    <span class="contact-email-value" data-email-value>fernando@arriondo.dev</span>
+                  </div>
+                  <div class="contact-email-buttons">
+                    <a href="mailto:fernando@arriondo.dev" class="contact-btn-primary" data-i18n="contact.cta">Send Email</a>
+                    <button type="button" class="contact-btn-secondary" data-copy-email>
+                      <span data-copy-text data-i18n="contact.copy">Copy</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="contact-social-card">
+                  <div class="contact-social-grid">
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact-social-link">
+                      <span>LinkedIn</span>
+                      <span class="contact-social-arrow">↗</span>
+                    </a>
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="contact-social-link">
+                      <span>GitHub</span>
+                      <span class="contact-social-arrow">↗</span>
+                    </a>
+                    <a href="#about" data-nav="about" class="contact-social-link">
+                      <span data-i18n="nav.about">About</span>
+                      <span class="contact-social-arrow">↗</span>
+                    </a>
+                    <a href="media/cv.pdf" target="_blank" class="contact-social-link">
+                      <span>Resume / CV</span>
+                      <span class="contact-social-arrow">↗</span>
+                    </a>
+                  </div>
+                  <div class="contact-location-pill">
+                    <span>📍</span>
+                    <span data-i18n="contact.location">Buenos Aires / Remote</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
         </div>

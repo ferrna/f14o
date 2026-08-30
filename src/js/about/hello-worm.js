@@ -94,6 +94,40 @@ function foldDelta(el, visual, index) {
   };
 }
 
+let mouseBound = false;
+function initWormParallax(visual, stage) {
+  if (mouseBound || REDUCE_MOTION || !visual) return;
+  mouseBound = true;
+
+  const setRotX = gsap.quickTo(stage, 'rotateX', { duration: 0.6, ease: 'power2.out' });
+  const setRotY = gsap.quickTo(stage, 'rotateY', { duration: 0.6, ease: 'power2.out' });
+  const setX = gsap.quickTo(visual, 'x', { duration: 0.7, ease: 'power2.out' });
+  const setY = gsap.quickTo(visual, 'y', { duration: 0.7, ease: 'power2.out' });
+
+  const hero = document.querySelector('#hero-wrapper');
+  if (!hero) return;
+
+  hero.addEventListener('mousemove', (e) => {
+    const el = root();
+    if (!el || el.dataset.state !== 'settled') return;
+    const rect = hero.getBoundingClientRect();
+    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+
+    setRotX(-ny * 14);
+    setRotY(nx * 18);
+    setX(nx * 16);
+    setY(ny * 16);
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    setRotX(0);
+    setRotY(0);
+    setX(0);
+    setY(0);
+  });
+}
+
 function startIdle(visual) {
   if (!visual || REDUCE_MOTION) return;
   idle = gsap.to(visual, {
@@ -103,6 +137,8 @@ function startIdle(visual) {
     repeat: -1,
     ease: 'sine.inOut',
   });
+  const stage = visual.closest('.hello-worm-stage');
+  initWormParallax(visual, stage);
 }
 
 function settle(el) {

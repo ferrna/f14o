@@ -7,8 +7,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const IMAGE_EASE = 'power3.inOut';
-const IMAGE_DURATION = 0.8;
+const IMAGE_DURATION = 0.85;
 const CONTENT_DURATION = 0.55;
+const pageCache = new Map();
 
 const state = {
   busy: false,
@@ -72,6 +73,17 @@ function fetchMain(url) {
   return fetchPart(url, 'main');
 }
 
+function fetchMainCached(url) {
+  const key = new URL(url, window.location.href).href;
+  if (!pageCache.has(key)) {
+    pageCache.set(key, fetchMain(key).catch((error) => {
+      pageCache.delete(key);
+      throw error;
+    }));
+  }
+  return pageCache.get(key);
+}
+
 function waitForImage(img) {
   if (img.complete && img.naturalHeight) {
     return Promise.resolve();
@@ -99,6 +111,7 @@ function setHomeScrollTriggers(enabled) {
 }
 
 function createFixedClone(image, rect) {
+  const styles = getComputedStyle(image);
   const clone = image.cloneNode(true);
   clone.className = 'project-transition-image';
   clone.removeAttribute('id');
@@ -116,6 +129,10 @@ function createFixedClone(image, rect) {
     objectFit: 'cover',
     maxWidth: 'none',
     maxHeight: 'none',
+    overflow: 'hidden',
+    borderRadius: styles.borderRadius,
+    backgroundColor: styles.backgroundColor,
+    boxShadow: styles.boxShadow,
   });
   return clone;
 }
@@ -300,6 +317,9 @@ export async function goToProject({ image, url, updateHistory = true }) {
   state.busy = true;
   state.fromImage = image;
   state.homeScrollY = window.scrollY;
+  const sourceVisual = image.closest('.slide-image') || image;
+  const sourceSlide = image.closest('.slide');
+  sourceSlide?.classList.add('transition-source');
 
   const views = ensureViews();
   if (!views) {
@@ -308,13 +328,13 @@ export async function goToProject({ image, url, updateHistory = true }) {
   }
 
   const { viewHome, viewProject } = views;
-  const start = rectOf(image);
-  const clone = createFixedClone(image, start);
-  image.style.visibility = 'hidden';
+  const start = rectOf(sourceVisual);
+  const clone = createFixedClone(sourceVisual, start);
+  sourceVisual.style.visibility = 'hidden';
   document.body.classList.add('is-page-transitioning');
 
   try {
-    const page = await fetchMain(url);
+    const page = await fetchMainCached(url);
     viewProject.innerHTML = page.html;
     applyTranslations(viewProject);
     bindProjectChrome(viewProject);
@@ -325,21 +345,25 @@ export async function goToProject({ image, url, updateHistory = true }) {
       throw new Error('Project page is missing #project-main-image');
     }
     target.src = image.currentSrc || image.src;
-    target.style.visibility = 'hidden';
+    const targetVisual = target.closest('[data-project-visual]') || target;
+    targetVisual.style.visibility = 'hidden';
     await waitForImage(target);
 
     prepareMeasuring(viewProject);
-    const end = rectOf(target);
+    const end = rectOf(targetVisual);
+    const targetStyles = getComputedStyle(targetVisual);
     setHomeScrollTriggers(false);
 
     const fadeOutHome = prefersReducedMotion()
       ? Promise.resolve()
-      : gsap.to(viewHome, { opacity: 0, duration: 0.4, ease: 'power2.inOut' });
+      : gsap.to(viewHome, { opacity: 0, duration: 0.42, delay: 0.16, ease: 'power2.inOut' });
 
     const moveImage = prefersReducedMotion()
       ? gsap.set(clone, end)
       : gsap.to(clone, {
           ...end,
+          borderRadius: targetStyles.borderRadius,
+          boxShadow: targetStyles.boxShadow,
           duration: IMAGE_DURATION,
           ease: IMAGE_EASE,
         });
@@ -352,15 +376,30 @@ export async function goToProject({ image, url, updateHistory = true }) {
     showView(viewProject);
 
     const incoming = projectContent(viewProject);
+    const incomingTitle = viewProject.querySelector('.project-title');
     if (prefersReducedMotion()) {
       gsap.set(incoming, { opacity: 1, y: 0 });
+      gsap.set(incomingTitle, { clipPath: 'none' });
     } else {
       gsap.set(incoming, { opacity: 0, y: 20 });
       fadeElements(incoming, { to: 1, y: 0, delay: 0.05 });
+      if (incomingTitle) {
+        gsap.fromTo(incomingTitle, {
+          clipPath: 'inset(0 0 100% 0)',
+          y: 18,
+        }, {
+          clipPath: 'inset(0 0 0% 0)',
+          y: 0,
+          duration: 0.72,
+          delay: 0.12,
+          ease: 'power3.out',
+        });
+      }
     }
 
-    target.style.visibility = '';
+    targetVisual.style.visibility = '';
     clone.remove();
+    document.body.dataset.page = 'project';
     const projectTitle = t('meta.projectTitle');
     if (updateHistory) {
       setHistory('project', url, projectTitle);
@@ -369,14 +408,16 @@ export async function goToProject({ image, url, updateHistory = true }) {
     }
   } catch (error) {
     clone.remove();
-    image.style.visibility = '';
+    sourceVisual.style.visibility = '';
     window.location.href = url;
     return;
   } finally {
     document.body.classList.remove('is-page-transitioning');
+    sourceSlide?.classList.remove('transition-source');
     state.busy = false;
   }
 
+  viewProject.querySelector('.project-title')?.focus({ preventScroll: true });
   await prepareProjectHandoff();
 }
 
@@ -400,7 +441,8 @@ export async function goToHome({ url = 'index.html', scrollToProjects = false, u
   }
 
   const { viewHome, viewProject } = views;
-  const hero = viewProject.querySelector('#project-main-image');
+  const heroImage = viewProject.querySelector('#project-main-image');
+  const hero = heroImage?.closest('[data-project-visual]') || heroImage;
   document.body.classList.add('is-page-transitioning');
 
   try {
@@ -419,9 +461,10 @@ export async function goToHome({ url = 'index.html', scrollToProjects = false, u
       ? state.fromImage
       : viewHome.querySelector('.carouselhero .slide.active img')
         || viewHome.querySelector('.projects-slide img');
+    const originalVisual = original?.closest('.slide-image') || original;
 
-    if (original) {
-      original.style.visibility = 'hidden';
+    if (originalVisual) {
+      originalVisual.style.visibility = 'hidden';
     }
 
     const start = hero ? rectOf(hero) : null;
@@ -444,11 +487,18 @@ export async function goToHome({ url = 'index.html', scrollToProjects = false, u
       viewHome.scrollTop = state.homeScrollY;
     }
 
-    const end = original ? rectOf(original) : null;
+    const end = originalVisual ? rectOf(originalVisual) : null;
+    const endStyles = originalVisual ? getComputedStyle(originalVisual) : null;
     const moveImage = clone && end
       ? (prefersReducedMotion()
         ? gsap.set(clone, end)
-        : gsap.to(clone, { ...end, duration: IMAGE_DURATION, ease: IMAGE_EASE }))
+        : gsap.to(clone, {
+            ...end,
+            borderRadius: endStyles?.borderRadius || 0,
+            boxShadow: endStyles?.boxShadow || 'none',
+            duration: IMAGE_DURATION,
+            ease: IMAGE_EASE,
+          }))
       : Promise.resolve();
 
     await Promise.all([fadeOutProject, moveImage]);
@@ -464,8 +514,8 @@ export async function goToHome({ url = 'index.html', scrollToProjects = false, u
     }
     setHomeScrollTriggers(true);
 
-    if (original) {
-      original.style.visibility = '';
+    if (originalVisual) {
+      originalVisual.style.visibility = '';
     }
     if (clone) {
       clone.remove();
@@ -696,6 +746,17 @@ export function bindSiteNav(root = document) {
   });
 }
 
+function bindProjectPrefetch(root = document) {
+  root.querySelectorAll('.projects-slide a[href]').forEach((link) => {
+    if (link.dataset.prefetchBound === 'true') return;
+    link.dataset.prefetchBound = 'true';
+    const warm = () => fetchMainCached(link.href).catch(() => {});
+    link.addEventListener('mouseenter', warm, { once: true });
+    link.addEventListener('focus', warm, { once: true });
+    link.addEventListener('touchstart', warm, { once: true, passive: true });
+  });
+}
+
 function getHandoffNodes(viewHome) {
   const projects = viewHome.querySelector('#projects');
   return projects ? [projects] : [];
@@ -704,9 +765,13 @@ function getHandoffNodes(viewHome) {
 function setProjectsTitleMode(isOther) {
   const title = document.querySelector('#projects-title');
   if (!title) return;
-  title.dataset.i18nHtml = isOther ? 'projects.otherTitle' : 'projects.selectedTitle';
-  title.classList.remove('text-split-done');
-  title.innerHTML = t(title.dataset.i18nHtml);
+  const key = isOther ? 'projects.otherTitlePlain' : 'projects.selectedTitlePlain';
+  title.dataset.i18nAttr = `aria-label:${key}`;
+  title.setAttribute('aria-label', t(key));
+  title.querySelectorAll('[data-projects-title-label], [data-projects-title-display]').forEach((part) => {
+    part.dataset.i18n = key;
+    part.textContent = t(key);
+  });
 }
 
 function restoreHandoffToHome({ resetTitle = true } = {}) {
@@ -945,6 +1010,8 @@ export function initPageTransitions() {
   const views = ensureViews();
   bindProjectChrome();
   bindSiteNav();
+  bindProjectPrefetch();
+  document.addEventListener('home-view-ready', () => bindProjectPrefetch());
 
   const initialView = detectInitialView();
   if (!window.history.state || !window.history.state.view) {

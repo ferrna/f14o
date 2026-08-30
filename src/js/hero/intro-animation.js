@@ -53,6 +53,9 @@ export function prepareHomeIntro() {
   const image = document.querySelector('.hero-image');
   const title = document.querySelector('.hero-title');
   const subtitle = document.querySelector('.hero-subtitle');
+  const tagline = document.querySelector('.hero-tagline');
+  const statusPill = document.querySelector('.hero-status-pill');
+  const footerBar = document.querySelector('.hero-footer-bar');
   const tech = document.querySelector('#technologies .tech-icons-container');
   const brand = document.querySelector('#header-left-content h2');
   const nav = document.querySelector('#header-content');
@@ -62,24 +65,26 @@ export function prepareHomeIntro() {
   const brandChars = splitChars(brand);
 
   if (REDUCE_MOTION) {
-    reveal([image, title, subtitle, tech, brand, nav, ...titleChars, ...subtitleChars, ...brandChars]);
+    reveal([image, title, subtitle, tagline, statusPill, footerBar, tech, brand, nav, ...titleChars, ...subtitleChars, ...brandChars]);
     playHelloWorm();
     document.body.classList.remove('is-awaiting-intro');
     document.body.classList.add('intro-done');
     document.dispatchEvent(new CustomEvent('intro-done'));
-    return { reduced: true, titleChars, subtitleChars, brandChars, image, tech, nav };
+    return { reduced: true, titleChars, subtitleChars, brandChars, image, tech, nav, tagline, statusPill, footerBar };
   }
 
   gsap.set(image, { opacity: 0, scale: 0.82, filter: 'blur(16px)' });
   gsap.set(nav, { opacity: 0, y: -8 });
   gsap.set(tech, { xPercent: 72, opacity: 0 });
+  gsap.set([statusPill, footerBar], { opacity: 0, y: 12 });
+  gsap.set(tagline, { opacity: 0, y: 8 });
   gsap.set([title, subtitle, brand], { opacity: 1 });
   gsap.set([...titleChars, ...subtitleChars], { opacity: 0, x: -18 });
   gsap.set(brandChars, { opacity: 0, y: 8, textShadow: GLOW_OFF });
 
   document.body.classList.remove('is-awaiting-intro');
 
-  return { reduced: false, titleChars, subtitleChars, brandChars, image, tech, nav };
+  return { reduced: false, titleChars, subtitleChars, brandChars, image, tech, nav, tagline, statusPill, footerBar };
 }
 
 function revealChars(chars, stagger) {
@@ -104,7 +109,7 @@ export function playHomeIntro(prepared, { delay = 0 } = {}) {
 
   document.body.dataset.introPlayed = 'true';
 
-  const { image, tech, nav, titleChars, subtitleChars, brandChars } = ctx;
+  const { image, tech, nav, titleChars, subtitleChars, brandChars, tagline, statusPill, footerBar } = ctx;
   const tl = gsap.timeline({
     delay,
     defaults: { ease: 'power3.out' },
@@ -113,6 +118,10 @@ export function playHomeIntro(prepared, { delay = 0 } = {}) {
       document.dispatchEvent(new CustomEvent('intro-done'));
     },
   });
+
+  if (statusPill) {
+    tl.to(statusPill, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0.2);
+  }
 
   if (image) {
     tl.fromTo(image, {
@@ -134,7 +143,11 @@ export function playHomeIntro(prepared, { delay = 0 } = {}) {
     delay: delay + nameAt - 0.08,
     onImage: () => {
       revealChars(titleChars, 0.04);
-      window.setTimeout(() => revealChars(subtitleChars, 0.028), 220);
+      window.setTimeout(() => {
+        revealChars(subtitleChars, 0.028);
+        if (tagline) gsap.to(tagline, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+        if (footerBar) gsap.to(footerBar, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+      }, 220);
     },
   });
 

@@ -36,12 +36,20 @@ export class CarouselHero {
 
     this.originalSlides = [...this.track.querySelectorAll(':scope > .slide')];
     if (!this.originalSlides.length) return;
+    this.root.setAttribute('role', 'region');
+    this.root.setAttribute('aria-roledescription', 'carousel');
+    this.originalSlides.forEach((slide, index) => {
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('aria-label', `${index + 1} / ${this.originalSlides.length}`);
+    });
 
     this.currentSlide = this.originalSlides.length > 1 ? 1 : 0;
     this.containerOffset = 0;
     this.swipeOffset = 0;
     this.touchStart = null;
     this.touchEnd = null;
+    this.isDraggingMouse = false;
     this.isTransitioning = false;
     this.transitionTime = '0.3s';
     this.didSwipe = false;
@@ -63,6 +71,8 @@ export class CarouselHero {
     last.classList.remove('projects-slide');
     first.setAttribute('aria-hidden', 'true');
     last.setAttribute('aria-hidden', 'true');
+    first.querySelectorAll('a, button').forEach((control) => control.setAttribute('tabindex', '-1'));
+    last.querySelectorAll('a, button').forEach((control) => control.setAttribute('tabindex', '-1'));
     this.track.insertBefore(last, this.track.firstChild);
     this.track.appendChild(first);
   }
@@ -90,9 +100,16 @@ export class CarouselHero {
 
     this.track.addEventListener('click', (event) => this.handleSlideClick(event));
 
-    this.touchSurface?.addEventListener('touchstart', (event) => this.onTouchStart(event), { passive: true });
-    this.touchSurface?.addEventListener('touchmove', (event) => this.onTouchMove(event), { passive: true });
-    this.touchSurface?.addEventListener('touchend', () => this.onTouchEnd());
+    // Touch events
+    const surface = this.touchSurface || this.track;
+    surface.addEventListener('touchstart', (event) => this.onTouchStart(event), { passive: true });
+    surface.addEventListener('touchmove', (event) => this.onTouchMove(event), { passive: true });
+    surface.addEventListener('touchend', () => this.onTouchEnd());
+
+    // Mouse drag events for fluid desktop experience
+    surface.addEventListener('mousedown', (event) => this.onMouseDown(event));
+    window.addEventListener('mousemove', (event) => this.onMouseMove(event));
+    window.addEventListener('mouseup', () => this.onMouseUp());
 
     this.onResize = () => this.scheduleMeasure();
     window.addEventListener('resize', this.onResize);
@@ -131,7 +148,7 @@ export class CarouselHero {
   }
 
   translateX() {
-    const swipe = isMobileViewport() ? this.swipeOffset : 0;
+    const swipe = this.swipeOffset || 0;
     const step = (this.inactiveSlideWidth || 0) + (this.slidesGap || 0);
     return -step * this.currentSlide + this.containerOffset - swipe;
   }
@@ -139,6 +156,11 @@ export class CarouselHero {
   update() {
     this.slides.forEach((slide, index) => {
       slide.classList.toggle('active', index === this.currentSlide);
+      if (slide.getAttribute('aria-hidden') !== 'true') {
+        const active = index === this.currentSlide;
+        slide.setAttribute('aria-current', active ? 'true' : 'false');
+        slide.querySelector('a')?.setAttribute('tabindex', active ? '0' : '-1');
+      }
     });
 
     this.track.style.transition = `transform ${this.transitionTime} ease-out`;
@@ -237,6 +259,32 @@ export class CarouselHero {
         if (!this.didSwipe) this.update();
       });
     });
+  }
+
+  onMouseDown(event) {
+    if (event.button !== 0) return;
+    this.isDraggingMouse = true;
+    this.touchEnd = null;
+    this.touchStart = event.clientX;
+    this.swipeOffset = 0;
+    this.didSwipe = false;
+    this.transitionTime = '0s';
+  }
+
+  onMouseMove(event) {
+    if (!this.isDraggingMouse || this.touchStart == null) return;
+    this.touchEnd = event.clientX;
+    this.swipeOffset = this.touchStart - event.clientX;
+    if (Math.abs(this.swipeOffset) > 8) {
+      this.didSwipe = true;
+    }
+    this.update();
+  }
+
+  onMouseUp() {
+    if (!this.isDraggingMouse) return;
+    this.isDraggingMouse = false;
+    this.onTouchEnd();
   }
 }
 

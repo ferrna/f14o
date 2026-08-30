@@ -1,315 +1,188 @@
-$experience-title-before-width: 50px;
-$experience-title-before-height: 1px;
+@import '../base/_variables';
 
 #experience {
-    overflow: hidden;
-    padding: 4rem 4rem 5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
+  overflow: visible;
+  padding-top: $section-space;
+  padding-bottom: $section-space;
+  max-width: $layout-wide;
+  margin: 0 auto;
+  position: relative;
 
-#experience-title {
-    font-size: 1.6rem;
-    padding-left: calc(1rem + $experience-title-before-width);
-    padding-right: 4rem;
-    margin: 0 0 3.5rem;
-    position: relative;
-
-    &:not(.is-in) {
-        opacity: 0;
-        transform: translateY(0.85rem);
-    }
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: calc(50% - $experience-title-before-height);
-        left: 0;
-        width: $experience-title-before-width;
-        height: $experience-title-before-height;
-        z-index: 2;
-        background-color: $white;
-    }
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 5% -10% 5% 10%;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba($purple-deep, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
 }
 
 .experience-timeline {
-    --line-x: -50%;
-    position: relative;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0.85rem;
-        bottom: 0.85rem;
-        left: 50%;
-        width: 1px;
-        background: rgba($text-color, 0.14);
-        transform: translateX(var(--line-x)) scaleY(0);
-        transform-origin: center top;
-        pointer-events: none;
-        transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    &.is-drawn::before {
-        transform: translateX(var(--line-x)) scaleY(1);
-    }
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .experience-item {
-    --accent: #{$green};
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 2.4rem minmax(0, 1fr);
-    grid-template-areas:
-        "dates node ."
-        "role node body"
-        "company node body";
-    column-gap: 1.75rem;
-    row-gap: 0.4rem;
-    align-items: start;
-    padding: 2.1rem 0;
+  --accent: #{$green};
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) auto 1fr;
+  column-gap: 2rem;
+  row-gap: 0.5rem;
+  align-items: start;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border: 1px solid $border-subtle;
+  border-radius: 18px;
+  background: rgba(18, 22, 21, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+  transition: border-color 0.35s $ease-editorial, background-color 0.35s ease, transform 0.35s $ease-editorial, box-shadow 0.35s ease;
 
-    &[data-accent="yellow"] {
-        --accent: #{$yellow};
-    }
+  &[data-accent="yellow"] {
+    --accent: #{$yellow};
+  }
 
-    &[data-accent="blue"] {
-        --accent: #{$blue};
-    }
+  &[data-accent="blue"] {
+    --accent: #{$blue};
+  }
 
-    &:first-child {
-        padding-top: 0;
-    }
+  &:not(.is-in) {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0);
+    pointer-events: none;
+  }
 
-    &:last-child {
-        padding-bottom: 0;
-    }
+  &.is-in {
+    pointer-events: auto;
+  }
 
-    &:not(.is-in) {
-        opacity: 0;
-        transform: translate3d(0, 1.75rem, 0);
-        pointer-events: none;
-    }
+  &:hover {
+    border-color: rgba(255, 252, 225, 0.25);
+    background: rgba(24, 30, 28, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.35), 0 0 25px rgba($purple-deep, 0.1);
+  }
+}
 
-    &.is-in {
-        pointer-events: auto;
-    }
+.experience-meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .experience-item-dates {
-    grid-area: dates;
-    margin: 0;
-    text-align: right;
-    font-size: 0.72rem;
-    line-height: 1.2;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-    transition: color 0.4s ease;
-}
-
-.experience-item-role {
-    grid-area: role;
-    position: relative;
-    display: inline-block;
-    justify-self: end;
-    margin: 0;
-    font-size: clamp(1.35rem, 2.6vw, 2rem);
-    font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.04em;
-    text-align: right;
-    transition: color 0.4s ease;
-
-    &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0.06em;
-        width: 100%;
-        height: 1px;
-        background: var(--accent);
-        transform: scaleX(0);
-        transform-origin: right center;
-        transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
 }
 
 .experience-item-company {
-    grid-area: company;
-    margin: 0;
-    text-align: right;
-    font-size: 0.92rem;
-    line-height: 1.4;
-    opacity: 0.42;
-    transition: color 0.4s ease, opacity 0.4s ease;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: $text-muted;
+  letter-spacing: -0.01em;
 }
 
 .experience-item-node {
-    grid-area: node;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: stretch;
-    min-height: 1.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.35rem;
 }
 
 .experience-marker {
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: 0.85rem;
-    height: 0.85rem;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    background: $colorBg;
-    box-shadow: 0 0 0 6px $colorBg;
-    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  background: $colorBg;
+  box-shadow: 0 0 0 4px rgba($colorBg, 0.8);
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
 
-    &::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0.28rem;
-        height: 0.28rem;
-        border-radius: 50%;
-        background: var(--accent);
-        transform: translate(-50%, -50%);
-        box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 45%, transparent);
-        transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--accent);
+    transition: transform 0.35s ease;
+  }
+}
+
+.experience-content-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.experience-item-role {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  color: $text-color;
+  transition: color 0.3s ease;
 }
 
 .experience-item-body {
-    grid-area: body;
-    margin: 0;
-    max-width: 38ch;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    opacity: 0.72;
-    transition: color 0.4s ease, opacity 0.4s ease;
+  margin: 0;
+  max-width: 48ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: $text-muted;
+  letter-spacing: -0.01em;
 }
 
-@media (hover: hover) and (pointer: fine) {
-    .experience-item.is-in {
-        transition: opacity 0.4s ease;
-    }
+@media screen and (max-width: 900px) {
+  #experience {
+    padding-top: 4rem;
+    padding-bottom: 4.5rem;
+  }
 
-    .experience-timeline.is-hovering .experience-item.is-in {
-        opacity: 0.28;
-    }
+  .experience-item {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1.5rem;
+  }
 
-    .experience-timeline.is-hovering .experience-item.is-in.is-active {
-        opacity: 1;
-
-        .experience-item-dates,
-        .experience-item-role,
-        .experience-item-company,
-        .experience-item-body {
-            color: $text-color;
-            opacity: 1;
-        }
-
-        .experience-item-role::after {
-            background: $text-color;
-            transform: scaleX(1);
-        }
-
-        .experience-marker {
-            border-color: $text-color;
-            box-shadow:
-                0 0 0 6px $colorBg,
-                0 0 18px rgba($text-color, 0.22);
-        }
-
-        .experience-marker::after {
-            background: $text-color;
-            transform: translate(-50%, -50%) scale(1.15);
-            box-shadow: 0 0 12px rgba($text-color, 0.4);
-        }
-    }
-}
-
-@media screen and (max-width: 800px) {
-    #experience {
-        padding: 2.5rem 1.25rem 3.5rem;
-    }
-
-    #experience-title {
-        margin-bottom: 2.25rem;
-        padding-right: 0;
-    }
-
-    .experience-timeline {
-        --line-x: 0;
-
-        &::before {
-            left: 0.42rem;
-        }
-    }
-
-    .experience-item {
-        grid-template-columns: 0.85rem minmax(0, 1fr);
-        grid-template-areas:
-            "node dates"
-            "node role"
-            "node company"
-            ". body";
-        column-gap: 1.15rem;
-        padding: 1.75rem 0;
-    }
-
-    .experience-item-dates,
-    .experience-item-role,
-    .experience-item-company {
-        text-align: left;
-    }
-
-    .experience-item-role {
-        justify-self: start;
-
-        &::after {
-            transform-origin: left center;
-        }
-    }
-
-    .experience-item-node {
-        align-self: start;
-        padding-top: 0.05rem;
-        justify-content: flex-start;
-    }
-
-    .experience-item-body {
-        max-width: none;
-        padding-top: 0.45rem;
-    }
+  .experience-item-node {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    #experience-title:not(.is-in),
-    .experience-item:not(.is-in) {
-        opacity: 1;
-        transform: none;
-        pointer-events: auto;
-    }
+  .experience-item:not(.is-in) {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
 
-    .experience-timeline::before {
-        transform: translateX(var(--line-x)) scaleY(1);
-    }
-
-    .experience-item.is-in,
-    .experience-item-role,
-    .experience-item-role::after,
-    .experience-item-dates,
-    .experience-item-company,
-    .experience-item-body,
-    .experience-marker,
-    .experience-marker::after,
-    .experience-timeline::before {
-        transition: none;
-    }
+  .experience-item,
+  .experience-marker {
+    transition: none;
+  }
 }

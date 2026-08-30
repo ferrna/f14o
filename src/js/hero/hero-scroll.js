@@ -232,6 +232,14 @@ export function initHeroScroll() {
   window.addEventListener('touchmove', onTouchMove, { passive: false });
   window.addEventListener('keydown', onKeyDown);
 
+  const exploreBtn = document.querySelector('[data-hero-explore]');
+  if (exploreBtn) {
+    exploreBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      guideTo(nextScrollY(), true);
+    });
+  }
+
   document.addEventListener('intro-done', () => {
     ScrollTrigger.refresh();
   });

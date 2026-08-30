@@ -1,20 +1,281 @@
-$contact-title-before-width: 50px;
+@import '../base/_variables';
 
 #contact {
-    padding: 3rem 4rem 3rem 4rem;
-    padding-left: calc(4rem + 1rem + $contact-title-before-width);
-    width: 100%;
-    height: 300px;
-    background-color: $green;
+  position: relative;
+  isolation: isolate;
+  padding-top: $section-space;
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+  width: 100%;
+  color: $text-color;
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 35rem;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 80%, rgba($purple-deep, 0.15) 0%, transparent 70%),
+      radial-gradient(circle at 80% 90%, rgba($green, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
 }
 
 #contact-container {
-    width: 100%;
-    height: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: $layout-wide;
+  margin: 0 auto;
 }
 
-#contact-title {
-    font-size: 1.6rem;
+.contact-card {
+  position: relative;
+  border: 1px solid $border-subtle;
+  border-radius: 24px;
+  background: rgba(18, 22, 21, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: clamp(2rem, 5vw, 4rem);
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.4), 0 0 40px rgba($purple-deep, 0.08);
+  overflow: hidden;
+  transition: border-color 0.35s ease;
+
+  &:hover {
+    border-color: rgba(255, 252, 225, 0.2);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 252, 225, 0.2) 30%, rgba($green, 0.4) 70%, transparent 100%);
+  }
+}
+
+.contact-header {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.contact-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.95rem;
+  border-radius: 100px;
+  border: 1px solid rgba($green, 0.3);
+  background: rgba(171, 255, 132, 0.06);
+  color: $green;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+
+  .contact-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: $green;
+    box-shadow: 0 0 10px $green-glow;
+    animation: pulse-dot 2s infinite ease-in-out;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
+}
+
+.contact-headline {
+  margin: 0 0 1rem;
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: $text-color;
+}
+
+.contact-sub {
+  margin: 0;
+  max-width: 46rem;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  line-height: 1.65;
+  color: $text-muted;
+  letter-spacing: -0.01em;
+}
+
+.contact-actions-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+
+  @media (max-width: 850px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-email-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: 18px;
+  border: 1px solid $border-subtle;
+  background: rgba(255, 252, 225, 0.02);
+  transition: border-color 0.3s ease, background 0.3s ease;
+
+  &:hover {
+    border-color: rgba($green, 0.35);
+    background: rgba(171, 255, 132, 0.02);
+  }
+}
+
+.contact-email-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $text-subtle;
+  margin: 0;
+}
+
+.contact-email-value {
+  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+  color: $text-color;
+  letter-spacing: -0.02em;
+  font-family: inherit;
+  word-break: break-all;
+}
+
+.contact-email-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.contact-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: 100px;
+  background-color: $green;
+  color: $colorBg;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba($green, 0.25);
+  transition: transform 0.25s $ease-editorial, background-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background-color: #bbf899;
+    box-shadow: 0 6px 22px rgba($green, 0.4);
+  }
+}
+
+.contact-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 100px;
+  background: rgba(255, 252, 225, 0.05);
+  border: 1px solid $border-subtle;
+  color: $text-color;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: rgba($green, 0.5);
+    color: $green;
+    background: rgba(171, 255, 132, 0.05);
+  }
+}
+
+.contact-social-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: 18px;
+  border: 1px solid $border-subtle;
+  background: rgba(255, 252, 225, 0.02);
+}
+
+.contact-social-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid $border-subtle;
+  background: rgba(255, 252, 225, 0.02);
+  color: $text-color;
+  text-decoration: none;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  transition: all 0.25s ease;
+
+  .contact-social-arrow {
+    color: $text-subtle;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  &:hover {
+    border-color: rgba($green, 0.5);
+    background: rgba(171, 255, 132, 0.04);
+    color: $green;
+
+    .contact-social-arrow {
+      color: $green;
+      transform: translate(2px, -2px);
+    }
+  }
+}
+
+.contact-location-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: $text-muted;
+  letter-spacing: 0.04em;
+}
+
+@media screen and (max-width: 800px) {
+  #contact {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 }

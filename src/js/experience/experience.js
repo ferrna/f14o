@@ -5,21 +5,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function revealTitle(title) {
-  if (!title || title.classList.contains('is-in')) return;
-  gsap.to(title, {
-    opacity: 1,
-    y: 0,
-    duration: REDUCE_MOTION ? 0 : 0.6,
-    ease: 'power3.out',
-    overwrite: 'auto',
-    onComplete: () => {
-      title.classList.add('is-in');
-      gsap.set(title, { clearProps: 'opacity,transform,y' });
-    },
-  });
-}
-
 function revealItem(item) {
   if (!item || item.classList.contains('is-in')) return;
   gsap.to(item, {
@@ -69,7 +54,7 @@ export function initExperience() {
     return;
   }
 
-  gsap.set(title, { opacity: 0, y: 14 });
+  title?.classList.add('is-in');
   gsap.set(items, { opacity: 0, y: 28 });
 
   ScrollTrigger.create({
@@ -77,7 +62,6 @@ export function initExperience() {
     start: 'top 70%',
     once: true,
     onEnter: () => {
-      revealTitle(title);
       timeline?.classList.add('is-drawn');
       items.forEach((item, index) => {
         gsap.delayedCall(0.16 + index * 0.24, () => revealItem(item));
