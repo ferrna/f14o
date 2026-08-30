@@ -2,6 +2,7 @@
 import { email, links, useSite } from '../data/site';
 import type { Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
+import Swap from './Swap.astro';
 
 interface Props {
   lang: Lang;
@@ -43,7 +44,8 @@ const site = useSite(lang);
       links.map((link) => (
         <li>
           <a href={link.href} rel="noopener noreferrer" data-cursor-hover>
-            {link.label}
+            <Swap text={link.label} />
+            <span class="sr-only">{link.label}</span>
           </a>
         </li>
       ))
@@ -153,6 +155,7 @@ const site = useSite(lang);
 
     a {
       @include mono(0.68rem);
+      display: inline-flex;
       color: $c-subtle;
       transition: color $dur-micro $ease-micro;
 

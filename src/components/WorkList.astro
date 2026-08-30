@@ -1,8 +1,9 @@
 ---
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { path, type Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
-import { getWork, slugOf } from '../i18n/work';
+import { getWork, slugOf, type Work } from '../i18n/work';
 
 interface Props {
   lang: Lang;
@@ -11,6 +12,17 @@ interface Props {
 const { lang } = Astro.props;
 const c = useCopy(lang);
 const projects = await getWork(lang);
+
+/** Ocho capturas por fila: se reciclan mientras el rastro corre. */
+const POOL = 8;
+
+function trailOf(project: Work): ImageMetadata[] {
+  const unique = [project.data.cover, ...project.data.gallery.map((item) => item.src)].filter(
+    (src, i, all) => all.findIndex((other) => other.src === src.src) === i,
+  );
+
+  return Array.from({ length: POOL }, (_, i) => unique[i % unique.length]);
+}
 ---
 
 <section class="work" id="work">
@@ -36,8 +48,14 @@ const projects = await getWork(lang);
             </span>
           </a>
           <span class="work__rule" data-rule aria-hidden="true" />
-          <div class="work__thumb" data-work-thumb aria-hidden="true">
-            <Image src={project.data.cover} alt="" widths={[420]} sizes="420px" loading="lazy" />
+          <div class="work__trail" data-work-trail aria-hidden="true">
+            {
+              trailOf(project).map((src) => (
+                <div class="work__shot" data-work-shot>
+                  <Image src={src} alt="" widths={[420]} sizes="240px" loading="lazy" />
+                </div>
+              ))
+            }
           </div>
         </li>
       ))
@@ -131,23 +149,24 @@ const projects = await getWork(lang);
     transform-origin: left center;
   }
 
-  // El thumbnail sigue al puntero: sólo existe cuando la fila está activa.
-  .work__thumb {
+  .work__shot {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 5;
-    width: 260px;
+    width: 240px;
+    overflow: hidden;
     opacity: 0;
     pointer-events: none;
-    will-change: transform;
+    will-change: transform, opacity;
+    border: 1px solid rgba(237, 227, 212, 0.55);
+    border-radius: 2px;
+    box-shadow: 0 24px 60px rgba(13, 11, 10, 0.65);
 
     :global(img) {
+      display: block;
       width: 100%;
       height: auto;
-      border: 1px solid rgba(237, 227, 212, 0.55);
-      border-radius: 2px;
-      box-shadow: 0 24px 60px rgba(13, 11, 10, 0.65);
     }
   }
 
@@ -190,7 +209,7 @@ const projects = await getWork(lang);
       order: -1;
     }
 
-    .work__thumb {
+    .work__shot {
       display: none;
     }
   }

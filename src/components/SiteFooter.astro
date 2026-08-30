@@ -15,7 +15,11 @@ const year = new Date().getFullYear();
   <span class="footer__rule" data-rule aria-hidden="true"></span>
   <div class="footer__row">
     <p>© {year} Fernando Arriondo</p>
-    <p>{c.footer.location}</p>
+    <p>
+      {c.footer.city}
+      <span aria-hidden="true"> · </span>
+      <time data-clock datetime="">--:--</time>
+    </p>
     <p class="footer__build">
       <span class="footer__dot" aria-hidden="true"></span>{c.footer.build}
     </p>

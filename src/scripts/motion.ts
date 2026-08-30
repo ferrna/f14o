@@ -9,6 +9,7 @@ import { initCopy } from './copy';
 import { initSculpture } from './sculpture';
 import { initIntro } from './intro';
 import { initMenu } from './menu';
+import { initClock } from './clock';
 
 let globalsReady = false;
 
@@ -39,6 +40,7 @@ export function initMotion(): void {
   initGallery();
   initCopy();
   initSculpture();
+  initClock();
 
   ScrollTrigger.refresh();
 }

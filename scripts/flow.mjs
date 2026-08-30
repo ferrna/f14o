@@ -44,14 +44,18 @@ for (const run of RUNS) {
 
   const row = page.locator('[data-work-row]').nth(1);
   const box = await row.boundingBox();
-  await page.mouse.move(box.x + box.width * 0.35, box.y + box.height / 2, { steps: 18 });
-  await page.waitForTimeout(700);
+  const y = box.y + box.height / 2;
+  await page.mouse.move(box.x + box.width * 0.2, y);
+  for (const t of [0.32, 0.44, 0.56, 0.68]) {
+    await page.mouse.move(box.x + box.width * t, y, { steps: 6 });
+    await page.waitForTimeout(80);
+  }
   await page.screenshot({ path: `${OUT}/flow-1-hover-${run.lang}.png` });
 
-  const thumbOpacity = await row
-    .locator('[data-work-thumb]')
-    .evaluate((el) => Number(getComputedStyle(el).opacity));
-  console.log(`thumbnail visible en hover: ${thumbOpacity > 0.8 ? 'si' : `no (opacity ${thumbOpacity})`}`);
+  const visibleShots = await row.locator('[data-work-shot]').evaluateAll((els) =>
+    els.filter((el) => Number(getComputedStyle(el).opacity) > 0.2).length,
+  );
+  console.log(`capturas en el rastro: ${visibleShots}`);
   console.log(`etiqueta del cursor: ${await page.locator('[data-cursor-label]').innerText()}`);
 
   await row.locator('a').click();

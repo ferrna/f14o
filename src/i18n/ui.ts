@@ -20,6 +20,8 @@ const en = {
     scroll: 'Scroll',
     telemetry: ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'],
     build: 'Build passing',
+    edition: 'Portfolio',
+    year: '2026',
   },
   work: {
     kicker: 'Selected work',
@@ -38,7 +40,7 @@ const en = {
     copied: 'Copied',
   },
   footer: {
-    location: 'Buenos Aires · Remote worldwide',
+    city: 'Buenos Aires',
     build: 'Build passing',
   },
   cursor: {
@@ -111,6 +113,8 @@ const es: typeof en = {
     scroll: 'Scroll',
     telemetry: ['Uptime 99.98%', 'Latencia 42ms', 'Último deploy hace 2h'],
     build: 'Build en verde',
+    edition: 'Portfolio',
+    year: '2026',
   },
   work: {
     kicker: 'Trabajo seleccionado',
@@ -129,7 +133,7 @@ const es: typeof en = {
     copied: 'Copiado',
   },
   footer: {
-    location: 'Buenos Aires · Remoto en todo el mundo',
+    city: 'Buenos Aires',
     build: 'Build en verde',
   },
   cursor: {

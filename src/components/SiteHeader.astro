@@ -1,6 +1,7 @@
 ---
 import { altPath, LANG_LABEL, otherLang, path, type Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
+import Swap from './Swap.astro';
 
 interface Props {
   lang: Lang;
@@ -28,16 +29,23 @@ const altHref = altPath(lang, Astro.url.pathname);
         <>
           {i > 0 && <span class="header__sep" aria-hidden="true">/</span>}
           <a class="header__link" href={item.href} data-cursor-hover>
-            {item.label}
+            <Swap text={item.label} />
+            <span class="sr-only">{item.label}</span>
           </a>
         </>
       ))
     }
   </nav>
 
-  <div class="header__lang">
-    <span class="header__lang-current" aria-current="true">{LANG_LABEL[lang]}</span>
-    <a class="header__lang-alt" href={altHref} hreflang={alt} data-cursor-hover>{LANG_LABEL[alt]}</a>
+  <div class="header__meta">
+    <div class="header__lang">
+      <span class="header__lang-current" aria-current="true">{LANG_LABEL[lang]}</span>
+      <a class="header__lang-alt" href={altHref} hreflang={alt} data-cursor-hover>
+        <Swap text={LANG_LABEL[alt]} />
+        <span class="sr-only">{LANG_LABEL[alt]}</span>
+      </a>
+    </div>
+    <time class="header__clock" data-clock datetime="">--:--</time>
   </div>
 
   <button
@@ -86,6 +94,7 @@ const altHref = altPath(lang, Astro.url.pathname);
 
   .header__link {
     @include mono(0.72rem);
+    display: inline-flex;
     color: $c-muted;
     transition: color $dur-micro $ease-micro;
 
@@ -99,11 +108,24 @@ const altHref = altPath(lang, Astro.url.pathname);
     color: $c-subtle;
   }
 
+  .header__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.28rem;
+    margin-left: 1.5rem;
+  }
+
   .header__lang {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    margin-left: 1.5rem;
+  }
+
+  .header__clock {
+    @include mono(0.62rem);
+    color: $c-subtle;
+    opacity: 0.72;
   }
 
   .header__lang-current {
@@ -152,6 +174,10 @@ const altHref = altPath(lang, Astro.url.pathname);
     .header__nav,
     .header__lang {
       display: none;
+    }
+
+    .header__meta {
+      margin-left: auto;
     }
 
     .header__toggle {

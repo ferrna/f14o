@@ -19,6 +19,11 @@ const c = useCopy(lang);
       <Sculpture variant="hero" />
     </div>
 
+    <p class="hero__edition" data-intro-fade>
+      <span>{c.hero.edition}</span>
+      <span>{c.hero.year}</span>
+    </p>
+
     <h1 class="hero__name" data-hero-name>Fernando Arriondo</h1>
     <p class="hero__role" data-intro-fade>{c.hero.role}</p>
 
@@ -86,6 +91,24 @@ const c = useCopy(lang);
     transform: translate(-50%, 30%);
     pointer-events: auto;
     will-change: transform;
+  }
+
+  .hero__edition {
+    @include mono(0.62rem);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    // Más ancha que el worm para que las dos palabras lo flanqueen
+    // sin montarse encima.
+    width: clamp(16rem, 42vw, 28rem);
+    max-width: calc(100vw - 2 * #{$space-page});
+    transform: translate(-50%, 8%);
+    color: $c-subtle;
+    opacity: 0.72;
+    pointer-events: none;
   }
 
   .hero__name {

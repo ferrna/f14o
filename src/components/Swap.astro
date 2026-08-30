@@ -1,0 +1,53 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<span class="swap" aria-hidden="true">
+  <span class="swap__track">
+    <span>{text}</span>
+    <span>{text}</span>
+  </span>
+</span>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .swap {
+    display: inline-flex;
+    overflow: hidden;
+    height: 1.25em;
+    vertical-align: bottom;
+    // Evita que el flex del clip comprima el track a una sola línea.
+    align-items: flex-start;
+  }
+
+  .swap__track {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 2.5em;
+
+    span {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      height: 1.25em;
+      line-height: 1;
+    }
+  }
+
+  @include motion-safe {
+    .swap__track {
+      transition: transform $dur-short $ease-out-soft;
+    }
+
+    :global(a:hover) .swap__track,
+    :global(a:focus-visible) .swap__track {
+      transform: translateY(-50%);
+    }
+  }
+</style>
