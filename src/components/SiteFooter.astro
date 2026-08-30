@@ -1,0 +1,64 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <span class="footer__rule" data-rule aria-hidden="true"></span>
+  <div class="footer__row">
+    <p>© {year} Fernando Arriondo</p>
+    <p>Buenos Aires · Remote worldwide</p>
+    <p class="footer__build"><span class="footer__dot" aria-hidden="true"></span>Build passing</p>
+  </div>
+</footer>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .footer {
+    position: relative;
+    z-index: $z-content;
+    padding: 0 $space-page clamp(2rem, 5vh, 3rem);
+  }
+
+  .footer__rule {
+    display: block;
+    height: 1px;
+    background-color: $c-hairline;
+    transform-origin: left center;
+  }
+
+  .footer__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+
+    p {
+      @include mono(0.62rem);
+      color: $c-subtle;
+      opacity: 0.72;
+    }
+  }
+
+  .footer__build {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .footer__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  @media (max-width: 760px) {
+    .footer__row {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+</style>

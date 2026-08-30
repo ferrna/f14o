@@ -50,6 +50,22 @@ for (const viewport of VIEWPORTS) {
     console.log(`ok    ${file}  [${response.status()}]`);
   }
 
+  // En desktop se capturan además las secciones por separado: la página
+  // completa queda demasiado chica para juzgar tipografía y espaciado.
+  if (viewport.name === 'desktop') {
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    await page.addStyleTag({ content: 'astro-dev-toolbar { display: none !important; }' });
+
+    for (const id of ['work', 'stack', 'experience', 'contact']) {
+      const section = page.locator(`#${id}`);
+      if (!(await section.count())) continue;
+      await section.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(500);
+      await section.screenshot({ path: `${OUT}/section-${id}.png` });
+      console.log(`ok    ${OUT}/section-${id}.png`);
+    }
+  }
+
   await context.close();
 }
 

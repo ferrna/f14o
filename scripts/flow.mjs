@@ -56,6 +56,16 @@ await page.locator('.case__back').click();
 await page.waitForURL(/\/f14o\/?(#work)?$/, { timeout: 5000 }).catch(() => {});
 console.log(`url tras volver: ${page.url()}`);
 
+// El copiado tiene que confirmar en el propio botón y volver solo.
+await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+await page.locator('#contact').scrollIntoViewIfNeeded();
+await page.locator('[data-copy]').click();
+await page.waitForTimeout(300);
+console.log(`etiqueta tras copiar: ${await page.locator('[data-copy-label]').innerText()}`);
+console.log(`portapapeles: ${await page.evaluate(() => navigator.clipboard.readText())}`);
+await page.waitForTimeout(2200);
+console.log(`etiqueta tras el hold: ${await page.locator('[data-copy-label]').innerText()}`);
+
 console.log(problems.length ? `\nPROBLEMAS:\n${problems.join('\n')}` : '\nsin errores de consola');
 
 await browser.close();

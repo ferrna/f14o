@@ -1,0 +1,102 @@
+---
+import { stack } from '../data/site';
+---
+
+<section class="stack" id="stack">
+  <div class="stack__head">
+    <p class="stack__kicker"><span class="stack__dot" aria-hidden="true"></span>03 / Stack</p>
+    <p class="stack__statement" data-reveal>{stack.statement}</p>
+  </div>
+
+  <ul class="stack__row" data-reveal-group>
+    {
+      stack.items.map((item, i) => (
+        <li class="stack__item" data-reveal-item>
+          {i > 0 && <span class="stack__sep" aria-hidden="true" />}
+          <span class:list={['stack__name', item === stack.primary && 'stack__name--primary']}>{item}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .stack {
+    position: relative;
+    z-index: $z-content;
+    padding: clamp(4rem, 10vh, 7rem) $space-page;
+  }
+
+  .stack__head {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1.5rem, 6vw, 5rem);
+    flex-wrap: wrap;
+  }
+
+  .stack__kicker {
+    @include mono(0.68rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: $c-muted;
+    flex: 0 0 auto;
+  }
+
+  .stack__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  .stack__statement {
+    @include display(clamp(1.1rem, 2.2vw, 1.8rem));
+    font-weight: 400;
+    color: $c-cream;
+  }
+
+  // Sin tarjetas ni logos: la sección se sostiene en tipografía y aire,
+  // que es lo que comunica criterio en vez de inventario.
+  .stack__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: clamp(2rem, 5vh, 3.5rem);
+  }
+
+  .stack__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .stack__sep {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: $c-violet;
+    opacity: 0.55;
+  }
+
+  .stack__name {
+    @include mono(0.74rem);
+    color: $c-muted;
+  }
+
+  .stack__name--primary {
+    padding: 0.5rem 1rem;
+    border: 1px solid $c-hairline-strong;
+    border-radius: 2px;
+    color: $c-cream;
+  }
+
+  @media (max-width: 760px) {
+    .stack__row {
+      gap: 0.7rem;
+    }
+  }
+</style>

@@ -5,6 +5,7 @@ import { initCounters, initHeroScrub, initReveals } from './reveals';
 import { initWorkList } from './work-list';
 import { initGallery } from './gallery';
 import { initCurtain } from './curtain';
+import { initCopy } from './copy';
 
 let globalsReady = false;
 
@@ -31,6 +32,7 @@ export function initMotion(): void {
   initCounters();
   initWorkList();
   initGallery();
+  initCopy();
 
   ScrollTrigger.refresh();
 }

@@ -1,0 +1,151 @@
+---
+import { experience } from '../data/site';
+---
+
+<section class="xp" id="experience">
+  <p class="xp__kicker"><span class="xp__dot" aria-hidden="true"></span>04 / Experience</p>
+
+  <ol class="xp__list" data-reveal-group>
+    {
+      experience.map((item) => (
+        <li class="xp__item" data-reveal-item data-current={item.current ? 'true' : undefined}>
+          <p class="xp__dates">{item.dates}</p>
+          <span class="xp__marker" aria-hidden="true" />
+          <div class="xp__content">
+            <h3 class="xp__role">{item.role}</h3>
+            <p class="xp__body">{item.body}</p>
+          </div>
+          <p class="xp__company">{item.company}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .xp {
+    position: relative;
+    z-index: $z-content;
+    padding: clamp(4rem, 10vh, 7rem) $space-page;
+  }
+
+  .xp__kicker {
+    @include mono(0.68rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: clamp(2rem, 5vh, 3.5rem);
+    color: $c-muted;
+  }
+
+  .xp__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  .xp__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(7rem, 10rem) 1.5rem minmax(0, 1fr) minmax(8rem, auto);
+    align-items: start;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding: clamp(1.5rem, 3.5vh, 2.5rem) 0;
+    @include hairline(top);
+
+    &:last-child {
+      @include hairline(bottom);
+    }
+  }
+
+  .xp__dates {
+    @include mono(0.68rem);
+    color: $c-subtle;
+  }
+
+  // La línea recorre el alto completo de cada entrada, de modo que la serie
+  // se lee continua sin desbordar hacia las secciones vecinas.
+  .xp__marker {
+    position: relative;
+    align-self: stretch;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background-color: $c-hairline;
+      transform: translateX(-50%);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0.4em;
+      left: 50%;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: $c-subtle;
+      transform: translateX(-50%);
+    }
+  }
+
+  .xp__role {
+    @include display(clamp(1.05rem, 1.9vw, 1.5rem));
+    font-weight: 400;
+    color: $c-muted;
+  }
+
+  .xp__body {
+    margin-top: 0.5rem;
+    max-width: 46ch;
+    color: $c-subtle;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .xp__company {
+    @include mono(0.66rem);
+    color: $c-subtle;
+    text-align: right;
+  }
+
+  // El puesto actual es lo único encendido de la serie.
+  .xp__item[data-current] {
+    .xp__role {
+      color: $c-cream;
+    }
+
+    .xp__body,
+    .xp__dates,
+    .xp__company {
+      color: $c-muted;
+    }
+
+    .xp__marker::after {
+      background-color: $c-violet;
+      box-shadow: 0 0 0 4px rgba(123, 97, 255, 0.18);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .xp__item {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .xp__marker {
+      display: none;
+    }
+
+    .xp__company {
+      text-align: left;
+    }
+  }
+</style>
