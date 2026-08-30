@@ -1,0 +1,137 @@
+@use 'tokens' as *;
+
+@use '@fontsource-variable/archivo/wdth.css';
+@use '@fontsource-variable/jetbrains-mono/index.css';
+
+:root {
+  --c-bg: #{$c-bg};
+  --c-bg-deep: #{$c-bg-deep};
+  --c-obsidian: #{$c-obsidian};
+  --c-cream: #{$c-cream};
+  --c-cream-bright: #{$c-cream-bright};
+  --c-muted: #{$c-muted};
+  --c-subtle: #{$c-subtle};
+  --c-violet: #{$c-violet};
+  --c-hairline: #{$c-hairline};
+
+  --space-page: #{$space-page};
+  --space-section: #{$space-section};
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  // Lenis toma el control del scroll; el nativo queda como fallback.
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: $c-bg;
+  color: $c-cream;
+  font-family: $font-sans;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+// El grano y la viñeta son la única textura del fondo: sostienen la
+// calidez del taupe sin introducir un degradado que compita con el tipo.
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('/media/noise.png');
+  background-repeat: repeat;
+  opacity: 0.035;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(13, 11, 10, 0.55) 100%);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+::selection {
+  background-color: $c-violet;
+  color: $c-cream-bright;
+}
+
+:focus-visible {
+  outline: 2px solid $c-violet;
+  outline-offset: 3px;
+}
+
+// Contenido accesible sólo para lectores de pantalla.
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// El sitio debe ser completamente usable sin una sola animación.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,54 @@
+/**
+ * Recorrido de capturas para revisar el diseño mientras se construye.
+ * Uso: node scripts/shots.mjs [baseUrl]
+ */
+import { chromium } from 'playwright';
+import { mkdir } from 'node:fs/promises';
+
+const BASE = process.argv[2] ?? 'http://localhost:4321/f14o';
+const OUT = '.attic/shots';
+
+const ROUTES = [
+  { name: 'home', path: '/' },
+  { name: 'about', path: '/about' },
+  { name: 'work-detail', path: '/work/beer-distribution' },
+  { name: '404', path: '/no-existe' },
+];
+
+const VIEWPORTS = [
+  { name: 'desktop', width: 1440, height: 900 },
+  { name: 'mobile', width: 390, height: 844 },
+];
+
+await mkdir(OUT, { recursive: true });
+
+const browser = await chromium.launch();
+
+for (const viewport of VIEWPORTS) {
+  const context = await browser.newContext({
+    viewport: { width: viewport.width, height: viewport.height },
+    deviceScaleFactor: 2,
+    // Las capturas deben mostrar el estado final, no animaciones a medias.
+    reducedMotion: 'reduce',
+  });
+  const page = await context.newPage();
+
+  for (const route of ROUTES) {
+    const url = `${BASE}${route.path}`;
+    const response = await page.goto(url, { waitUntil: 'networkidle' }).catch(() => null);
+
+    if (!response) {
+      console.log(`skip  ${viewport.name}/${route.name} — sin respuesta`);
+      continue;
+    }
+
+    await page.waitForTimeout(400);
+    const file = `${OUT}/${route.name}-${viewport.name}.png`;
+    await page.screenshot({ path: file, fullPage: route.name !== '404' });
+    console.log(`ok    ${file}  [${response.status()}]`);
+  }
+
+  await context.close();
+}
+
+await browser.close();

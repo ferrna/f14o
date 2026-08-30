@@ -1,2 +1,12 @@
 node_modules/
 dist/
+.astro/
+.attic/
+
+# Entorno
+.env
+.env.production
+
+# Sistema
+.DS_Store
+Thumbs.db

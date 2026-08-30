@@ -1,0 +1,65 @@
+---
+// Cortina obsidiana: fallback universal de la transición entre páginas y
+// única pieza visible mientras la vista destino termina de resolverse.
+---
+
+<div class="curtain" data-curtain aria-hidden="true">
+  <div class="curtain__panel">
+    <span class="curtain__label" data-curtain-label></span>
+    <span class="curtain__track"><span class="curtain__bar" data-curtain-bar></span></span>
+  </div>
+</div>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .curtain {
+    position: fixed;
+    inset: 0;
+    z-index: $z-curtain;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .curtain[data-active='true'] {
+    visibility: visible;
+  }
+
+  .curtain__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    width: 100%;
+    height: 100%;
+    background-color: $c-obsidian;
+    // La cortina siempre barre en la misma dirección: entra desde abajo y
+    // sale por arriba, para que la navegación tenga una gramática estable.
+    transform: translateY(100%);
+    will-change: transform;
+  }
+
+  .curtain__label {
+    @include mono(0.72rem);
+    color: $c-cream;
+    opacity: 0;
+  }
+
+  .curtain__track {
+    display: block;
+    width: 120px;
+    height: 1px;
+    background-color: rgba(237, 227, 212, 0.18);
+    opacity: 0;
+  }
+
+  .curtain__bar {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: $c-cream;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+</style>

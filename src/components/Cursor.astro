@@ -1,0 +1,133 @@
+---
+// El cursor se monta siempre pero se activa sólo en punteros finos.
+---
+
+<div class="cursor" data-cursor aria-hidden="true">
+  <span class="cursor__dot" data-cursor-dot></span>
+  <span class="cursor__ring" data-cursor-ring>
+    <span class="cursor__label" data-cursor-label></span>
+  </span>
+</div>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: $z-cursor;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity $dur-short $ease-micro;
+  }
+
+  .cursor[data-visible='true'] {
+    opacity: 1;
+  }
+
+  .cursor__dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    border-radius: 50%;
+    background-color: $c-cream;
+    transition:
+      opacity $dur-micro $ease-micro,
+      transform $dur-micro $ease-micro;
+  }
+
+  .cursor__ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    border: 1px solid $c-hairline-strong;
+    border-radius: 999px;
+    transition:
+      width $dur-short $ease-out-soft,
+      height $dur-short $ease-out-soft,
+      margin $dur-short $ease-out-soft,
+      border-color $dur-micro $ease-micro,
+      background-color $dur-micro $ease-micro;
+  }
+
+  .cursor__label {
+    @include mono(0.6rem);
+    opacity: 0;
+    color: transparent;
+    letter-spacing: 0.18em;
+    transition: opacity $dur-micro $ease-micro;
+  }
+
+  // ------------------------------------------------------------- estados
+  .cursor[data-state='hover'] .cursor__ring {
+    width: 48px;
+    height: 48px;
+    margin: -24px 0 0 -24px;
+    border-color: $c-violet;
+    background-color: $c-violet-dim;
+  }
+
+  .cursor[data-state='project'] .cursor__dot,
+  .cursor[data-state='drag'] .cursor__dot {
+    opacity: 0;
+  }
+
+  .cursor[data-state='project'] .cursor__ring {
+    width: 78px;
+    height: 34px;
+    margin: -17px 0 0 -39px;
+    border-color: $c-violet;
+    background-color: $c-violet;
+  }
+
+  .cursor[data-state='project'] .cursor__label {
+    opacity: 1;
+    color: $c-obsidian;
+  }
+
+  .cursor[data-state='drag'] .cursor__ring {
+    width: 92px;
+    height: 34px;
+    margin: -17px 0 0 -46px;
+    border-color: $c-violet;
+    background-color: rgba(20, 17, 15, 0.88);
+  }
+
+  .cursor[data-state='drag'] .cursor__label {
+    opacity: 1;
+    color: $c-violet-soft;
+  }
+
+  .cursor[data-state='sculpture'] .cursor__dot {
+    opacity: 0;
+  }
+
+  .cursor[data-state='sculpture'] .cursor__ring {
+    width: 58px;
+    height: 58px;
+    margin: -29px 0 0 -29px;
+    border-color: $c-violet;
+    background-color: $c-violet-dim;
+  }
+
+  .cursor[data-state='sculpture'] .cursor__label {
+    opacity: 1;
+    color: $c-violet-soft;
+  }
+
+  @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .cursor {
+      display: none;
+    }
+  }
+</style>

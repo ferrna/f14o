@@ -1,0 +1,212 @@
+---
+import { Image } from 'astro:assets';
+import sculpture from '../assets/worm/worm-legacy.png';
+
+interface Props {
+  availability: string;
+  role: string;
+  scroll: string;
+}
+
+const { availability, role, scroll } = Astro.props;
+
+// Capa de datos: presente pero en el contraste más bajo de la página.
+const telemetry = ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'];
+---
+
+<section class="hero" data-hero>
+  <div class="hero__stage">
+    <!-- La escultura va detrás del título y a escala contenida: acompaña
+         la composición en lugar de funcionar como logo. -->
+    <div class="hero__sculpture" data-hero-sculpture data-cursor-sculpture>
+      <Image src={sculpture} alt="" widths={[320, 640]} sizes="(max-width: 760px) 220px, 320px" loading="eager" />
+    </div>
+
+    <h1 class="hero__name" data-hero-name>Fernando Arriondo</h1>
+    <p class="hero__role">{role}</p>
+
+    <p class="hero__pill">
+      <span class="hero__pill-dot" aria-hidden="true"></span>
+      {availability}
+    </p>
+  </div>
+
+  <a class="hero__scroll" href="#work" data-cursor-hover>
+    <span class="hero__scroll-label">{scroll}</span>
+    <span class="hero__scroll-line" aria-hidden="true"></span>
+  </a>
+
+  <p class="hero__telemetry">
+    {
+      telemetry.map((item, i) => (
+        <>
+          {i > 0 && <span class="hero__telemetry-sep" aria-hidden="true">·</span>}
+          <span>{item}</span>
+        </>
+      ))
+    }
+    <span class="hero__telemetry-sep" aria-hidden="true">·</span>
+    <span class="hero__telemetry-build"><span class="hero__telemetry-dot" aria-hidden="true"></span>Build passing</span>
+  </p>
+</section>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .hero {
+    position: relative;
+    z-index: $z-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    padding: 8rem $space-page 3.5rem;
+    text-align: center;
+  }
+
+  .hero__stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // Ligeramente por encima del centro óptico: compensa el peso visual de
+    // la línea de telemetría al pie.
+    margin: auto 0 clamp(4rem, 12vh, 8rem);
+  }
+
+  .hero__sculpture {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    z-index: 0;
+    width: clamp(118px, 14vw, 186px);
+    // Baja sobre su propio alto para apoyarse en el remate del título sin
+    // llegar a invadir la línea del rol.
+    transform: translate(-50%, 30%);
+    pointer-events: auto;
+    will-change: transform;
+
+    :global(img) {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 24px 48px rgba(13, 11, 10, 0.55));
+    }
+  }
+
+  .hero__name {
+    @include display(clamp(2.8rem, 8vw, 6.5rem));
+    position: relative;
+    z-index: 2;
+    font-stretch: $width-tight;
+    color: $c-cream;
+    text-wrap: balance;
+  }
+
+  .hero__role {
+    @include mono(clamp(0.72rem, 1.1vw, 0.9rem));
+    position: relative;
+    z-index: 2;
+    margin-top: 0.9rem;
+    color: $c-muted;
+    letter-spacing: 0.34em;
+    text-indent: 0.34em;
+  }
+
+  .hero__pill {
+    @include mono(0.68rem);
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding: 0.55rem 1.2rem;
+    border: 1px solid $c-hairline-strong;
+    border-radius: 999px;
+    color: $c-cream;
+  }
+
+  .hero__pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  .hero__scroll {
+    position: absolute;
+    bottom: 3.5rem;
+    left: $space-page;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .hero__scroll-label {
+    @include mono(0.62rem);
+    color: $c-subtle;
+  }
+
+  .hero__scroll-line {
+    width: 1px;
+    height: 56px;
+    background-color: $c-hairline-strong;
+  }
+
+  .hero__telemetry {
+    @include mono(0.62rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    color: $c-subtle;
+    // Deliberadamente el contraste más bajo de la página: la lee quien la
+    // busca y no interrumpe a quien no.
+    opacity: 0.72;
+  }
+
+  .hero__telemetry-sep {
+    color: rgba(119, 108, 96, 0.6);
+  }
+
+  .hero__telemetry-build {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .hero__telemetry-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      padding-bottom: 2.5rem;
+    }
+
+    // En mobile el indicador entra en el flujo, debajo de la telemetría:
+    // en posición absoluta se superponía con ella.
+    .hero__scroll {
+      position: static;
+      order: 2;
+      align-items: center;
+      margin-top: 1.25rem;
+    }
+
+    .hero__scroll-line {
+      height: 28px;
+    }
+
+    .hero__telemetry {
+      order: 1;
+      max-width: 22rem;
+      line-height: 1.9;
+    }
+  }
+</style>

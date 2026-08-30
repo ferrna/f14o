@@ -1,0 +1,98 @@
+// Sistema de diseño — taupe cálido + crema + obsidiana + violeta
+// Los valores viven como custom properties para poder leerlos desde JS,
+// y se exponen además como variables Sass para usarlos en cálculos.
+
+// ---------------------------------------------------------------- color
+$c-bg: #2e2a26; // taupe cálido, fondo base
+$c-bg-deep: #26221f; // taupe más profundo, zonas de descanso
+$c-obsidian: #14110f; // objetos y cortina de transición
+$c-obsidian-deep: #0d0b0a;
+
+$c-cream: #ede3d4; // texto principal
+$c-cream-bright: #f7f0e5; // estados activos
+$c-muted: #a89c8c; // texto secundario
+$c-subtle: #776c60; // etiquetas, datos, metadata
+
+$c-violet: #7b61ff; // acento único
+$c-violet-soft: #9b86ff;
+$c-violet-dim: rgba(123, 97, 255, 0.18);
+
+$c-hairline: rgba(237, 227, 212, 0.12);
+$c-hairline-strong: rgba(237, 227, 212, 0.24);
+
+// ------------------------------------------------------------ tipografía
+$font-sans: 'Archivo Variable', 'Archivo', system-ui, -apple-system, sans-serif;
+$font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+
+// El eje de ancho de Archivo va de 62% a 125%. La condensación moderada
+// del diseño se sostiene en 84%; los titulares grandes bajan un poco más.
+$width-normal: 100%;
+$width-condensed: 84%;
+$width-tight: 78%;
+
+// --------------------------------------------------------------- espacio
+$space-page: clamp(1.25rem, 4vw, 4rem);
+$space-section: clamp(6rem, 14vh, 12rem);
+
+// ---------------------------------------------------------------- motion
+// Curvas
+$ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1); // entradas y reveals
+$ease-in-out-mat: cubic-bezier(0.65, 0, 0.35, 1); // transiciones de página
+$ease-micro: cubic-bezier(0.33, 1, 0.68, 1); // hovers y botones
+
+// Duraciones
+$dur-micro: 0.2s;
+$dur-short: 0.35s;
+$dur-base: 0.6s;
+$dur-long: 0.9s;
+$dur-intro: 1.8s;
+
+// Stagger
+$stagger-chars: 0.028s;
+$stagger-rows: 0.04s;
+
+// Reveals
+$reveal-shift: 16px;
+$reveal-dur: 0.4s;
+$rule-draw: 0.6s;
+
+// Transición de página
+$curtain-in: 0.4s;
+$curtain-hold-max: 0.4s;
+$curtain-out: 0.5s;
+
+// ----------------------------------------------------------------- capas
+$z-content: 1;
+$z-header: 60;
+$z-menu: 80;
+$z-curtain: 90;
+$z-cursor: 100;
+
+// --------------------------------------------------------------- mixins
+@mixin mono($size: 0.75rem) {
+  font-family: $font-mono;
+  font-size: $size;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@mixin display($size) {
+  font-family: $font-sans;
+  font-size: $size;
+  font-stretch: $width-condensed;
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+@mixin hairline($side: bottom) {
+  border-#{$side}: 1px solid $c-hairline;
+}
+
+// Respeta la preferencia de movimiento reducido en cualquier bloque.
+@mixin motion-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}

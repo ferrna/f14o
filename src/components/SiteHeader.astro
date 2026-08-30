@@ -1,0 +1,143 @@
+---
+interface Props {
+  lang: 'en' | 'es';
+}
+
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'es' ? `${base}/es` : base;
+
+const nav = [
+  { href: `${prefix}/#work`, label: 'Work' },
+  { href: `${prefix}/about`, label: 'About' },
+  { href: `${prefix}/#contact`, label: 'Contact' },
+];
+
+const path = Astro.url.pathname;
+const altLang = lang === 'es' ? 'en' : 'es';
+const altHref = lang === 'es' ? path.replace('/es', '') || base : `${base}/es`;
+---
+
+<header class="header">
+  <a class="header__mark" href={prefix || '/'} aria-label="Fernando Arriondo — home">FA</a>
+
+  <nav class="header__nav" aria-label="Main">
+    {
+      nav.map((item, i) => (
+        <>
+          {i > 0 && <span class="header__sep" aria-hidden="true">/</span>}
+          <a class="header__link" href={item.href} data-cursor-hover>
+            {item.label}
+          </a>
+        </>
+      ))
+    }
+  </nav>
+
+  <div class="header__lang">
+    <span class="header__lang-current" aria-current="true">{lang.toUpperCase()}</span>
+    <a class="header__lang-alt" href={altHref} data-cursor-hover>{altLang.toUpperCase()}</a>
+  </div>
+
+  <button class="header__toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu">
+    <span class="sr-only">Menu</span>
+    <span class="header__toggle-line" aria-hidden="true"></span>
+    <span class="header__toggle-line" aria-hidden="true"></span>
+  </button>
+</header>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: $z-header;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    width: 100%;
+    padding: clamp(1rem, 2.5vw, 1.75rem) $space-page;
+    mix-blend-mode: normal;
+  }
+
+  .header__mark {
+    @include display(1.35rem);
+    font-stretch: $width-normal;
+    color: $c-cream;
+    letter-spacing: 0.02em;
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-left: auto;
+  }
+
+  .header__link {
+    @include mono(0.72rem);
+    color: $c-muted;
+    transition: color $dur-micro $ease-micro;
+
+    &:hover {
+      color: $c-cream;
+    }
+  }
+
+  .header__sep {
+    @include mono(0.72rem);
+    color: $c-subtle;
+  }
+
+  .header__lang {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 1.5rem;
+  }
+
+  .header__lang-current {
+    @include mono(0.72rem);
+    color: $c-cream;
+  }
+
+  .header__lang-alt {
+    @include mono(0.72rem);
+    color: $c-subtle;
+    transition: color $dur-micro $ease-micro;
+
+    &:hover {
+      color: $c-cream;
+    }
+  }
+
+  // El disparador del menú sólo existe en mobile; en desktop la nav es visible.
+  .header__toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0.5rem 0;
+  }
+
+  .header__toggle-line {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background-color: $c-cream;
+    transition: transform $dur-short $ease-out-soft;
+  }
+
+  @media (max-width: 760px) {
+    .header__nav,
+    .header__lang {
+      display: none;
+    }
+
+    .header__toggle {
+      display: flex;
+    }
+  }
+</style>
