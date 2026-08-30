@@ -9,7 +9,8 @@
     "build:html": "cp src/*.html dist/",
     "build:sass": "sass src/scss/main.scss dist/css/main.css",
     "build:fonts": "cp src/fonts/* dist/fonts/",
-    "build": "npm run build:js && npm run build:html && npm run build:sass && npm run build:fonts",
+    "build:media": "mkdir -p dist/media && cp -r src/media/. dist/media/",
+    "build": "npm run build:js && npm run build:html && npm run build:sass && npm run build:fonts && npm run build:media",
     "dev": "npm run build && npm start",
     "watch": "npm run build && npx concurrently \"npm run start\" \"sass src/scss/main.scss dist/css/main.css --watch\""
   },
