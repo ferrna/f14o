@@ -49,23 +49,6 @@ $tech-title-before-height: 1px;
   }
 }
 
-.tech-label {
-  display: block;
-  width: max-content;
-  max-width: 100%;
-  margin: 0.7rem 0 0 auto;
-  padding: 0 0.15rem;
-  font-size: 1.15rem;
-  font-weight: 400;
-  letter-spacing: -0.06em;
-  line-height: 1.2;
-  text-align: center;
-  color: $text-color;
-  opacity: 0;
-  text-shadow: 0 0 8px rgba($green, 0.4), 0 0 18px rgba($green, 0.18);
-  transition: text-shadow 0.35s ease;
-}
-
 // Tech icons
 $tech-icons-width: 40px;
 $tech-icons-height: 40px;
@@ -133,12 +116,6 @@ $tech-icons-set-width: calc(-1 * (calc($tech-icons-width * $n-of-icons + $tech-i
   margin-left: $tech-icons-margin;
   fill: $white;
   transition: filter 0.35s ease;
-}
-
-#technologies.is-label-in .tech-toggle:hover .tech-label,
-#technologies.is-label-in .tech-toggle:focus-visible .tech-label,
-#technologies.is-open .tech-label {
-  text-shadow: 0 0 10px $green, 0 0 24px rgba($green, 0.55);
 }
 
 #technologies.is-label-in .tech-toggle:hover .icon,
