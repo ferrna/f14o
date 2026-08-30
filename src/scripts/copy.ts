@@ -19,7 +19,7 @@ export function initCopy(scope: ParentNode = document): void {
         return;
       }
 
-      label.textContent = copied;
+      label.textContent = copied.startsWith('✓') ? copied : `✓ ${copied}`;
       button.dataset.copied = 'true';
 
       window.clearTimeout(timer);

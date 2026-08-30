@@ -16,6 +16,8 @@ const work = defineCollection({
       category: z.string(),
       year: z.number(),
       role: z.string(),
+      /** Si no hay un dato real, el caso muestra un em dash. */
+      duration: z.string().optional(),
       stack: z.array(z.string()),
       /** Una línea, la que se lee en la lista. */
       summary: z.string(),

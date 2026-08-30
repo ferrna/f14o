@@ -10,9 +10,9 @@ const { lang } = Astro.props;
 const c = useCopy(lang);
 
 const items = [
-  { href: path(lang, '/#work'), label: c.nav.work },
-  { href: path(lang, '/about'), label: c.nav.about },
-  { href: path(lang, '/#contact'), label: c.nav.contact },
+  { href: path(lang, '/#work'), label: c.nav.work, id: 'work' },
+  { href: path(lang, '/about'), label: c.nav.about, id: 'about' },
+  { href: path(lang, '/#contact'), label: c.nav.contact, id: 'contact' },
 ];
 
 const alt = otherLang(lang);
@@ -25,9 +25,10 @@ const altHref = altPath(lang, Astro.url.pathname);
       {
         items.map((item, i) => (
           <li class="menu__item" data-menu-item>
-            <a href={item.href}>
+            <a href={item.href} data-nav={item.id}>
               <span class="menu__index">{String(i + 1).padStart(2, '0')}</span>
               <span class="menu__label">{item.label}</span>
+              <span class="menu__dot" aria-hidden="true"></span>
             </a>
           </li>
         ))
@@ -79,6 +80,15 @@ const altHref = altPath(lang, Astro.url.pathname);
     align-items: baseline;
     gap: 1.25rem;
     padding: 0.6rem 0;
+  }
+
+  .menu__item .menu__dot {
+    opacity: 0;
+    margin-left: 0.35rem;
+  }
+
+  .menu__item a[data-current] .menu__dot {
+    opacity: 1;
   }
 
   .menu__index {

@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { EASE } from './lib/tokens';
+import { EASE, REVEAL, STAGGER } from './lib/tokens';
 import { hasFinePointer, prefersReducedMotion } from './lib/prefs';
 
 /** Distancia mínima entre una captura y la siguiente: si no, el rastro se satura. */
@@ -15,15 +15,19 @@ const SHRINK = 0.55;
  */
 export function initWorkList(): void {
   const list = document.querySelector<HTMLElement>('[data-work-list]');
-  if (!list || !hasFinePointer() || prefersReducedMotion()) return;
+  if (!list) return;
 
   const rows = Array.from(list.querySelectorAll<HTMLElement>('[data-work-row]'));
   if (!rows.length) return;
 
+  enterRows(rows);
+
+  if (!hasFinePointer() || prefersReducedMotion()) return;
+
   let active: HTMLElement | null = null;
 
   rows.forEach((row) => {
-    const shots = Array.from(row.querySelectorAll<HTMLElement>('[data-work-shot]'));
+    const shots = ensureShots(row);
     if (!shots.length) return;
 
     let lastX = 0;
@@ -89,4 +93,59 @@ export function initWorkList(): void {
       delete row.dataset.active;
     });
   });
+}
+
+/** El pool no vive en el HTML: 24 <img> en el home mataban el LCP mobile. */
+function ensureShots(row: HTMLElement): HTMLElement[] {
+  const existing = Array.from(row.querySelectorAll<HTMLElement>('[data-work-shot]'));
+  if (existing.length) return existing;
+
+  const trail = row.querySelector<HTMLElement>('[data-work-trail]');
+  const srcs = trail?.dataset.srcs?.split('|').filter(Boolean) ?? [];
+  if (!trail || !srcs.length) return [];
+
+  return Array.from({ length: 8 }, (_, i) => {
+    const shot = document.createElement('div');
+    shot.className = 'work__shot';
+    shot.dataset.workShot = '';
+
+    const img = document.createElement('img');
+    img.src = srcs[i % srcs.length] ?? '';
+    img.alt = '';
+    img.decoding = 'async';
+    shot.appendChild(img);
+    trail.appendChild(shot);
+    return shot;
+  });
+}
+
+/**
+ * Las filas entran una vez: abajo más apagadas y con la línea corta.
+ * El transform va en el título y la regla, nunca en [data-work-row].
+ */
+function enterRows(rows: HTMLElement[]): void {
+  const leads = rows.map((row) => row.querySelector<HTMLElement>('.work__lead'));
+  const rules = rows.map((row) => row.querySelector<HTMLElement>('[data-work-rule]'));
+
+  if (prefersReducedMotion()) {
+    gsap.set(leads, { opacity: 1 });
+    gsap.set(rules, { scaleX: 1 });
+    return;
+  }
+
+  const last = Math.max(rows.length - 1, 1);
+  rows.forEach((_, i) => {
+    const dim = 0.82 - (i / last) * 0.55;
+    gsap.set(leads[i], { opacity: dim });
+    gsap.set(rules[i], { scaleX: 0.72 - (i / last) * 0.52, transformOrigin: 'left center' });
+  });
+
+  const trigger = rows[0]?.closest('section') ?? rows[0];
+
+  gsap
+    .timeline({
+      scrollTrigger: { trigger, start: REVEAL.trigger, once: true },
+    })
+    .to(leads, { opacity: 1, duration: REVEAL.dur, ease: EASE.outSoft, stagger: STAGGER.rows + 0.03 }, 0)
+    .to(rules, { scaleX: 1, duration: REVEAL.ruleDraw, ease: EASE.outSoft, stagger: STAGGER.rows + 0.03 }, 0);
 }

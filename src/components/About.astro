@@ -18,22 +18,34 @@ const facts = [
 ];
 ---
 
-<section class="about" data-sculpture-stage>
+<section class="about" data-about data-sculpture-stage>
+  <div class="about__wipe" data-about-wipe hidden>
+    <p class="about__wipe-label">{c.about.kicker}</p>
+    <span class="about__wipe-line" aria-hidden="true"></span>
+  </div>
+
   <p class="about__kicker"><span class="about__dot" aria-hidden="true"></span>01 / {c.about.kicker}</p>
 
   <div class="about__layout">
-    <figure class="about__visual">
+    <figure class="about__visual" data-about-visual>
       <!-- Único lugar del sitio donde la escultura puede ser grande: en
            una página que habla de mí, el objeto es el sujeto y no un logo. -->
       <Sculpture variant="about" />
       <figcaption>{c.about.caption}</figcaption>
     </figure>
 
-    <div class="about__text" data-reveal-group="blocks">
-      <h1 class="about__headline" data-reveal-item>
-        {c.about.headline.map((line) => <span>{line}</span>)}
-      </h1>
+    <h1 class="about__headline" data-about-headline data-reveal-group="blocks">
+      {
+        c.about.headline.map((line, i) => (
+          <span data-reveal-item>
+            {i === 1 && <i class="about__dash" aria-hidden="true" />}
+            {line}
+          </span>
+        ))
+      }
+    </h1>
 
+    <div class="about__rest" data-reveal-group="blocks">
       <div class="about__prose" data-reveal-item>
         {c.about.prose.map((paragraph) => <p>{paragraph}</p>)}
       </div>
@@ -78,7 +90,35 @@ const facts = [
   .about {
     position: relative;
     z-index: $z-content;
-    padding: clamp(6rem, 14vh, 9rem) $space-page clamp(3rem, 8vh, 5rem);
+    padding: clamp(7.5rem, 16vh, 10rem) $space-page clamp(4rem, 10vh, 6rem);
+  }
+
+  .about__wipe {
+    position: fixed;
+    inset: 0;
+    z-index: $z-curtain;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    background-color: $c-obsidian;
+  }
+
+  .about__wipe[hidden] {
+    display: none;
+  }
+
+  .about__wipe-label {
+    @include mono(0.72rem);
+    color: $c-cream;
+  }
+
+  .about__wipe-line {
+    display: block;
+    width: min(42vw, 220px);
+    height: 1px;
+    background: linear-gradient(90deg, $c-violet, $c-cream 45%, $c-cream 55%, $c-violet);
   }
 
   .about__kicker {
@@ -98,21 +138,22 @@ const facts = [
 
   .about__layout {
     display: grid;
-    grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
     align-items: center;
-    gap: clamp(2rem, 6vw, 5rem);
-    margin-top: clamp(2rem, 5vh, 4rem);
+    column-gap: clamp(3rem, 8vw, 6.5rem);
+    row-gap: clamp(2.5rem, 6vh, 4rem);
+    margin-top: clamp(3rem, 8vh, 5.5rem);
   }
 
   .about__visual {
-    // A escala grande el halo se vuelve el elemento dominante, así que la
-    // pieza se contiene y deja aire alrededor.
-    max-width: 380px;
+    position: relative;
+    max-width: 420px;
     margin: 0 auto;
+    padding-bottom: 2.5rem;
 
     figcaption {
       @include mono(0.6rem);
-      margin-top: 1.5rem;
+      margin-top: 2rem;
       color: $c-subtle;
       opacity: 0.72;
     }
@@ -121,6 +162,7 @@ const facts = [
   .about__headline {
     display: flex;
     flex-direction: column;
+    gap: 0.35rem;
 
     span {
       @include display(clamp(2.2rem, 5vw, 4rem));
@@ -128,9 +170,22 @@ const facts = [
     }
   }
 
+  .about__dash {
+    display: inline-block;
+    width: 1.4rem;
+    height: 2px;
+    margin-right: 0.7rem;
+    margin-bottom: 0.28em;
+    vertical-align: middle;
+    background-color: $c-violet;
+  }
+
+  .about__rest {
+    grid-column: 2;
+  }
+
   .about__prose {
     max-width: 46ch;
-    margin-top: clamp(1.5rem, 3vh, 2.5rem);
     color: $c-muted;
     font-size: 0.95rem;
     line-height: 1.75;
@@ -143,15 +198,15 @@ const facts = [
   .about__rule {
     display: block;
     height: 1px;
-    margin: clamp(2rem, 4vh, 3rem) 0;
+    margin: clamp(2.4rem, 5vh, 3.5rem) 0;
     background-color: $c-hairline;
     transform-origin: left center;
   }
 
   .about__facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: clamp(1.5rem, 5vw, 4rem);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 2.5rem);
     margin: 0;
   }
 
@@ -174,33 +229,52 @@ const facts = [
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    margin-top: clamp(2rem, 4vh, 3rem);
+    margin-top: clamp(2.4rem, 5vh, 3.5rem);
     padding: 0.7rem 1.3rem;
-    border: 1px solid $c-hairline-strong;
+    border: 1px solid $c-violet;
     border-radius: 999px;
     color: $c-cream;
-    transition: border-color $dur-micro $ease-micro;
+    transition: background-color $dur-micro $ease-micro;
 
     &:hover {
-      border-color: $c-violet;
+      background-color: $c-violet-dim;
     }
   }
 
   .about__foot {
     @include mono(0.62rem);
-    margin-top: clamp(3rem, 8vh, 5rem);
+    margin-top: clamp(4rem, 10vh, 6rem);
     color: $c-subtle;
     opacity: 0.72;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 760px) {
     .about__layout {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: end;
+      column-gap: 1.25rem;
     }
 
     .about__visual {
-      max-width: 320px;
-      margin: 0 auto;
+      max-width: none;
+      padding-bottom: 1.25rem;
+
+      figcaption {
+        margin-top: 1rem;
+      }
+    }
+
+    .about__headline span {
+      @include display(clamp(1.55rem, 7vw, 2.2rem));
+    }
+
+    .about__rest,
+    .about__foot {
+      grid-column: 1 / -1;
+    }
+
+    .about__facts {
+      grid-template-columns: 1fr;
     }
   }
 </style>

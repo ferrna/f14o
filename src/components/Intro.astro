@@ -11,6 +11,7 @@ const c = useCopy(lang);
 ---
 
 <div class="intro" data-intro transition:persist="intro">
+  <div class="intro__veil" data-intro-veil aria-hidden="true"></div>
   <p class="intro__hello" data-intro-hello>
     {
       c.intro.hello.map((line) => (
@@ -40,6 +41,13 @@ const c = useCopy(lang);
     align-items: flex-end;
     justify-content: center;
     padding-bottom: 34vh;
+    background-color: transparent;
+  }
+
+  .intro__veil {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
     background-color: $c-bg;
   }
 
@@ -52,7 +60,7 @@ const c = useCopy(lang);
     position: absolute;
     left: $space-page;
     bottom: clamp(2.5rem, 7vh, 5.5rem);
-    z-index: 1;
+    z-index: 2;
     max-width: 22rem;
     color: $c-cream;
     line-height: 1.7;
@@ -71,6 +79,8 @@ const c = useCopy(lang);
   }
 
   .intro__meter {
+    position: relative;
+    z-index: 2;
     display: flex;
     align-items: center;
     gap: 1rem;

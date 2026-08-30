@@ -1,0 +1,344 @@
+---
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
+---
+
+<section class="deck" data-deck>
+  <p class="deck__kicker">
+    <span class="deck__dot" aria-hidden="true"></span>00 / {c.lab.kicker}
+  </p>
+
+  <div class="deck__stage" data-deck-stage data-cursor-drag>
+    <article class="deck__card" data-deck-card data-index="0">
+      <aside class="deck__nav">
+        <p class="deck__brand">Northline</p>
+        <ul>
+          <li>Overview</li>
+          <li data-on>Shipments</li>
+          <li>Tracking</li>
+          <li>Exceptions</li>
+          <li>Analytics</li>
+        </ul>
+      </aside>
+      <div class="deck__body">
+        <header class="deck__head">
+          <h2>Shipment #SH-78291 <span class="deck__badge">In transit</span></h2>
+          <dl>
+            <div><dt>Origin</dt><dd>Hamburg, DE</dd></div>
+            <div><dt>Destination</dt><dd>Rotterdam, NL</dd></div>
+            <div><dt>ETA</dt><dd>14:40</dd></div>
+          </dl>
+        </header>
+        <div class="deck__map" aria-hidden="true">
+          <svg viewBox="0 0 320 140" fill="none">
+            <path d="M28 108 C80 108 90 36 160 40 C220 44 230 92 292 88" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 4" />
+            <circle cx="28" cy="108" r="3.5" fill="currentColor" />
+            <circle cx="292" cy="88" r="3.5" fill="currentColor" />
+            <circle cx="168" cy="42" r="5" fill="#7b61ff" />
+          </svg>
+        </div>
+        <footer class="deck__foot">
+          <span>Mode · Sea</span>
+          <span>Carrier · Maersk</span>
+          <span>Progress 68%</span>
+          <b></b>
+        </footer>
+      </div>
+    </article>
+
+    <article class="deck__card" data-deck-card data-index="1">
+      <aside class="deck__nav">
+        <p class="deck__brand">Northline</p>
+        <ul>
+          <li>Overview</li>
+          <li>Shipments</li>
+          <li data-on>Tracking</li>
+          <li>Exceptions</li>
+          <li>Analytics</li>
+        </ul>
+      </aside>
+      <div class="deck__body">
+        <header class="deck__head">
+          <h2>Route optimization</h2>
+          <dl>
+            <div><dt>Goal</dt><dd>ETA first</dd></div>
+            <div><dt>Constraint</dt><dd>No weekends</dd></div>
+          </dl>
+        </header>
+        <div class="deck__split">
+          <ul class="deck__form">
+            <li>Optimization goal</li>
+            <li>Avoid canals</li>
+            <li>Keep current vessel</li>
+          </ul>
+          <div class="deck__map" aria-hidden="true">
+            <svg viewBox="0 0 200 140" fill="none">
+              <path d="M16 112 L90 40 L184 78" stroke="#7b61ff" stroke-width="1.6" />
+              <path d="M16 112 L110 96 L184 78" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="deck__card" data-deck-card data-index="2">
+      <aside class="deck__nav">
+        <p class="deck__brand">Northline</p>
+        <ul>
+          <li>Overview</li>
+          <li>Shipments</li>
+          <li>Tracking</li>
+          <li>Exceptions</li>
+          <li data-on>Analytics</li>
+        </ul>
+      </aside>
+      <div class="deck__body">
+        <header class="deck__head">
+          <h2>Lane performance</h2>
+          <dl>
+            <div><dt>On time</dt><dd>94%</dd></div>
+            <div><dt>Exceptions</dt><dd>6</dd></div>
+          </dl>
+        </header>
+        <div class="deck__bars" aria-hidden="true">
+          <span style="height: 42%"></span>
+          <span style="height: 68%"></span>
+          <span style="height: 54%"></span>
+          <span style="height: 86%"></span>
+          <span style="height: 61%"></span>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="deck__meta">
+    <p data-deck-caption data-figures={c.lab.figures.join('|')}>Fig. 01 — {c.lab.figures[0]}</p>
+    <p data-deck-counter>01 / 03</p>
+  </div>
+  <div class="deck__progress" aria-hidden="true">
+    <span data-deck-progress></span>
+  </div>
+  <p class="deck__hint">{c.lab.hint}</p>
+</section>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .deck {
+    position: relative;
+    z-index: $z-content;
+    padding: clamp(7rem, 14vh, 9rem) $space-page 4rem;
+  }
+
+  .deck__kicker {
+    @include mono(0.68rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: $c-muted;
+  }
+
+  .deck__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  .deck__stage {
+    position: relative;
+    height: min(62vh, 520px);
+    margin-top: 2.5rem;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .deck__stage[data-dragging='true'] {
+    cursor: grabbing;
+  }
+
+  .deck__card {
+    position: absolute;
+    inset: 8% 12%;
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    overflow: hidden;
+    border: 1px solid $c-hairline-strong;
+    border-radius: 4px;
+    background: rgba(46, 42, 38, 0.55);
+    box-shadow: 0 24px 60px rgba(13, 11, 10, 0.45);
+    backdrop-filter: blur(10px) saturate(1.1);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .deck__nav {
+    @include mono(0.52rem);
+    padding: 1rem 0.85rem;
+    border-right: 1px solid $c-hairline;
+    color: $c-subtle;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-top: 1.25rem;
+    }
+
+    [data-on] {
+      color: $c-cream;
+    }
+  }
+
+  .deck__brand {
+    color: $c-cream;
+    letter-spacing: 0.16em;
+  }
+
+  .deck__body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1.1rem 1.2rem 1rem;
+  }
+
+  .deck__head h2 {
+    @include display(1.15rem);
+    color: $c-cream;
+  }
+
+  .deck__badge {
+    @include mono(0.5rem);
+    margin-left: 0.5rem;
+    padding: 0.15rem 0.4rem;
+    border: 1px solid $c-violet;
+    color: $c-violet;
+    vertical-align: middle;
+  }
+
+  .deck__head dl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.4rem;
+    margin: 0.7rem 0 0;
+  }
+
+  .deck__head dt {
+    @include mono(0.5rem);
+    color: $c-subtle;
+  }
+
+  .deck__head dd {
+    @include mono(0.58rem);
+    margin: 0.2rem 0 0;
+    color: $c-cream;
+    text-transform: none;
+  }
+
+  .deck__map {
+    flex: 1;
+    margin-top: 0.8rem;
+    color: $c-muted;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .deck__foot {
+    @include mono(0.5rem);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.6rem;
+    color: $c-subtle;
+
+    b {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, $c-violet 68%, $c-hairline 68%);
+    }
+  }
+
+  .deck__split {
+    display: grid;
+    grid-template-columns: 0.7fr 1fr;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+    margin-top: 0.8rem;
+  }
+
+  .deck__form {
+    @include mono(0.55rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    color: $c-muted;
+  }
+
+  .deck__bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    flex: 1;
+    margin-top: 1rem;
+    padding-bottom: 0.2rem;
+
+    span {
+      flex: 1;
+      background: linear-gradient(180deg, $c-violet, rgba(123, 97, 255, 0.2));
+    }
+  }
+
+  .deck__meta {
+    @include mono(0.62rem);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+    color: $c-subtle;
+  }
+
+  .deck__progress {
+    height: 2px;
+    margin-top: 0.85rem;
+    background-color: $c-hairline;
+
+    span {
+      display: block;
+      height: 100%;
+      background-color: $c-violet;
+      transform: scaleX(0.33);
+      transform-origin: left center;
+    }
+  }
+
+  .deck__hint {
+    @include mono(0.58rem);
+    margin-top: 1rem;
+    color: $c-subtle;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 760px) {
+    .deck__card {
+      inset: 6% 4%;
+      grid-template-columns: 1fr;
+    }
+
+    .deck__nav {
+      display: none;
+    }
+  }
+</style>

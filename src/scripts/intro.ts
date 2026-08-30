@@ -22,6 +22,7 @@ export async function initIntro(): Promise<void> {
 
   const name = document.querySelector<HTMLElement>('[data-hero-name]');
   const sculpture = document.querySelector<HTMLElement>('[data-hero-sculpture]');
+  const veil = intro.querySelector<HTMLElement>('[data-intro-veil]');
   const lines = Array.from(intro.querySelectorAll<HTMLElement>('[data-intro-hello-line]'));
 
   const done = (): void => {
@@ -41,10 +42,11 @@ export async function initIntro(): Promise<void> {
 
   const bar = intro.querySelector<HTMLElement>('[data-intro-bar]');
   const value = intro.querySelector<HTMLElement>('[data-intro-value]');
+  const meter = intro.querySelector<HTMLElement>('.intro__meter');
   const chars = name ? splitChars(name) : [];
   const late = Array.from(document.querySelectorAll<HTMLElement>('[data-intro-fade]'));
 
-  if (sculpture) gsap.set(sculpture, { opacity: 0, scale: 0.92, filter: 'blur(18px)' });
+  if (sculpture) gsap.set(sculpture, { opacity: 0, scale: 0.92 });
   if (chars.length) gsap.set(chars, { opacity: 0, xPercent: -18 });
   if (late.length) gsap.set(late, { opacity: 0, y: 10 });
   if (lines.length) gsap.set(lines, { yPercent: 110, clipPath: 'inset(100% 0 0 0)' });
@@ -60,19 +62,24 @@ export async function initIntro(): Promise<void> {
     });
   }
 
-  await runMeter(bar, value, waitForAssets(sculpture));
+  await runMeter(bar, value, waitForAssets(sculpture), sculpture, veil);
 
   const tl = gsap.timeline({ onComplete: done });
-  tl.to(intro, { opacity: 0, duration: DUR.short, ease: EASE.micro });
-
-  if (sculpture) {
-    tl.to(sculpture, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: DUR.base, ease: EASE.outSoft }, '<');
-  }
+  // El nombre entra con el fade del loader: si espera a que termine,
+  // Lighthouse marca el LCP 400ms más tarde.
   if (chars.length) {
-    tl.to(chars, { opacity: 1, xPercent: 0, duration: DUR.base, ease: EASE.outSoft, stagger: STAGGER.chars }, '-=0.25');
+    tl.to(chars, { opacity: 1, xPercent: 0, duration: DUR.base, ease: EASE.outSoft, stagger: STAGGER.chars }, 0);
   }
+  if (sculpture) {
+    tl.to(sculpture, { opacity: 1, scale: 1, duration: DUR.base, ease: EASE.outSoft }, 0);
+  }
+  tl.to([meter, intro.querySelector('[data-intro-hello]'), veil].filter(Boolean), {
+    opacity: 0,
+    duration: DUR.short,
+    ease: EASE.micro,
+  }, 0);
   if (late.length) {
-    tl.to(late, { opacity: 1, y: 0, duration: DUR.base, ease: EASE.outSoft, stagger: 0.06 }, '-=0.35');
+    tl.to(late, { opacity: 1, y: 0, duration: DUR.base, ease: EASE.outSoft, stagger: 0.06 }, 0.12);
   }
 }
 
@@ -84,26 +91,48 @@ function waitForAssets(sculpture: HTMLElement | null): Promise<unknown> {
   const image = sculpture?.querySelector('img');
   const decoded = image?.decode?.().catch(() => undefined) ?? Promise.resolve();
   const floor = new Promise((resolve) => setTimeout(resolve, 900));
+  // Sólo Archivo: fonts.ready también espera a la mono y retrasa el LCP.
+  const typeface = document.fonts.load('700 4rem "Archivo Variable"').catch(() => undefined);
 
-  return Promise.all([document.fonts.ready, decoded, floor]);
+  return Promise.all([typeface, decoded, floor]);
 }
 
 /**
- * La barra avanza hasta 90% mientras se espera y completa al resolverse:
- * refleja progreso real sin quedarse trabada si algo tarda de más.
+ * La barra avanza hasta 90% mientras se espera y completa al resolverse.
+ * Desde 70% el worm asoma detrás del velo.
  */
-function runMeter(bar: HTMLElement | null, value: HTMLElement | null, ready: Promise<unknown>): Promise<void> {
+function runMeter(
+  bar: HTMLElement | null,
+  value: HTMLElement | null,
+  ready: Promise<unknown>,
+  sculpture: HTMLElement | null,
+  veil: HTMLElement | null,
+): Promise<void> {
   return new Promise((resolve) => {
     const progress = { value: 0 };
 
     const paint = (): void => {
-      if (bar) bar.style.transform = `scaleX(${progress.value / 100})`;
-      if (value) value.textContent = `${Math.round(progress.value)}%`;
+      const t = progress.value;
+      if (bar) bar.style.transform = `scaleX(${t / 100})`;
+      if (value) value.textContent = `${Math.round(t)}%`;
+
+      if (sculpture) {
+        if (t < 70) {
+          gsap.set(sculpture, { opacity: 0, scale: 0.92 });
+        } else {
+          const k = (t - 70) / 30;
+          gsap.set(sculpture, { opacity: k, scale: 0.92 + 0.08 * k });
+        }
+      }
+
+      if (veil) {
+        veil.style.opacity = t < 50 ? '1' : String(1 - ((t - 50) / 50) * 0.88);
+      }
     };
 
     const crawl = gsap.to(progress, {
       value: 90,
-      duration: 2.2,
+      duration: 1.5,
       ease: EASE.linear,
       onUpdate: paint,
     });

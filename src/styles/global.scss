@@ -1,8 +1,5 @@
 @use 'tokens' as *;
 
-@use '@fontsource-variable/archivo/wdth.css';
-@use '@fontsource-variable/jetbrains-mono/index.css';
-
 :root {
   --c-bg: #{$c-bg};
   --c-bg-deep: #{$c-bg-deep};
@@ -60,7 +57,9 @@ body::before {
   // con la que GitHub Pages sirve el sitio.
   background-image: var(--noise-url);
   background-repeat: repeat;
-  opacity: 0.035;
+  background-size: 180px 180px;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
 }
 
 body::after {

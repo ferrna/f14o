@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import Deck from '../../components/Deck.astro';
+import { useCopy } from '../../i18n/ui';
+
+const lang = 'es';
+const c = useCopy(lang);
+---
+
+<Base title={c.meta.labTitle} description={c.meta.labDescription} lang={lang} routeLabel={c.route.lab}>
+  <Deck lang={lang} />
+</Base>

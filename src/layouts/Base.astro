@@ -1,5 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import '../styles/fonts.css';
 import '../styles/global.scss';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
@@ -46,6 +48,7 @@ const alternates = LANGS.map((code) => ({
     <meta name="description" content={description} />
     <meta name="theme-color" content="#2e2a26" />
 
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href={`${base}/favicon.ico`} sizes="any" />
     <link rel="apple-touch-icon" href={`${base}/favicon_io/apple-touch-icon.png`} />
 

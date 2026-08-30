@@ -61,7 +61,7 @@ const en = {
       'I design and engineer web products end to end, from the first interface sketch to the systems that hold state, motion and data. I care about the quiet details: how something loads, how it answers, how it stays clear once it gets complex.',
       'No handoff in the middle. That is usually where products lose the thread, and it is the part I like most.',
     ],
-    caption: 'Fig. 00 — The worm',
+    caption: 'Fig. 00 — The worm · WebGL · 60fps',
     facts: {
       based: 'Based',
       experience: 'Experience',
@@ -83,13 +83,14 @@ const en = {
     },
   },
   case: {
-    back: '← Index',
+    back: '← All work',
     brief: 'The brief',
     role: 'Role',
+    duration: 'Duration',
     year: 'Year',
     stack: 'Stack',
     live: 'Visit live site',
-    next: 'Next project',
+    next: 'Next',
   },
   lost: {
     line: 'This route does not exist.',
@@ -100,6 +101,7 @@ const en = {
   route: {
     home: 'Home',
     about: 'About',
+    lab: 'Lab',
     lost: 'Not found',
   },
   meta: {
@@ -111,6 +113,13 @@ const en = {
       'Full stack developer working end to end, from interface to the systems that hold state and data.',
     lostTitle: '404 — Fernando Arriondo',
     lostDescription: 'This route does not exist.',
+    labTitle: 'Lab — Fernando Arriondo',
+    labDescription: 'Sandbox for a 3D deck prototype.',
+  },
+  lab: {
+    kicker: 'Sandbox',
+    hint: 'Drag to move between plates.',
+    figures: ['Shipment tracking', 'Route optimization', 'Analytics'],
   },
 };
 
@@ -170,7 +179,7 @@ const es: typeof en = {
       'Diseño y desarrollo productos web de punta a punta, desde el primer boceto de interfaz hasta los sistemas que sostienen estado, movimiento y datos. Me importan los detalles callados: cómo carga algo, cómo responde, cómo sigue siendo claro cuando se vuelve complejo.',
       'Sin traspaso en el medio. Ahí es donde los productos suelen perder el hilo, y es la parte que más me gusta.',
     ],
-    caption: 'Fig. 00 — El gusano',
+    caption: 'Fig. 00 — El gusano · WebGL · 60fps',
     facts: {
       based: 'Base',
       experience: 'Experiencia',
@@ -192,13 +201,14 @@ const es: typeof en = {
     },
   },
   case: {
-    back: '← Índice',
+    back: '← Todos los proyectos',
     brief: 'El encargo',
     role: 'Rol',
+    duration: 'Duración',
     year: 'Año',
     stack: 'Stack',
     live: 'Ver el sitio',
-    next: 'Siguiente proyecto',
+    next: 'Siguiente',
   },
   lost: {
     line: 'Esta ruta no existe.',
@@ -209,6 +219,7 @@ const es: typeof en = {
   route: {
     home: 'Inicio',
     about: 'Sobre mí',
+    lab: 'Lab',
     lost: 'No encontrado',
   },
   meta: {
@@ -220,6 +231,13 @@ const es: typeof en = {
       'Desarrollador full stack que trabaja de punta a punta, de la interfaz a los sistemas que sostienen estado y datos.',
     lostTitle: '404 — Fernando Arriondo',
     lostDescription: 'Esta ruta no existe.',
+    labTitle: 'Lab — Fernando Arriondo',
+    labDescription: 'Sandbox para un prototipo de placa 3D.',
+  },
+  lab: {
+    kicker: 'Sandbox',
+    hint: 'Arrastrá para pasar de placa.',
+    figures: ['Seguimiento de envío', 'Optimización de ruta', 'Analítica'],
   },
 };
 

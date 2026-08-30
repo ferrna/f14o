@@ -101,6 +101,13 @@ $z-cursor: 100;
   background: rgba(46, 42, 38, var($alpha, 0));
   backdrop-filter: blur(var($blur, 0px)) saturate(1.12);
   -webkit-backdrop-filter: blur(var($blur, 0px)) saturate(1.12);
+
+  // En mobile el blur de viewport entero es el gasto de GPU más caro
+  // del sitio. Queda el tinte: el vidrio se lee igual, sin el filtro.
+  @media (max-width: 760px) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 // Respeta la preferencia de movimiento reducido en cualquier bloque.

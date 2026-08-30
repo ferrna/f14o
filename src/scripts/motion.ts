@@ -1,17 +1,9 @@
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { initCursor } from './cursor';
 import { initSmoothScroll, resetScroll, scrollTo } from './scroll';
-import { initCounters, initHeroScrub, initReveals } from './reveals';
-import { initWorkList } from './work-list';
-import { initGallery } from './gallery';
 import { initCurtain } from './curtain';
-import { initCopy } from './copy';
-import { initSculpture } from './sculpture';
 import { initIntro } from './intro';
 import { initMenu } from './menu';
-import { initClock } from './clock';
-import { initWorkGate, releaseWorkGate } from './work-gate';
-import { initAboutPlate } from './about-plate';
+import { initNav } from './nav';
+import { hasFinePointer } from './lib/prefs';
 
 let globalsReady = false;
 
@@ -19,32 +11,77 @@ let globalsReady = false;
  * Punto de entrada único. Se separa lo que vive mientras dure la sesión
  * (scroll, cursor, cortina) de lo que hay que rearmar en cada vista, porque
  * con ClientRouter el documento persiste entre navegaciones.
+ *
+ * La intro corre primero: montar ScrollTriggers y módulos de página al
+ * mismo tiempo pelea por el hilo principal en mobile.
  */
 export function initMotion(): void {
   if (!globalsReady) {
     globalsReady = true;
     initSmoothScroll();
-    initCursor();
+    void bootCursor();
     initCurtain();
     bindAnchors();
   }
 
-  // Los triggers apuntan a nodos que la navegación acaba de reemplazar.
+  initMenu();
+  initNav();
+  void bootPage();
+}
+
+async function bootCursor(): Promise<void> {
+  if (!hasFinePointer()) return;
+  const { initCursor } = await import('./cursor');
+  initCursor();
+}
+
+async function bootPage(): Promise<void> {
+  await initIntro();
+
+  const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+  const { gsap } = await import('gsap');
+  gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
   resetScroll();
 
-  initMenu();
-  void initIntro();
+  const { initCounters, initHeroScrub, initReveals } = await import('./reveals');
   initReveals();
   initHeroScrub();
   initCounters();
-  initWorkGate();
-  initAboutPlate();
-  initWorkList();
-  initGallery();
+
+  const [{ initCopy }, { initSculpture }, { initClock }] = await Promise.all([
+    import('./copy'),
+    import('./sculpture'),
+    import('./clock'),
+  ]);
   initCopy();
   initSculpture();
   initClock();
+
+  if (document.querySelector('[data-work-gate]')) {
+    const { initWorkGate } = await import('./work-gate');
+    initWorkGate();
+  }
+  if (document.querySelector('[data-work-list]')) {
+    const { initWorkList } = await import('./work-list');
+    initWorkList();
+  }
+  if (document.querySelector('[data-about-plate]')) {
+    const { initAboutPlate } = await import('./about-plate');
+    initAboutPlate();
+  }
+  if (document.querySelector('[data-about]')) {
+    const { initAboutEnter } = await import('./about-enter');
+    initAboutEnter();
+  }
+  if (document.querySelector('[data-gallery]')) {
+    const { initGallery } = await import('./gallery');
+    initGallery();
+  }
+  if (document.querySelector('[data-deck]')) {
+    const { initDeck } = await import('./deck');
+    initDeck();
+  }
 
   ScrollTrigger.refresh();
 }
@@ -62,7 +99,13 @@ function bindAnchors(): void {
     if (!target) return;
 
     event.preventDefault();
-    if (url.hash === '#work') releaseWorkGate();
+    if (url.hash === '#work') {
+      document.querySelector('#work')?.dispatchEvent(new Event('work-gate'));
+    }
+    if (url.hash) {
+      history.replaceState(null, '', `${url.pathname}${url.hash}`);
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    }
     scrollTo(target);
   });
 }

@@ -41,13 +41,20 @@ const site = useSite(lang);
 
   <ul class="contact__links">
     {
-      links.map((link) => (
-        <li>
-          <a href={link.href} rel="noopener noreferrer" data-cursor-hover>
-            <Swap text={link.label} />
-            <span class="sr-only">{link.label}</span>
-          </a>
-        </li>
+      links.map((link, i) => (
+        <>
+          {i > 0 && (
+            <li class="contact__sep" aria-hidden="true">
+              ·
+            </li>
+          )}
+          <li>
+            <a href={link.href} rel="noopener noreferrer" data-cursor-hover>
+              <Swap text={link.label} />
+              <span class="sr-only">{link.label}</span>
+            </a>
+          </li>
+        </>
       ))
     }
   </ul>
@@ -65,6 +72,9 @@ const site = useSite(lang);
 
   .contact__kicker {
     @include mono(0.68rem);
+    position: absolute;
+    top: $space-section;
+    left: $space-page;
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
@@ -90,10 +100,24 @@ const site = useSite(lang);
   }
 
   .contact__row {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 1rem;
     margin-top: clamp(2rem, 5vh, 3.5rem);
+    padding-bottom: 1.15rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 100vw;
+      height: 1px;
+      background-color: $c-violet;
+      transform: translateX(-50%);
+      opacity: 0.55;
+    }
   }
 
   .contact__email {
@@ -104,45 +128,35 @@ const site = useSite(lang);
     text-transform: none;
   }
 
-  // El email es el único elemento con subrayado animado del sitio.
   .contact__underline {
     position: absolute;
     left: 0;
     bottom: -0.4rem;
     width: 100%;
     height: 1px;
-    background-color: $c-hairline-strong;
-    transform: scaleX(0);
+    background-color: $c-violet;
     transform-origin: left center;
-    transition: transform $dur-short $ease-out-soft;
-  }
-
-  .contact__email:hover .contact__underline {
-    transform: scaleX(1);
   }
 
   .contact__copy {
     @include mono(0.64rem);
-    padding: 0.5rem 1rem;
-    border: 1px solid $c-hairline-strong;
-    border-radius: 999px;
-    color: $c-muted;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid $c-violet;
+    border-radius: 4px;
+    color: $c-cream;
     transition:
-      border-color $dur-micro $ease-micro,
       color $dur-micro $ease-micro,
       background-color $dur-micro $ease-micro;
 
     &:hover {
-      border-color: $c-violet;
-      color: $c-cream;
+      background-color: $c-violet;
+      color: $c-cream-bright;
     }
   }
 
-  // Confirmación deliberadamente silenciosa: la misma píldora cambia de
-  // estado. Un toast acá rompería el tono sobrio del resto.
   .contact__copy[data-copied='true'] {
     border-color: $c-violet;
-    background-color: $c-violet-dim;
+    background-color: transparent;
     color: $c-cream;
   }
 
@@ -150,7 +164,7 @@ const site = useSite(lang);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(1.25rem, 4vw, 2.5rem);
+    gap: 0.75rem;
     margin-top: clamp(2.5rem, 6vh, 4rem);
 
     a {
@@ -163,6 +177,12 @@ const site = useSite(lang);
         color: $c-cream;
       }
     }
+  }
+
+  .contact__sep {
+    @include mono(0.68rem);
+    color: $c-subtle;
+    pointer-events: none;
   }
 
   @media (max-width: 760px) {

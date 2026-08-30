@@ -11,9 +11,9 @@ const { lang } = Astro.props;
 const c = useCopy(lang);
 
 const nav = [
-  { href: path(lang, '/#work'), label: c.nav.work },
-  { href: path(lang, '/about'), label: c.nav.about },
-  { href: path(lang, '/#contact'), label: c.nav.contact },
+  { href: path(lang, '/#work'), label: c.nav.work, id: 'work' },
+  { href: path(lang, '/about'), label: c.nav.about, id: 'about' },
+  { href: path(lang, '/#contact'), label: c.nav.contact, id: 'contact' },
 ];
 
 const alt = otherLang(lang);
@@ -28,7 +28,8 @@ const altHref = altPath(lang, Astro.url.pathname);
       nav.map((item, i) => (
         <>
           {i > 0 && <span class="header__sep" aria-hidden="true">/</span>}
-          <a class="header__link" href={item.href} data-cursor-hover>
+          <a class="header__link" href={item.href} data-nav={item.id} data-cursor-hover>
+            <span class="header__dot" aria-hidden="true"></span>
             <Swap text={item.label} />
             <span class="sr-only">{item.label}</span>
           </a>
@@ -95,11 +96,29 @@ const altHref = altPath(lang, Astro.url.pathname);
   .header__link {
     @include mono(0.72rem);
     display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     color: $c-muted;
     transition: color $dur-micro $ease-micro;
 
     &:hover {
       color: $c-cream;
+    }
+  }
+
+  .header__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+    opacity: 0;
+  }
+
+  .header__link[data-current] {
+    color: $c-cream;
+
+    .header__dot {
+      opacity: 1;
     }
   }
 
