@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import sculpture from '../assets/worm/worm-legacy.png';
+import Sculpture from './Sculpture.astro';
 
 interface Props {
   availability: string;
@@ -14,12 +13,12 @@ const { availability, role, scroll } = Astro.props;
 const telemetry = ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'];
 ---
 
-<section class="hero" data-hero>
+<section class="hero" data-hero data-sculpture-stage>
   <div class="hero__stage">
     <!-- La escultura va detrás del título y a escala contenida: acompaña
          la composición en lugar de funcionar como logo. -->
-    <div class="hero__sculpture" data-hero-sculpture data-cursor-sculpture>
-      <Image src={sculpture} alt="" widths={[320, 640]} sizes="(max-width: 760px) 220px, 320px" loading="eager" />
+    <div class="hero__sculpture" data-hero-sculpture>
+      <Sculpture variant="hero" />
     </div>
 
     <h1 class="hero__name" data-hero-name>Fernando Arriondo</h1>
@@ -86,17 +85,6 @@ const telemetry = ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'];
     transform: translate(-50%, 30%);
     pointer-events: auto;
     will-change: transform;
-
-    :global(img) {
-      width: 100%;
-      height: auto;
-      // Recoloreo provisorio del asset heredado a obsidiana: se desatura y
-      // se oscurece conservando los brillos especulares, y el filo violeta
-      // se simula con una sombra que sigue el alfa de la silueta.
-      filter: grayscale(1) brightness(0.32) contrast(1.55)
-        drop-shadow(0 0 7px rgba(123, 97, 255, 0.55)) drop-shadow(0 0 22px rgba(123, 97, 255, 0.22))
-        drop-shadow(0 22px 44px rgba(13, 11, 10, 0.6));
-    }
   }
 
   .hero__name {

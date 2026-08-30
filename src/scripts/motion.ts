@@ -6,6 +6,7 @@ import { initWorkList } from './work-list';
 import { initGallery } from './gallery';
 import { initCurtain } from './curtain';
 import { initCopy } from './copy';
+import { initSculpture } from './sculpture';
 
 let globalsReady = false;
 
@@ -33,6 +34,7 @@ export function initMotion(): void {
   initWorkList();
   initGallery();
   initCopy();
+  initSculpture();
 
   ScrollTrigger.refresh();
 }

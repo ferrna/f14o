@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import Sculpture from '../components/Sculpture.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title="404 — Fernando Arriondo" description="This route does not exist." routeLabel="Not found">
+  <section class="lost" data-sculpture-stage>
+    <div class="lost__stage">
+      <div class="lost__sculpture">
+        <Sculpture variant="lost" />
+      </div>
+
+      <h1 class="lost__code">404</h1>
+      <p class="lost__line">This route does not exist.</p>
+      <p class="lost__aside">The worm looked. It is not here.</p>
+
+      <a class="lost__back" href={base || '/'} data-cursor-hover>
+        <span class="lost__dot" aria-hidden="true"></span>
+        Back to index
+      </a>
+    </div>
+
+    <p class="lost__terminal" data-terminal>GET /unknown → 404 · no matching route</p>
+  </section>
+</Base>
+
+<script>
+  // La ruta real es más honesta que un texto fijo, y refuerza el tono
+  // sin necesidad de explicarlo.
+  const terminal = document.querySelector<HTMLElement>('[data-terminal]');
+  if (terminal) {
+    terminal.textContent = `GET ${window.location.pathname} → 404 · no matching route`;
+  }
+</script>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .lost {
+    position: relative;
+    z-index: $z-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    padding: 7rem $space-page 3rem;
+    text-align: center;
+  }
+
+  .lost__stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto 0;
+  }
+
+  .lost__sculpture {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    z-index: 0;
+    width: clamp(180px, 22vw, 300px);
+    transform: translate(-50%, 42%);
+    will-change: transform;
+  }
+
+  .lost__code {
+    @include display(clamp(4rem, 12vw, 9rem));
+    position: relative;
+    z-index: 2;
+    font-stretch: $width-tight;
+    color: $c-cream;
+  }
+
+  .lost__line {
+    @include display(clamp(1.2rem, 2.6vw, 2rem));
+    position: relative;
+    z-index: 2;
+    margin-top: 0.5rem;
+    font-weight: 400;
+    color: $c-cream;
+  }
+
+  .lost__aside {
+    @include mono(0.66rem);
+    position: relative;
+    z-index: 2;
+    margin-top: 1rem;
+    color: $c-muted;
+  }
+
+  .lost__back {
+    @include mono(0.66rem);
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding: 0.7rem 1.4rem;
+    border: 1px solid $c-hairline-strong;
+    border-radius: 999px;
+    color: $c-cream;
+    transition: border-color $dur-micro $ease-micro;
+
+    &:hover {
+      border-color: $c-violet;
+    }
+  }
+
+  .lost__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  .lost__terminal {
+    @include mono(0.62rem);
+    color: $c-subtle;
+    opacity: 0.72;
+    text-transform: none;
+  }
+</style>

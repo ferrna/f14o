@@ -47,5 +47,4 @@ export const SCULPTURE = {
   rotateX: 14,
   rotateY: 18,
   follow: 0.6,
-  aboutLoop: 40,
 } as const;
