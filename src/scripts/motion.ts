@@ -11,6 +11,7 @@ import { initIntro } from './intro';
 import { initMenu } from './menu';
 import { initClock } from './clock';
 import { initWorkGate, releaseWorkGate } from './work-gate';
+import { initAboutPlate } from './about-plate';
 
 let globalsReady = false;
 
@@ -38,6 +39,7 @@ export function initMotion(): void {
   initHeroScrub();
   initCounters();
   initWorkGate();
+  initAboutPlate();
   initWorkList();
   initGallery();
   initCopy();

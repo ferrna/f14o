@@ -72,6 +72,15 @@ const en = {
     focus: 'Web platforms',
     cta: 'Get in touch',
     foot: 'Currently reading source code · Open to selected projects',
+    plate: {
+      caption: 'Fig. 01 — Portrait',
+      alt: 'Fernando Arriondo, portrait.',
+      lines: [
+        'I build software that holds up.',
+        'I care about the quiet details.',
+        'No handoff in the middle.',
+      ],
+    },
   },
   case: {
     back: '← Index',
@@ -172,6 +181,15 @@ const es: typeof en = {
     focus: 'Plataformas web',
     cta: 'Escribime',
     foot: 'Leyendo código fuente · Abierto a proyectos seleccionados',
+    plate: {
+      caption: 'Fig. 01 — Retrato',
+      alt: 'Fernando Arriondo, retrato.',
+      lines: [
+        'Construyo software que se sostiene.',
+        'Me importan los detalles callados.',
+        'Sin traspaso en el medio.',
+      ],
+    },
   },
   case: {
     back: '← Índice',

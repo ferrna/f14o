@@ -1,5 +1,6 @@
 ---
 import Sculpture from './Sculpture.astro';
+import AboutPlate from './AboutPlate.astro';
 import { path, type Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
 
@@ -68,6 +69,8 @@ const facts = [
 
   <p class="about__foot">{c.about.foot}</p>
 </section>
+
+<AboutPlate lang={lang} />
 
 <style lang="scss">
   @use 'tokens' as *;

@@ -1,0 +1,157 @@
+---
+import { Image } from 'astro:assets';
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+import portrait from '../assets/photo/portrait.jpg';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
+---
+
+<section class="plate" data-about-plate>
+  <div class="plate__pin" data-about-plate-pin>
+    <figure class="plate__stage">
+      <div class="plate__frame">
+        <Image
+          src={portrait}
+          alt={c.about.plate.alt}
+          widths={[720, 1100]}
+          sizes="(max-width: 760px) 78vw, min(72vmin, 520px)"
+          loading="lazy"
+        />
+        <div class="plate__glass" aria-hidden="true"></div>
+      </div>
+      <div class="plate__copy">
+        {
+          c.about.plate.lines.map((line) => (
+            <p class="plate__line">
+              <span data-about-plate-line>{line}</span>
+            </p>
+          ))
+        }
+      </div>
+      <figcaption>{c.about.plate.caption}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .plate {
+    position: relative;
+    z-index: $z-content;
+  }
+
+  .plate__pin {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    padding: 7rem $space-page 4rem;
+  }
+
+  .plate__stage {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    figcaption {
+      @include mono(0.6rem);
+      margin-top: 1.5rem;
+      color: $c-subtle;
+      opacity: 0.72;
+    }
+  }
+
+  .plate__frame {
+    position: relative;
+    width: min(72vmin, 520px);
+    overflow: hidden;
+    border: 1px solid $c-hairline;
+    border-radius: 2px;
+
+    :global(img) {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      object-fit: cover;
+      object-position: 50% 18%;
+      filter: sepia(0.14) saturate(0.88) contrast(1.04);
+    }
+  }
+
+  .plate__glass {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    @include glass;
+  }
+
+  .plate__copy {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    width: min(72vmin, 520px);
+    height: min(72vmin, 520px);
+    padding: 0 1rem 1.15rem;
+    transform: translateX(-50%);
+    pointer-events: none;
+    text-align: center;
+  }
+
+  .plate__line {
+    @include display(clamp(1.5rem, 3.6vw, 2.75rem));
+    overflow: hidden;
+    color: $c-cream;
+    text-wrap: balance;
+  }
+
+  .plate__line span {
+    display: block;
+  }
+
+  @media (max-width: 760px) {
+    .plate__pin {
+      justify-content: flex-start;
+      padding-top: 6.5rem;
+    }
+
+    .plate__stage {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plate__frame {
+      width: min(78vw, 340px);
+    }
+
+    .plate__stage figcaption {
+      order: 2;
+    }
+
+    .plate__copy {
+      position: static;
+      order: 3;
+      width: auto;
+      height: auto;
+      margin-top: 0.35rem;
+      padding: 0;
+      transform: none;
+    }
+  }
+</style>
