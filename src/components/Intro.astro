@@ -1,8 +1,28 @@
 ---
-// La intro sólo existe en el home y corre una vez por sesión.
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
 ---
 
-<div class="intro" data-intro>
+<div class="intro" data-intro transition:persist="intro">
+  <p class="intro__hello" data-intro-hello>
+    {
+      c.intro.hello.map((line) => (
+        <span class="intro__hello-line">
+          <span class="intro__hello-text" data-intro-hello-line>
+            {line}
+          </span>
+        </span>
+      ))
+    }
+  </p>
+
   <div class="intro__meter">
     <span class="intro__track"><span class="intro__bar" data-intro-bar></span></span>
     <span class="intro__value" data-intro-value>0%</span>
@@ -25,6 +45,29 @@
 
   .intro[hidden] {
     display: none;
+  }
+
+  .intro__hello {
+    @include display(clamp(0.72rem, 1.1vw, 0.88rem));
+    position: absolute;
+    left: $space-page;
+    bottom: clamp(2.5rem, 7vh, 5.5rem);
+    z-index: 1;
+    max-width: 22rem;
+    color: $c-cream;
+    line-height: 1.7;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    text-align: left;
+  }
+
+  .intro__hello-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .intro__hello-text {
+    display: block;
   }
 
   .intro__meter {
@@ -52,5 +95,12 @@
     @include mono(0.62rem);
     color: $c-subtle;
     font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 760px) {
+    .intro__hello {
+      max-width: 16rem;
+      bottom: 5.5rem;
+    }
   }
 </style>

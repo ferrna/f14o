@@ -25,7 +25,8 @@ function trailOf(project: Work): ImageMetadata[] {
 }
 ---
 
-<section class="work" id="work">
+<section class="work" id="work" data-work-gate>
+  <div class="work__in" data-work-gate-panel>
   <header class="work__head">
     <p class="work__kicker">
       <span class="work__dot" aria-hidden="true"></span>02 / {c.work.kicker}
@@ -63,6 +64,7 @@ function trailOf(project: Work): ImageMetadata[] {
   </ul>
 
   <p class="work__hint">{c.work.hint}</p>
+  </div>
 </section>
 
 <style lang="scss">

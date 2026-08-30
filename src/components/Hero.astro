@@ -69,6 +69,8 @@ const c = useCopy(lang);
     min-height: 100svh;
     padding: 8rem $space-page 3.5rem;
     text-align: center;
+    transform-origin: 50% 42%;
+    will-change: transform, opacity, filter;
   }
 
   // Entre el worm (z 0) y el tipo (z 2): el objeto queda detrás del vidrio.
@@ -76,7 +78,7 @@ const c = useCopy(lang);
     position: absolute;
     inset: 0;
     z-index: 1;
-    @include glass(20px, 0.38);
+    @include glass(hero);
   }
 
   .hero__stage {

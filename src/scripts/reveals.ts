@@ -90,6 +90,8 @@ export function initReveals(scope: ParentNode = document): void {
  */
 export function initHeroScrub(): void {
   if (prefersReducedMotion()) return;
+  // El gate del home se queda con el hero: un scrub acá pelearía con el pin.
+  if (document.querySelector('[data-work-gate]')) return;
 
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   const sculpture = document.querySelector<HTMLElement>('[data-hero-sculpture]');

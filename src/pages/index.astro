@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Intro from '../components/Intro.astro';
 import Hero from '../components/Hero.astro';
 import WorkList from '../components/WorkList.astro';
 import Stack from '../components/Stack.astro';
@@ -13,7 +12,6 @@ const c = useCopy(lang);
 ---
 
 <Base title={c.meta.homeTitle} description={c.meta.homeDescription} lang={lang} routeLabel={c.route.home}>
-  <Intro />
   <Hero lang={lang} />
   <WorkList lang={lang} />
   <Stack lang={lang} />

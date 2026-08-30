@@ -10,6 +10,7 @@ import { initSculpture } from './sculpture';
 import { initIntro } from './intro';
 import { initMenu } from './menu';
 import { initClock } from './clock';
+import { initWorkGate, releaseWorkGate } from './work-gate';
 
 let globalsReady = false;
 
@@ -36,6 +37,7 @@ export function initMotion(): void {
   initReveals();
   initHeroScrub();
   initCounters();
+  initWorkGate();
   initWorkList();
   initGallery();
   initCopy();
@@ -58,6 +60,7 @@ function bindAnchors(): void {
     if (!target) return;
 
     event.preventDefault();
+    if (url.hash === '#work') releaseWorkGate();
     scrollTo(target);
   });
 }

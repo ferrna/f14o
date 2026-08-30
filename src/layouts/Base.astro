@@ -6,8 +6,10 @@ import SiteFooter from '../components/SiteFooter.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import Cursor from '../components/Cursor.astro';
 import Curtain from '../components/Curtain.astro';
+import Intro from '../components/Intro.astro';
 import { LANGS, path, routeWithoutLocale, type Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
+import { glassMode, glassVars } from '../data/visual';
 
 interface Props {
   title: string;
@@ -31,7 +33,12 @@ const alternates = LANGS.map((code) => ({
 ---
 
 <!doctype html>
-<html lang={lang} data-route-label={routeLabel} style={`--noise-url: url('${base}/media/noise.png')`}>
+<html
+  lang={lang}
+  data-route-label={routeLabel}
+  data-glass={glassMode()}
+  style={`--noise-url: url('${base}/media/noise.png'); ${glassVars()}`}
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -59,6 +66,7 @@ const alternates = LANGS.map((code) => ({
 
     <Cursor lang={lang} />
     <Curtain />
+    <Intro lang={lang} />
 
     <SiteHeader lang={lang} />
     <MobileMenu lang={lang} />

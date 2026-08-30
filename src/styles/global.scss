@@ -78,7 +78,13 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: 0;
-  @include glass(12px, 0.18);
+  @include glass;
+}
+
+html[data-glass='off'] .frost,
+html[data-glass='off'] .hero__glass,
+html[data-glass='off'] .lost__glass {
+  display: none;
 }
 
 h1,

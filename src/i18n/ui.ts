@@ -14,6 +14,13 @@ const en = {
     menu: 'Menu',
     skip: 'Skip to content',
   },
+  intro: {
+    hello: [
+      "Hello, I'm Fernando! A freelance",
+      'full stack developer based',
+      'in Buenos Aires.',
+    ],
+  },
   hero: {
     availability: 'Available for work',
     role: 'Full Stack Developer',
@@ -106,6 +113,13 @@ const es: typeof en = {
     home: 'Fernando Arriondo — inicio',
     menu: 'Menú',
     skip: 'Ir al contenido',
+  },
+  intro: {
+    hello: [
+      'Hola, soy Fernando. Desarrollador',
+      'full stack freelance',
+      'en Buenos Aires.',
+    ],
   },
   hero: {
     availability: 'Disponible para trabajar',
