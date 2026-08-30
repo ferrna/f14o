@@ -1,4 +1,13 @@
 ---
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
 const year = new Date().getFullYear();
 ---
 
@@ -6,8 +15,10 @@ const year = new Date().getFullYear();
   <span class="footer__rule" data-rule aria-hidden="true"></span>
   <div class="footer__row">
     <p>© {year} Fernando Arriondo</p>
-    <p>Buenos Aires · Remote worldwide</p>
-    <p class="footer__build"><span class="footer__dot" aria-hidden="true"></span>Build passing</p>
+    <p>{c.footer.location}</p>
+    <p class="footer__build">
+      <span class="footer__dot" aria-hidden="true"></span>{c.footer.build}
+    </p>
   </div>
 </footer>
 

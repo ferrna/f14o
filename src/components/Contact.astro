@@ -1,28 +1,46 @@
 ---
-import { contact } from '../data/site';
+import { email, links, useSite } from '../data/site';
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
+const site = useSite(lang);
 ---
 
 <section class="contact" id="contact">
-  <p class="contact__kicker"><span class="contact__dot" aria-hidden="true"></span>05 / Contact</p>
+  <p class="contact__kicker">
+    <span class="contact__dot" aria-hidden="true"></span>05 / {c.contact.kicker}
+  </p>
 
   <h2 class="contact__headline" data-reveal-group="blocks">
-    {contact.headline.map((line) => <span class="contact__line" data-reveal-item>{line}</span>)}
+    {site.contactHeadline.map((line) => <span class="contact__line" data-reveal-item>{line}</span>)}
   </h2>
 
   <div class="contact__row" data-reveal>
-    <a class="contact__email" href={`mailto:${contact.email}`} data-cursor-hover>
-      {contact.email}
+    <a class="contact__email" href={`mailto:${email}`} data-cursor-hover>
+      {email}
       <span class="contact__underline" aria-hidden="true"></span>
     </a>
 
-    <button class="contact__copy" type="button" data-copy={contact.email} data-cursor-hover>
-      <span data-copy-label>Copy</span>
+    <button
+      class="contact__copy"
+      type="button"
+      data-copy={email}
+      data-copied-label={c.contact.copied}
+      data-cursor-hover
+    >
+      <span data-copy-label>{c.contact.copy}</span>
     </button>
   </div>
 
   <ul class="contact__links">
     {
-      contact.links.map((link) => (
+      links.map((link) => (
         <li>
           <a href={link.href} rel="noopener noreferrer" data-cursor-hover>
             {link.label}

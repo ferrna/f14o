@@ -1,0 +1,132 @@
+---
+import { altPath, LANG_LABEL, otherLang, path, type Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
+
+const items = [
+  { href: path(lang, '/#work'), label: c.nav.work },
+  { href: path(lang, '/about'), label: c.nav.about },
+  { href: path(lang, '/#contact'), label: c.nav.contact },
+];
+
+const alt = otherLang(lang);
+const altHref = altPath(lang, Astro.url.pathname);
+---
+
+<div class="menu" id="mobile-menu" data-menu hidden>
+  <nav class="menu__nav" aria-label="Mobile">
+    <ul>
+      {
+        items.map((item, i) => (
+          <li class="menu__item" data-menu-item>
+            <a href={item.href}>
+              <span class="menu__index">{String(i + 1).padStart(2, '0')}</span>
+              <span class="menu__label">{item.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="menu__foot" data-menu-item>
+    <p class="menu__lang">
+      <span class="menu__lang-current">{LANG_LABEL[lang]}</span>
+      <span aria-hidden="true">/</span>
+      <a href={altHref} hreflang={alt}>{LANG_LABEL[alt]}</a>
+    </p>
+    <p class="menu__status">
+      <span class="menu__dot" aria-hidden="true"></span>{c.hero.availability}
+    </p>
+  </div>
+</div>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: $z-menu;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem $space-page;
+    background-color: $c-bg;
+    // Entra desde arriba: el contenido de fondo se hunde en lugar de
+    // ser reemplazado, lo que la hace leer como capa y no como otra página.
+    transform: translateY(-100%);
+    will-change: transform;
+  }
+
+  .menu[hidden] {
+    display: none;
+  }
+
+  // El margen automático centra la nav en el hueco disponible y empuja el pie
+  // al fondo sin depender de una altura fija.
+  .menu__nav {
+    margin-block: auto;
+  }
+
+  .menu__item a {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding: 0.6rem 0;
+  }
+
+  .menu__index {
+    @include mono(0.66rem);
+    color: $c-subtle;
+  }
+
+  .menu__label {
+    @include display(clamp(2.2rem, 11vw, 3.4rem));
+    color: $c-cream;
+  }
+
+  .menu__foot {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .menu__lang {
+    @include mono(0.68rem);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $c-subtle;
+  }
+
+  .menu__lang-current {
+    color: $c-cream;
+  }
+
+  .menu__status {
+    @include mono(0.62rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $c-subtle;
+  }
+
+  .menu__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  @media (min-width: 761px) {
+    .menu {
+      display: none;
+    }
+  }
+</style>

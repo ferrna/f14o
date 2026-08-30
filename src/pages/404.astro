@@ -1,11 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
 import Sculpture from '../components/Sculpture.astro';
+import { LANGS, path } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// GitHub Pages sirve un único 404.html desde la raíz para cualquier ruta
+// rota, así que esta página no puede existir por idioma. Se entrega en
+// inglés y lo que sí se ajusta en el cliente es a dónde vuelve.
+const lang = 'en';
+const c = useCopy(lang);
+const homes = Object.fromEntries(LANGS.map((code) => [code, path(code)]));
 ---
 
-<Base title="404 — Fernando Arriondo" description="This route does not exist." routeLabel="Not found">
+<Base
+  title={c.meta.lostTitle}
+  description={c.meta.lostDescription}
+  lang={lang}
+  routeLabel={c.route.lost}
+>
   <section class="lost" data-sculpture-stage>
     <div class="lost__stage">
       <div class="lost__sculpture">
@@ -13,25 +25,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
 
       <h1 class="lost__code">404</h1>
-      <p class="lost__line">This route does not exist.</p>
-      <p class="lost__aside">The worm looked. It is not here.</p>
+      <p class="lost__line">{c.lost.line}</p>
+      <p class="lost__aside">{c.lost.aside}</p>
 
-      <a class="lost__back" href={base || '/'} data-cursor-hover>
+      <a class="lost__back" href={homes[lang]} data-back data-cursor-hover>
         <span class="lost__dot" aria-hidden="true"></span>
-        Back to index
+        {c.lost.back}
       </a>
     </div>
 
-    <p class="lost__terminal" data-terminal>GET /unknown → 404 · no matching route</p>
+    <p class="lost__terminal" data-terminal>GET /unknown → 404 · {c.lost.terminal}</p>
   </section>
 </Base>
 
-<script>
+<script is:inline define:vars={{ homes, fallback: c.lost.terminal }}>
   // La ruta real es más honesta que un texto fijo, y refuerza el tono
   // sin necesidad de explicarlo.
-  const terminal = document.querySelector<HTMLElement>('[data-terminal]');
+  const terminal = document.querySelector('[data-terminal]');
   if (terminal) {
-    terminal.textContent = `GET ${window.location.pathname} → 404 · no matching route`;
+    terminal.textContent = `GET ${window.location.pathname} → 404 · ${fallback}`;
+  }
+
+  // Quien se pierde dentro del sitio en español vuelve al sitio en español.
+  const back = document.querySelector('[data-back]');
+  const es = homes.es;
+  if (back && (window.location.pathname === es || window.location.pathname.startsWith(`${es}/`))) {
+    back.setAttribute('href', es);
   }
 </script>
 

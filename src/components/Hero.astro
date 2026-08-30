@@ -1,16 +1,14 @@
 ---
 import Sculpture from './Sculpture.astro';
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
 
 interface Props {
-  availability: string;
-  role: string;
-  scroll: string;
+  lang: Lang;
 }
 
-const { availability, role, scroll } = Astro.props;
-
-// Capa de datos: presente pero en el contraste más bajo de la página.
-const telemetry = ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'];
+const { lang } = Astro.props;
+const c = useCopy(lang);
 ---
 
 <section class="hero" data-hero data-sculpture-stage>
@@ -22,22 +20,23 @@ const telemetry = ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'];
     </div>
 
     <h1 class="hero__name" data-hero-name>Fernando Arriondo</h1>
-    <p class="hero__role">{role}</p>
+    <p class="hero__role" data-intro-fade>{c.hero.role}</p>
 
-    <p class="hero__pill">
+    <p class="hero__pill" data-intro-fade>
       <span class="hero__pill-dot" aria-hidden="true"></span>
-      {availability}
+      {c.hero.availability}
     </p>
   </div>
 
-  <a class="hero__scroll" href="#work" data-cursor-hover>
-    <span class="hero__scroll-label">{scroll}</span>
+  <a class="hero__scroll" href="#work" data-intro-fade data-cursor-hover>
+    <span class="hero__scroll-label">{c.hero.scroll}</span>
     <span class="hero__scroll-line" aria-hidden="true"></span>
   </a>
 
-  <p class="hero__telemetry">
+  <!-- Capa de datos: presente pero en el contraste más bajo de la página. -->
+  <p class="hero__telemetry" data-intro-fade>
     {
-      telemetry.map((item, i) => (
+      c.hero.telemetry.map((item, i) => (
         <>
           {i > 0 && <span class="hero__telemetry-sep" aria-hidden="true">·</span>}
           <span>{item}</span>
@@ -45,7 +44,9 @@ const telemetry = ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'];
       ))
     }
     <span class="hero__telemetry-sep" aria-hidden="true">·</span>
-    <span class="hero__telemetry-build"><span class="hero__telemetry-dot" aria-hidden="true"></span>Build passing</span>
+    <span class="hero__telemetry-build">
+      <span class="hero__telemetry-dot" aria-hidden="true"></span>{c.hero.build}
+    </span>
   </p>
 </section>
 

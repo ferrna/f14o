@@ -1,9 +1,21 @@
 ---
-import { experience } from '../data/site';
+import { useSite } from '../data/site';
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
+const { experience } = useSite(lang);
 ---
 
 <section class="xp" id="experience">
-  <p class="xp__kicker"><span class="xp__dot" aria-hidden="true"></span>04 / Experience</p>
+  <p class="xp__kicker">
+    <span class="xp__dot" aria-hidden="true"></span>04 / {c.experience.kicker}
+  </p>
 
   <ol class="xp__list" data-reveal-group>
     {

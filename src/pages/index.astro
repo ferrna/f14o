@@ -1,21 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
+import Intro from '../components/Intro.astro';
 import Hero from '../components/Hero.astro';
 import WorkList from '../components/WorkList.astro';
 import Stack from '../components/Stack.astro';
 import Experience from '../components/Experience.astro';
 import Contact from '../components/Contact.astro';
+import { useCopy } from '../i18n/ui';
+
+const lang = 'en';
+const c = useCopy(lang);
 ---
 
-<Base
-  title="Fernando Arriondo — Full Stack Developer"
-  description="Full stack developer building web platforms with a focus on clarity, performance and long-term maintainability."
-  lang="en"
-  routeLabel="Home"
->
-  <Hero availability="Available for work" role="Full Stack Developer" scroll="Scroll" />
-  <WorkList />
-  <Stack />
-  <Experience />
-  <Contact />
+<Base title={c.meta.homeTitle} description={c.meta.homeDescription} lang={lang} routeLabel={c.route.home}>
+  <Intro />
+  <Hero lang={lang} />
+  <WorkList lang={lang} />
+  <Stack lang={lang} />
+  <Experience lang={lang} />
+  <Contact lang={lang} />
 </Base>

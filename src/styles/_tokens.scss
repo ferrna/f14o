@@ -63,8 +63,10 @@ $curtain-out: 0.5s;
 
 // ----------------------------------------------------------------- capas
 $z-content: 1;
-$z-header: 60;
+// El header queda por encima del overlay del menú: el toggle se convierte en
+// la X que lo cierra, así que tiene que seguir visible y clickeable.
 $z-menu: 80;
+$z-header: 85;
 $z-curtain: 90;
 $z-cursor: 100;
 

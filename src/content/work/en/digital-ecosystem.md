@@ -6,7 +6,7 @@ year: 2022
 role: Frontend
 stack: ['GSAP', 'WebGL', 'Sass']
 summary: An interface where motion carries meaning instead of decorating it.
-cover: '../../assets/projects/3.png'
+cover: '../../../assets/projects/3.png'
 metrics:
   - label: Lighthouse
     value: '94'
@@ -15,9 +15,9 @@ metrics:
   - label: TTI
     value: 1.6s
 gallery:
-  - src: '../../assets/projects/3.png'
+  - src: '../../../assets/projects/3.png'
     caption: Landing
-  - src: '../../assets/projects/project1.PNG'
+  - src: '../../../assets/projects/project1.PNG'
     caption: Case view
 draft: true
 ---

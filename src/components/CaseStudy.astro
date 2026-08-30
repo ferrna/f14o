@@ -1,0 +1,309 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Gallery from './Gallery.astro';
+import { path, type Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+import { slugOf, type Work } from '../i18n/work';
+
+interface Props {
+  lang: Lang;
+  project: Work;
+  next: Work;
+}
+
+const { lang, project, next } = Astro.props;
+const c = useCopy(lang);
+const { Content } = await render(project);
+const slug = slugOf(project);
+
+const meta = [
+  { label: c.case.role, value: project.data.role },
+  { label: c.case.year, value: String(project.data.year) },
+  { label: c.case.stack, value: project.data.stack.join(' · ') },
+];
+---
+
+<article class="case">
+  <header class="case__bar">
+    <a class="case__back" href={path(lang, '/#work')} data-cursor-hover>{c.case.back}</a>
+    <h1 class="case__title" style={`view-transition-name: title-${slug}`}>{project.data.title}</h1>
+    <dl class="case__meta">
+      {
+        meta.map((item) => (
+          <div class="case__meta-item">
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </header>
+
+  <span class="case__rule" data-rule aria-hidden="true"></span>
+
+  <div class="case__layout">
+    <aside class="case__aside" data-reveal-group="blocks">
+      <p class="case__kicker" data-reveal-item>
+        <span class="case__dot" aria-hidden="true"></span>{c.case.brief}
+      </p>
+
+      <div class="case__prose" data-reveal-item>
+        <Content />
+      </div>
+
+      {
+        project.data.metrics.length > 0 && (
+          <dl class="case__metrics" data-reveal-item>
+            {project.data.metrics.map((metric) => (
+              <div class="case__metric">
+                <dt>{metric.label}</dt>
+                <dd>{metric.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      {
+        project.data.liveUrl && (
+          <a
+            class="case__live"
+            href={project.data.liveUrl}
+            rel="noopener noreferrer"
+            target="_blank"
+            data-cursor-hover
+          >
+            <span class="case__dot" aria-hidden="true" />
+            {c.case.live}
+          </a>
+        )
+      }
+    </aside>
+
+    <div class="case__visual">
+      <figure class="case__cover" data-reveal>
+        <Image
+          src={project.data.cover}
+          alt={project.data.title}
+          widths={[720, 1200, 1600]}
+          sizes="(max-width: 900px) 92vw, 62vw"
+          loading="eager"
+          style={`view-transition-name: cover-${slug}`}
+        />
+        <figcaption>Fig. 00 — {project.data.category}</figcaption>
+      </figure>
+
+      <Gallery items={project.data.gallery} />
+    </div>
+  </div>
+
+  <span class="case__rule" data-rule aria-hidden="true"></span>
+
+  <a class="case__next" href={path(lang, `/work/${slugOf(next)}`)} data-cursor-project>
+    <span class="case__next-label">{c.case.next}</span>
+    <span class="case__next-title">{next.data.title} →</span>
+  </a>
+</article>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .case {
+    position: relative;
+    z-index: $z-content;
+    padding: clamp(6rem, 14vh, 9rem) $space-page clamp(4rem, 10vh, 7rem);
+  }
+
+  .case__bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: clamp(1rem, 4vw, 3rem);
+    padding-bottom: 1.5rem;
+  }
+
+  .case__back {
+    @include mono(0.68rem);
+    color: $c-muted;
+    transition: color $dur-micro $ease-micro;
+
+    &:hover {
+      color: $c-cream;
+    }
+  }
+
+  .case__title {
+    @include display(clamp(1.8rem, 4vw, 3.2rem));
+    color: $c-cream;
+  }
+
+  .case__meta {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    margin: 0;
+  }
+
+  .case__meta-item {
+    dt {
+      @include mono(0.6rem);
+      color: $c-subtle;
+    }
+
+    dd {
+      @include mono(0.68rem);
+      margin: 0.35rem 0 0;
+      color: $c-cream;
+      text-transform: none;
+    }
+  }
+
+  .case__rule {
+    display: block;
+    height: 1px;
+    background-color: $c-hairline;
+    transform-origin: left center;
+  }
+
+  .case__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding: clamp(2.5rem, 7vh, 5rem) 0;
+  }
+
+  .case__kicker {
+    @include mono(0.68rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: $c-cream;
+  }
+
+  .case__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  .case__prose {
+    margin-top: 1.5rem;
+    color: $c-muted;
+    font-size: 0.95rem;
+    line-height: 1.75;
+
+    :global(h2) {
+      @include mono(0.62rem);
+      margin: 2rem 0 0.6rem;
+      color: $c-subtle;
+    }
+
+    :global(h2:first-child) {
+      margin-top: 0;
+    }
+
+    :global(p) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .case__metrics {
+    margin: 2.5rem 0 0;
+  }
+
+  .case__metric {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    @include hairline(bottom);
+
+    dt {
+      @include mono(0.64rem);
+      color: $c-subtle;
+    }
+
+    dd {
+      @include mono(0.72rem);
+      margin: 0;
+      color: $c-cream;
+    }
+  }
+
+  .case__live {
+    @include mono(0.66rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding: 0.7rem 1.3rem;
+    border: 1px solid $c-hairline-strong;
+    border-radius: 999px;
+    color: $c-cream;
+    transition: border-color $dur-micro $ease-micro;
+
+    &:hover {
+      border-color: $c-violet;
+    }
+  }
+
+  // La captura oscura va enmarcada en crema: así se lee como objeto
+  // apoyado sobre la página cálida y no como un agujero en la composición.
+  .case__cover {
+    margin: 0;
+
+    :global(img) {
+      width: 100%;
+      height: auto;
+      border: 1px solid rgba(237, 227, 212, 0.45);
+      border-radius: 2px;
+      box-shadow: 0 30px 70px rgba(13, 11, 10, 0.6);
+    }
+
+    figcaption {
+      @include mono(0.62rem);
+      margin-top: 1rem;
+      color: $c-subtle;
+    }
+  }
+
+  .case__next {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: clamp(2rem, 5vh, 3.5rem);
+  }
+
+  .case__next-label {
+    @include mono(0.66rem);
+    color: $c-subtle;
+  }
+
+  .case__next-title {
+    @include display(clamp(1.6rem, 4vw, 3rem));
+    color: $c-muted;
+    transition: color $dur-short $ease-out-soft;
+  }
+
+  .case__next:hover .case__next-title {
+    color: $c-cream-bright;
+  }
+
+  @media (max-width: 900px) {
+    .case__bar {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .case__meta {
+      flex-wrap: wrap;
+    }
+
+    .case__layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

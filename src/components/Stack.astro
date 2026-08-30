@@ -1,19 +1,31 @@
 ---
-import { stack } from '../data/site';
+import { primaryTool, tools, useSite } from '../data/site';
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
+const site = useSite(lang);
 ---
 
 <section class="stack" id="stack">
   <div class="stack__head">
-    <p class="stack__kicker"><span class="stack__dot" aria-hidden="true"></span>03 / Stack</p>
-    <p class="stack__statement" data-reveal>{stack.statement}</p>
+    <p class="stack__kicker">
+      <span class="stack__dot" aria-hidden="true"></span>03 / {c.stack.kicker}
+    </p>
+    <p class="stack__statement" data-reveal>{site.stackStatement}</p>
   </div>
 
   <ul class="stack__row" data-reveal-group>
     {
-      stack.items.map((item, i) => (
+      tools.map((item, i) => (
         <li class="stack__item" data-reveal-item>
           {i > 0 && <span class="stack__sep" aria-hidden="true" />}
-          <span class:list={['stack__name', item === stack.primary && 'stack__name--primary']}>{item}</span>
+          <span class:list={['stack__name', item === primaryTool && 'stack__name--primary']}>{item}</span>
         </li>
       ))
     }

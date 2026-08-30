@@ -7,7 +7,8 @@ export function initCopy(scope: ParentNode = document): void {
     const label = button.querySelector<HTMLElement>('[data-copy-label]');
     if (!value || !label) return;
 
-    const original = label.textContent ?? 'Copy';
+    const original = label.textContent ?? '';
+    const copied = button.dataset.copiedLabel ?? 'Copied';
     let timer: number | undefined;
 
     button.addEventListener('click', async () => {
@@ -18,7 +19,7 @@ export function initCopy(scope: ParentNode = document): void {
         return;
       }
 
-      label.textContent = 'Copied';
+      label.textContent = copied;
       button.dataset.copied = 'true';
 
       window.clearTimeout(timer);

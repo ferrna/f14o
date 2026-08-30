@@ -1,12 +1,12 @@
 ---
-title: Commerce platform
+title: Plataforma de comercio
 order: 2
 category: E-commerce
 year: 2023
 role: Full stack
 stack: ['Node', 'Postgres', 'Headless CMS']
-summary: A headless storefront built so the catalog can change without a deploy.
-cover: '../../assets/projects/2.png'
+summary: Una tienda headless construida para que el catálogo cambie sin necesidad de un deploy.
+cover: '../../../assets/projects/2.png'
 metrics:
   - label: Lighthouse
     value: '96'
@@ -15,21 +15,21 @@ metrics:
   - label: TTI
     value: 1.4s
 gallery:
-  - src: '../../assets/projects/2.png'
-    caption: Storefront
-  - src: '../../assets/projects/3.png'
+  - src: '../../../assets/projects/2.png'
+    caption: Tienda
+  - src: '../../../assets/projects/3.png'
     caption: Checkout
 draft: true
 ---
 
-## The brief
+## El encargo
 
 Texto pendiente.
 
-## What I did
+## Qué hice
 
 Texto pendiente.
 
-## Outcome
+## Resultado
 
 Texto pendiente.

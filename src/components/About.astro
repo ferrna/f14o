@@ -1,0 +1,203 @@
+---
+import Sculpture from './Sculpture.astro';
+import { path, type Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
+
+const facts = [
+  { label: c.about.facts.based, value: c.about.location },
+  { label: c.about.facts.experience, count: 6, suffix: c.about.years },
+  { label: c.about.facts.focus, value: c.about.focus },
+];
+---
+
+<section class="about" data-sculpture-stage>
+  <p class="about__kicker"><span class="about__dot" aria-hidden="true"></span>01 / {c.about.kicker}</p>
+
+  <div class="about__layout">
+    <figure class="about__visual">
+      <!-- Único lugar del sitio donde la escultura puede ser grande: en
+           una página que habla de mí, el objeto es el sujeto y no un logo. -->
+      <Sculpture variant="about" />
+      <figcaption>{c.about.caption}</figcaption>
+    </figure>
+
+    <div class="about__text" data-reveal-group="blocks">
+      <h1 class="about__headline" data-reveal-item>
+        {c.about.headline.map((line) => <span>{line}</span>)}
+      </h1>
+
+      <div class="about__prose" data-reveal-item>
+        {c.about.prose.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+
+      <span class="about__rule" data-rule aria-hidden="true"></span>
+
+      <dl class="about__facts" data-reveal-item>
+        {
+          facts.map((fact) => (
+            <div class="about__fact">
+              <dt>{fact.label}</dt>
+              <dd>
+                {fact.count ? (
+                  <>
+                    <span data-count-to={fact.count}>0</span>
+                    {fact.suffix}
+                  </>
+                ) : (
+                  fact.value
+                )}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <a class="about__cv" href={path(lang, '/#contact')} data-reveal-item data-cursor-hover>
+        <span class="about__dot" aria-hidden="true"></span>
+        {c.about.cta}
+      </a>
+    </div>
+  </div>
+
+  <p class="about__foot">{c.about.foot}</p>
+</section>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .about {
+    position: relative;
+    z-index: $z-content;
+    padding: clamp(6rem, 14vh, 9rem) $space-page clamp(3rem, 8vh, 5rem);
+  }
+
+  .about__kicker {
+    @include mono(0.68rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: $c-muted;
+  }
+
+  .about__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: $c-violet;
+  }
+
+  .about__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+    align-items: center;
+    gap: clamp(2rem, 6vw, 5rem);
+    margin-top: clamp(2rem, 5vh, 4rem);
+  }
+
+  .about__visual {
+    // A escala grande el halo se vuelve el elemento dominante, así que la
+    // pieza se contiene y deja aire alrededor.
+    max-width: 380px;
+    margin: 0 auto;
+
+    figcaption {
+      @include mono(0.6rem);
+      margin-top: 1.5rem;
+      color: $c-subtle;
+      opacity: 0.72;
+    }
+  }
+
+  .about__headline {
+    display: flex;
+    flex-direction: column;
+
+    span {
+      @include display(clamp(2.2rem, 5vw, 4rem));
+      color: $c-cream;
+    }
+  }
+
+  .about__prose {
+    max-width: 46ch;
+    margin-top: clamp(1.5rem, 3vh, 2.5rem);
+    color: $c-muted;
+    font-size: 0.95rem;
+    line-height: 1.75;
+
+    p + p {
+      margin-top: 1rem;
+    }
+  }
+
+  .about__rule {
+    display: block;
+    height: 1px;
+    margin: clamp(2rem, 4vh, 3rem) 0;
+    background-color: $c-hairline;
+    transform-origin: left center;
+  }
+
+  .about__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 5vw, 4rem);
+    margin: 0;
+  }
+
+  .about__fact {
+    dt {
+      @include mono(0.6rem);
+      color: $c-subtle;
+    }
+
+    dd {
+      @include mono(0.76rem);
+      margin: 0.45rem 0 0;
+      color: $c-cream;
+      text-transform: none;
+    }
+  }
+
+  .about__cv {
+    @include mono(0.66rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: clamp(2rem, 4vh, 3rem);
+    padding: 0.7rem 1.3rem;
+    border: 1px solid $c-hairline-strong;
+    border-radius: 999px;
+    color: $c-cream;
+    transition: border-color $dur-micro $ease-micro;
+
+    &:hover {
+      border-color: $c-violet;
+    }
+  }
+
+  .about__foot {
+    @include mono(0.62rem);
+    margin-top: clamp(3rem, 8vh, 5rem);
+    color: $c-subtle;
+    opacity: 0.72;
+  }
+
+  @media (max-width: 900px) {
+    .about__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .about__visual {
+      max-width: 320px;
+      margin: 0 auto;
+    }
+  }
+</style>

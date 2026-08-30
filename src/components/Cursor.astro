@@ -1,8 +1,23 @@
 ---
 // El cursor se monta siempre pero se activa sólo en punteros finos.
+import type { Lang } from '../i18n/config';
+import { useCopy } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = useCopy(lang);
 ---
 
-<div class="cursor" data-cursor aria-hidden="true">
+<div
+  class="cursor"
+  data-cursor
+  data-label-project={c.cursor.view}
+  data-label-drag={c.cursor.drag}
+  aria-hidden="true"
+>
   <span class="cursor__dot" data-cursor-dot></span>
   <span class="cursor__ring" data-cursor-ring>
     <span class="cursor__label" data-cursor-label></span>

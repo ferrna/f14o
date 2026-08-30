@@ -43,6 +43,11 @@ body {
   overflow-x: hidden;
 }
 
+// Durante la secuencia de carga no hay nada abajo que valga la pena alcanzar.
+body.is-intro {
+  overflow: hidden;
+}
+
 // El grano y la viñeta son la única textura del fondo: sostienen la
 // calidez del taupe sin introducir un degradado que compita con el tipo.
 body::before {

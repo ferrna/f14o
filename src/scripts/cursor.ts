@@ -18,6 +18,13 @@ export function initCursor(): void {
   const label = document.querySelector<HTMLElement>('[data-cursor-label]');
   if (!root || !dot || !ring || !label) return;
 
+  // Las etiquetas llegan desde el marcado porque el idioma se resuelve al
+  // construir la página, no en el cliente.
+  const words = {
+    project: root.dataset.labelProject ?? 'View',
+    drag: root.dataset.labelDrag ?? 'Drag',
+  };
+
   let pointerX = -100;
   let pointerY = -100;
   let ringX = -100;
@@ -48,8 +55,8 @@ export function initCursor(): void {
       return apply(mode, explicit.dataset.cursorLabel ?? '');
     }
 
-    if (target.closest('[data-cursor-project]')) return apply('project', 'View');
-    if (target.closest('[data-cursor-drag]')) return apply('drag', 'Drag');
+    if (target.closest('[data-cursor-project]')) return apply('project', words.project);
+    if (target.closest('[data-cursor-drag]')) return apply('drag', words.drag);
     if (target.closest('[data-cursor-sculpture]')) return apply('sculpture', '3D');
     if (target.closest('a, button, [role="button"], [data-cursor-hover]')) return apply('hover');
 

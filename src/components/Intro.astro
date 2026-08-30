@@ -1,0 +1,56 @@
+---
+// La intro sólo existe en el home y corre una vez por sesión.
+---
+
+<div class="intro" data-intro>
+  <div class="intro__meter">
+    <span class="intro__track"><span class="intro__bar" data-intro-bar></span></span>
+    <span class="intro__value" data-intro-value>0%</span>
+  </div>
+</div>
+
+<style lang="scss">
+  @use 'tokens' as *;
+
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: $z-curtain;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 34vh;
+    background-color: $c-bg;
+  }
+
+  .intro[hidden] {
+    display: none;
+  }
+
+  .intro__meter {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: min(46vw, 420px);
+  }
+
+  .intro__track {
+    flex: 1;
+    height: 1px;
+    background-color: rgba(237, 227, 212, 0.14);
+  }
+
+  .intro__bar {
+    display: block;
+    height: 100%;
+    background-color: $c-cream;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .intro__value {
+    @include mono(0.62rem);
+    color: $c-subtle;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

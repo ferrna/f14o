@@ -13,6 +13,9 @@ const ROUTES = [
   { name: 'about', path: '/about' },
   { name: 'work-detail', path: '/work/product-experience' },
   { name: '404', path: '/no-existe' },
+  { name: 'home-es', path: '/es' },
+  { name: 'about-es', path: '/es/about' },
+  { name: 'work-detail-es', path: '/es/work/product-experience' },
 ];
 
 const VIEWPORTS = [

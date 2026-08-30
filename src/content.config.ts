@@ -3,7 +3,8 @@ import { glob } from 'astro/loaders';
 
 /**
  * Cada caso de proyecto es un archivo Markdown: agregar un proyecto es
- * escribir un archivo, no editar plantillas.
+ * escribir un archivo, no editar plantillas. Se agrupan en una carpeta por
+ * idioma (work/en, work/es) y el slug de la URL es el nombre del archivo.
  */
 const work = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/work' }),

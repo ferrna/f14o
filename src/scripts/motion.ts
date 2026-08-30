@@ -7,6 +7,8 @@ import { initGallery } from './gallery';
 import { initCurtain } from './curtain';
 import { initCopy } from './copy';
 import { initSculpture } from './sculpture';
+import { initIntro } from './intro';
+import { initMenu } from './menu';
 
 let globalsReady = false;
 
@@ -28,6 +30,8 @@ export function initMotion(): void {
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
   resetScroll();
 
+  initMenu();
+  void initIntro();
   initReveals();
   initHeroScrub();
   initCounters();
