@@ -12,6 +12,7 @@ const c = useCopy(lang);
 ---
 
 <section class="hero" data-hero data-sculpture-stage>
+  <div class="hero__glass" aria-hidden="true"></div>
   <div class="hero__stage">
     <!-- La escultura va detrás del título y a escala contenida: acompaña
          la composición en lugar de funcionar como logo. -->
@@ -68,6 +69,14 @@ const c = useCopy(lang);
     min-height: 100svh;
     padding: 8rem $space-page 3.5rem;
     text-align: center;
+  }
+
+  // Entre el worm (z 0) y el tipo (z 2): el objeto queda detrás del vidrio.
+  .hero__glass {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    @include glass(20px, 0.38);
   }
 
   .hero__stage {
@@ -155,6 +164,7 @@ const c = useCopy(lang);
     position: absolute;
     bottom: 3.5rem;
     left: $space-page;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -174,6 +184,8 @@ const c = useCopy(lang);
 
   .hero__telemetry {
     @include mono(0.62rem);
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -224,6 +236,17 @@ const c = useCopy(lang);
       order: 1;
       max-width: 22rem;
       line-height: 1.9;
+    }
+
+    // En mobile hay aire sobre el worm: las dos palabras van juntas
+    // arriba, sin achicar el hueco a los costados.
+    .hero__edition {
+      width: auto;
+      max-width: none;
+      justify-content: center;
+      gap: 1.25rem;
+      bottom: calc(100% + 10.5rem);
+      transform: translateX(-50%);
     }
   }
 </style>

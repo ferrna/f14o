@@ -72,6 +72,15 @@ body::after {
   background: radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(13, 11, 10, 0.55) 100%);
 }
 
+// Capa de vidrio del fondo: suaviza el grano. El worm del hero se pinta
+// detrás de otra lámina más densa, para que se lea a través del blur.
+.frost {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  @include glass(12px, 0.18);
+}
+
 h1,
 h2,
 h3,

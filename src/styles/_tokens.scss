@@ -92,6 +92,15 @@ $z-cursor: 100;
   border-#{$side}: 1px solid $c-hairline;
 }
 
+// Vidrio: el blur solo se lee si hay algo detrás (el worm, el grano).
+@mixin glass($blur: 18px, $alpha: 0.4) {
+  pointer-events: none;
+  // rgba() con comas: la notación moderna `38 / $alpha` la divide Sass.
+  background: rgba(46, 42, 38, $alpha);
+  backdrop-filter: blur($blur) saturate(1.12);
+  -webkit-backdrop-filter: blur($blur) saturate(1.12);
+}
+
 // Respeta la preferencia de movimiento reducido en cualquier bloque.
 @mixin motion-safe {
   @media (prefers-reduced-motion: no-preference) {
