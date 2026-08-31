@@ -11,11 +11,15 @@ const FLICK_VELOCITY = 1.1;
  * se clava con inercia. Sin Draggable: el mismo gesto que la galería.
  */
 export function initDeck(): void {
-  const root = document.querySelector<HTMLElement>('[data-deck]');
-  const stage = root?.querySelector<HTMLElement>('[data-deck-stage]');
-  if (!root || !stage) return;
+  document.querySelectorAll<HTMLElement>('[data-deck]').forEach(setup);
+}
+
+function setup(root: HTMLElement): void {
+  const stage = root.querySelector<HTMLElement>('[data-deck-stage]');
+  if (!stage) return;
 
   const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-deck-card]'));
+  if (!cards.length) return;
   const caption = root.querySelector<HTMLElement>('[data-deck-caption]');
   const counter = root.querySelector<HTMLElement>('[data-deck-counter]');
   const progress = root.querySelector<HTMLElement>('[data-deck-progress]');

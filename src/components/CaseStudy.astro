@@ -1,7 +1,6 @@
 ---
 import { render } from 'astro:content';
-import { Image } from 'astro:assets';
-import Gallery from './Gallery.astro';
+import CaseDeck from './CaseDeck.astro';
 import { path, type Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
 import { slugOf, type Work } from '../i18n/work';
@@ -23,35 +22,33 @@ const meta = [
   { label: c.case.stack, value: project.data.stack.join(', ') },
   { label: c.case.year, value: String(project.data.year) },
 ];
+
+/** Cover + galería, sin repetir la misma foto. */
+const frames: Array<{ src: (typeof project.data.cover); caption: string }> = [];
+const seen = new Set<string>();
+const push = (src: typeof project.data.cover, caption: string) => {
+  if (seen.has(src.src)) return;
+  seen.add(src.src);
+  frames.push({ src, caption });
+};
+push(project.data.cover, project.data.gallery[0]?.caption ?? project.data.title);
+for (const item of project.data.gallery) {
+  push(item.src, item.caption);
+}
 ---
 
 <article class="case">
-  <div class="case__layout">
-    <div class="case__main">
-      <a class="case__back" href={path(lang, '/#work')} data-cursor-hover>{c.case.back}</a>
+  <header class="case__head">
+    <a class="case__back" href={path(lang, '/#work')} data-cursor-hover>{c.case.back}</a>
+    <h1 class="case__title" style={`view-transition-name: title-${slug}`}>{project.data.title}</h1>
+    <p class="case__kicker">{project.data.year} — {project.data.category}</p>
+  </header>
 
-      <h1 class="case__title" style={`view-transition-name: title-${slug}`}>{project.data.title}</h1>
-      <p class="case__sub">
-        {project.data.year} — {project.data.category}
-        {project.data.summary ? ` · ${project.data.summary}` : ''}
-      </p>
+  <CaseDeck frames={frames} transitionName={`cover-${slug}`} />
 
-      <figure class="case__cover" data-reveal>
-        <Image
-          src={project.data.cover}
-          alt={project.data.title}
-          widths={[720, 1200, 1600]}
-          sizes="(max-width: 900px) 92vw, 62vw"
-          loading="eager"
-          style={`view-transition-name: cover-${slug}`}
-        />
-      </figure>
-
-      <Gallery items={project.data.gallery} />
-
-      <a class="case__next" href={path(lang, `/work/${slugOf(next)}`)} data-cursor-project>
-        {c.case.next} — {next.data.title} →
-      </a>
+  <div class="case__body">
+    <div class="case__prose" data-reveal>
+      <Content />
     </div>
 
     <aside class="case__aside" data-reveal-group="blocks">
@@ -66,10 +63,6 @@ const meta = [
         }
       </dl>
 
-      <div class="case__prose" data-reveal-item>
-        <Content />
-      </div>
-
       {
         project.data.liveUrl && (
           <a
@@ -78,6 +71,7 @@ const meta = [
             rel="noopener noreferrer"
             target="_blank"
             data-cursor-hover
+            data-reveal-item
           >
             <span class="case__dot" aria-hidden="true" />
             {c.case.live}
@@ -86,6 +80,10 @@ const meta = [
       }
     </aside>
   </div>
+
+  <a class="case__next" href={path(lang, `/work/${slugOf(next)}`)} data-cursor-project>
+    {c.case.next} — {next.data.title} →
+  </a>
 
   <p class="case__status">
     {[...c.hero.telemetry, c.hero.build].join(' · ')}
@@ -101,11 +99,8 @@ const meta = [
     padding: clamp(6.5rem, 14vh, 9rem) $space-page clamp(2.5rem, 6vh, 4rem);
   }
 
-  .case__layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.7fr) minmax(15rem, 0.7fr);
-    gap: clamp(2rem, 5vw, 4.5rem);
-    padding-bottom: clamp(3rem, 8vh, 5rem);
+  .case__head {
+    max-width: 52rem;
   }
 
   .case__back {
@@ -119,34 +114,29 @@ const meta = [
   }
 
   .case__title {
-    @include display(clamp(3rem, 8vw, 6.5rem));
-    margin-top: 1.5rem;
+    @include display(clamp(2rem, 4.5vw, 3.4rem));
+    margin-top: 1.15rem;
     color: $c-cream;
     text-transform: uppercase;
   }
 
-  .case__sub {
+  .case__kicker {
     @include mono(0.62rem);
-    margin-top: 0.85rem;
+    margin-top: 0.7rem;
     color: $c-muted;
   }
 
-  .case__cover {
-    margin: clamp(2rem, 5vh, 3.5rem) 0 0;
-
-    :global(img) {
-      width: 100%;
-      height: auto;
-      border: 1px solid rgba(237, 227, 212, 0.45);
-      border-radius: 4px;
-      box-shadow: 0 30px 70px rgba(13, 11, 10, 0.6);
-    }
+  .case__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(14rem, 0.55fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    margin-top: clamp(2.5rem, 6vh, 4rem);
+    padding-bottom: clamp(2rem, 5vh, 3.5rem);
   }
 
   .case__next {
-    @include display(clamp(1.6rem, 3.6vw, 2.8rem));
+    @include display(clamp(1.4rem, 3vw, 2.4rem));
     display: inline-block;
-    margin-top: clamp(2.5rem, 6vh, 4rem);
     color: $c-cream;
     text-transform: uppercase;
     transition: color $dur-short $ease-out-soft;
@@ -157,7 +147,7 @@ const meta = [
   }
 
   .case__aside {
-    padding-top: 0.2rem;
+    padding-top: 0.15rem;
   }
 
   .case__meta {
@@ -169,7 +159,7 @@ const meta = [
     align-items: baseline;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.85rem 0;
+    padding: 0.75rem 0;
     @include hairline(bottom);
 
     dt {
@@ -187,7 +177,6 @@ const meta = [
   }
 
   .case__prose {
-    margin-top: 2rem;
     color: $c-muted;
     font-size: 0.95rem;
     line-height: 1.75;
@@ -219,7 +208,7 @@ const meta = [
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    margin-top: 2rem;
+    margin-top: 1.75rem;
     padding: 0.7rem 1.3rem;
     border: 1px solid $c-hairline-strong;
     border-radius: 999px;
@@ -233,6 +222,7 @@ const meta = [
 
   .case__status {
     @include mono(0.58rem);
+    margin-top: clamp(2.5rem, 6vh, 4rem);
     padding-top: 1.5rem;
     color: $c-subtle;
     text-align: center;
@@ -240,13 +230,9 @@ const meta = [
     @include hairline(top);
   }
 
-  @media (max-width: 900px) {
-    .case__layout {
+  @media (max-width: 760px) {
+    .case__body {
       grid-template-columns: 1fr;
-    }
-
-    .case__title {
-      @include display(clamp(2.4rem, 12vw, 4rem));
     }
   }
 </style>
