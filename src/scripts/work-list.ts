@@ -109,11 +109,21 @@ function ensureShots(row: HTMLElement): HTMLElement[] {
     shot.className = 'work__shot';
     shot.dataset.workShot = '';
 
+    const src = srcs[i % srcs.length] ?? '';
+
     const img = document.createElement('img');
-    img.src = srcs[i % srcs.length] ?? '';
+    img.className = 'work__shot-img';
+    img.src = src;
     img.alt = '';
     img.decoding = 'async';
-    shot.appendChild(img);
+
+    const bg = document.createElement('img');
+    bg.className = 'work__shot-bg';
+    bg.src = src;
+    bg.alt = '';
+    bg.decoding = 'async';
+
+    shot.append(bg, img);
     trail.appendChild(shot);
     return shot;
   });
