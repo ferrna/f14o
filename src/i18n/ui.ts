@@ -17,13 +17,13 @@ const en = {
   intro: {
     hello: [
       "Hello, I'm Fernando! A freelance",
-      'full stack developer based',
-      'in Buenos Aires.',
+      'software engineer based',
+      'in Santa Fe.',
     ],
   },
   hero: {
     availability: 'Available for work',
-    role: 'Full Stack Developer',
+    role: 'Software Engineer',
     scroll: 'Scroll',
     telemetry: ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'],
     build: 'Build passing',
@@ -47,7 +47,7 @@ const en = {
     copied: 'Copied',
   },
   footer: {
-    city: 'Buenos Aires',
+    city: 'Santa Fe',
     build: 'Build passing',
   },
   cursor: {
@@ -58,7 +58,7 @@ const en = {
     kicker: 'About',
     headline: ['I build software', 'that holds up.'],
     prose: [
-      'I design and engineer web products end to end, from the first interface sketch to the systems that hold state, motion and data. I care about the quiet details: how something loads, how it answers, how it stays clear once it gets complex.',
+      'I build web products end to end: frontend, backend, testing and deploy. I care about the quiet details: how something loads, how it answers, how it stays clear once it gets complex.',
       'No handoff in the middle. That is usually where products lose the thread, and it is the part I like most.',
     ],
     caption: 'Fig. 00 — The worm · WebGL · 60fps',
@@ -67,7 +67,7 @@ const en = {
       experience: 'Experience',
       focus: 'Focus',
     },
-    location: 'Buenos Aires',
+    location: 'Santa Fe',
     years: ' years',
     focus: 'Web platforms',
     cta: 'Get in touch',
@@ -105,12 +105,12 @@ const en = {
     lost: 'Not found',
   },
   meta: {
-    homeTitle: 'Fernando Arriondo — Full Stack Developer',
+    homeTitle: 'Fernando Arriondo — Software Engineer',
     homeDescription:
-      'Full stack developer building web platforms with a focus on clarity, performance and long-term maintainability.',
+      'Software engineer building web platforms with a focus on clarity, performance and long-term maintainability.',
     aboutTitle: 'About — Fernando Arriondo',
     aboutDescription:
-      'Full stack developer working end to end, from interface to the systems that hold state and data.',
+      'Software engineer working end to end: frontend, backend, tests and deploy.',
     lostTitle: '404 — Fernando Arriondo',
     lostDescription: 'This route does not exist.',
     labTitle: 'Lab — Fernando Arriondo',
@@ -136,12 +136,12 @@ const es: typeof en = {
     hello: [
       'Hola, soy Fernando. Desarrollador',
       'full stack freelance',
-      'en Buenos Aires.',
+      'en Santa Fe.',
     ],
   },
   hero: {
     availability: 'Disponible para trabajar',
-    role: 'Desarrollador Full Stack',
+    role: 'Desarrollador de Software',
     scroll: 'Scroll',
     telemetry: ['Uptime 99.98%', 'Latencia 42ms', 'Último deploy hace 2h'],
     build: 'Build en verde',
@@ -165,7 +165,7 @@ const es: typeof en = {
     copied: 'Copiado',
   },
   footer: {
-    city: 'Buenos Aires',
+    city: 'Santa Fe',
     build: 'Build en verde',
   },
   cursor: {
@@ -176,7 +176,7 @@ const es: typeof en = {
     kicker: 'Sobre mí',
     headline: ['Construyo software', 'que se sostiene.'],
     prose: [
-      'Diseño y desarrollo productos web de punta a punta, desde el primer boceto de interfaz hasta los sistemas que sostienen estado, movimiento y datos. Me importan los detalles callados: cómo carga algo, cómo responde, cómo sigue siendo claro cuando se vuelve complejo.',
+      'Armo productos web de punta a punta: frontend, backend, testing y deploy. Me importan los detalles callados: cómo carga algo, cómo responde, cómo sigue siendo claro cuando se vuelve complejo.',
       'Sin traspaso en el medio. Ahí es donde los productos suelen perder el hilo, y es la parte que más me gusta.',
     ],
     caption: 'Fig. 00 — El gusano · WebGL · 60fps',
@@ -185,7 +185,7 @@ const es: typeof en = {
       experience: 'Experiencia',
       focus: 'Enfoque',
     },
-    location: 'Buenos Aires',
+    location: 'Santa Fe',
     years: ' años',
     focus: 'Plataformas web',
     cta: 'Escribime',
@@ -228,7 +228,7 @@ const es: typeof en = {
       'Desarrollador full stack que construye plataformas web con foco en claridad, rendimiento y mantenimiento a largo plazo.',
     aboutTitle: 'Sobre mí — Fernando Arriondo',
     aboutDescription:
-      'Desarrollador full stack que trabaja de punta a punta, de la interfaz a los sistemas que sostienen estado y datos.',
+      'Desarrollador full stack de punta a punta: frontend, backend, testing y deploy.',
     lostTitle: '404 — Fernando Arriondo',
     lostDescription: 'Esta ruta no existe.',
     labTitle: 'Lab — Fernando Arriondo',

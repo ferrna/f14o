@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import CaseDeck from './CaseDeck.astro';
+import Swap from './Swap.astro';
 import { path, type Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
 import { slugOf, type Work } from '../i18n/work';
@@ -75,7 +76,8 @@ for (const item of project.data.gallery) {
             data-reveal-item
           >
             <span class="case__dot" aria-hidden="true" />
-            {c.case.live}
+            <Swap text={c.case.live} />
+            <span class="sr-only">{c.case.live}</span>
           </a>
         )
       }

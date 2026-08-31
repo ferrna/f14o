@@ -49,7 +49,12 @@ const site = useSite(lang);
             </li>
           )}
           <li>
-            <a href={link.href} rel="noopener noreferrer" data-cursor-hover>
+            <a
+              href={link.href}
+              rel="noopener noreferrer"
+              data-cursor-hover
+              target={link.newTab ? '_blank' : undefined}
+            >
               <Swap text={link.label} />
               <span class="sr-only">{link.label}</span>
             </a>

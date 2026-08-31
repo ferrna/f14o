@@ -4,7 +4,7 @@ let timer: number | undefined;
 
 /**
  * La hora se pinta en el cliente porque el sitio es estático: la del build
- * sería la de CI, no la de Buenos Aires. Un solo intervalo sobrevive a las
+ * sería la de CI, no la de Santa Fe. Un solo intervalo sobrevive a las
  * navegaciones de ClientRouter; si no, cada vista dejaría un ticker atrás.
  */
 export function initClock(): void {
