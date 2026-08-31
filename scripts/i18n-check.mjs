@@ -22,8 +22,11 @@ page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`));
 const pairs = [
   { from: '/about', to: '/es/about' },
   { from: '/es/about', to: '/about' },
-  { from: '/work/product-experience', to: '/es/work/product-experience' },
-  { from: '/es/work/commerce-platform', to: '/work/commerce-platform' },
+  { from: '/work/agora-shop', to: '/es/work/agora-shop' },
+  { from: '/es/work/hacienda-de-las-flores', to: '/work/hacienda-de-las-flores' },
+  { from: '/work/kino-bet', to: '/es/work/kino-bet' },
+  { from: '/es/work/barista', to: '/work/barista' },
+  { from: '/work/bantrab', to: '/es/work/bantrab' },
   { from: '/', to: '/es' },
 ];
 
@@ -37,7 +40,7 @@ for (const pair of pairs) {
 }
 
 // El idioma declarado en el documento tiene que coincidir con la ruta.
-for (const route of ['/', '/about', '/es', '/es/about', '/es/work/commerce-platform']) {
+for (const route of ['/', '/about', '/es', '/es/about', '/es/work/hacienda-de-las-flores']) {
   await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded' });
   const lang = await page.locator('html').getAttribute('lang');
   const expected = route.startsWith('/es') ? 'es' : 'en';

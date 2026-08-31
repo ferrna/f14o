@@ -1,5 +1,6 @@
 import { initSmoothScroll, resetScroll, scrollTo } from './scroll';
 import { initCurtain } from './curtain';
+import { watchCaseEnter, initCaseEnter } from './case-enter';
 import { initIntro } from './intro';
 import { initMenu } from './menu';
 import { initNav } from './nav';
@@ -21,6 +22,7 @@ export function initMotion(): void {
     initSmoothScroll();
     void bootCursor();
     initCurtain();
+    watchCaseEnter();
     bindAnchors();
   }
 
@@ -36,6 +38,7 @@ async function bootCursor(): Promise<void> {
 }
 
 async function bootPage(): Promise<void> {
+  initCaseEnter();
   await initIntro();
 
   const { ScrollTrigger } = await import('gsap/ScrollTrigger');

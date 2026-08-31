@@ -23,8 +23,8 @@ const figures = frames.map((frame) => frame.caption).join('|');
 
 {
   frames.length > 0 && (
-    <div class="case-deck" data-deck aria-roledescription="carousel">
-      <div class="case-deck__stage" data-deck-stage data-cursor-drag>
+    <div class="case-deck" data-deck data-cursor-drag aria-roledescription="carousel">
+      <div class="case-deck__stage" data-deck-stage>
         {frames.map((frame, i) => (
           <figure class="case-deck__card" data-deck-card data-index={i}>
             <Image
@@ -83,6 +83,15 @@ const figures = frames.map((frame) => frame.caption).join('|');
 
   .case-deck__stage[data-dragging='true'] {
     cursor: grabbing;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    @media (prefers-reduced-motion: no-preference) {
+      .case-deck,
+      .case-deck * {
+        cursor: none;
+      }
+    }
   }
 
   /* left/width, no translate: GSAP escribe transform en la carta. */

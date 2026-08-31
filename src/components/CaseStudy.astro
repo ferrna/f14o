@@ -37,14 +37,15 @@ for (const item of project.data.gallery) {
 }
 ---
 
-<article class="case">
+<article class="case" data-case>
   <header class="case__head">
-    <a class="case__back" href={path(lang, '/#work')} data-cursor-hover>{c.case.back}</a>
+    <a class="case__back" href={path(lang, '/#work')} data-cursor-hover data-case-late>{c.case.back}</a>
     <h1 class="case__title" style={`view-transition-name: title-${slug}`}>{project.data.title}</h1>
     <p class="case__kicker">{project.data.year} — {project.data.category}</p>
   </header>
 
-  <CaseDeck frames={frames} transitionName={`cover-${slug}`} />
+  <div data-case-late>
+  <CaseDeck frames={frames} />
 
   <div class="case__body">
     <div class="case__prose" data-reveal>
@@ -88,6 +89,7 @@ for (const item of project.data.gallery) {
   <p class="case__status">
     {[...c.hero.telemetry, c.hero.build].join(' · ')}
   </p>
+  </div>
 </article>
 
 <style lang="scss">
@@ -124,6 +126,13 @@ for (const item of project.data.gallery) {
     @include mono(0.62rem);
     margin-top: 0.7rem;
     color: $c-muted;
+  }
+
+  /* El hold se pinta en before-swap para que el resto no parpadee durante el morph. */
+  .case[data-case-hold] [data-case-late] {
+    opacity: 0;
+    pointer-events: none;
+    view-transition-name: none;
   }
 
   .case__body {
