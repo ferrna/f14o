@@ -12,6 +12,7 @@ import Intro from '../components/Intro.astro';
 import { LANGS, path, routeWithoutLocale, type Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
 import { glassMode, glassVars } from '../data/visual';
+import { googleSiteVerification } from '../data/site';
 
 interface Props {
   title: string;
@@ -46,7 +47,13 @@ const alternates = LANGS.map((code) => ({
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {
+      googleSiteVerification && (
+        <meta name="google-site-verification" content={googleSiteVerification} />
+      )
+    }
     <meta name="theme-color" content="#2e2a26" />
+    <link rel="canonical" href={alternates.find((alt) => alt.code === lang)?.href} />
 
     <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href={`${base}/favicon.ico`} sizes="any" />

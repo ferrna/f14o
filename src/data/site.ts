@@ -8,6 +8,9 @@ import type { Lang } from '../i18n/config';
 
 export const email = 'arriondovfernando@gmail.com';
 
+/** Content del meta tag de Search Console. Vacío hasta verificar la propiedad. */
+export const googleSiteVerification = '';
+
 export const links: Array<{
   label: string;
   href: string;
