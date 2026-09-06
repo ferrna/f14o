@@ -1,12 +1,24 @@
 ---
 title: Barista
 order: 4
-category: E-commerce
+category: Plataforma retail
 year: 2026
 role: Full stack
 duration: '2026'
 stack: ['Go', 'Next.js', 'Kotlin', 'Voucherify']
 summary: Una cadena de café para Guatemala, del pickup y el delivery a los granos, el monedero y el POS.
+status: Todavía no es público
+specs:
+  - label: Superficies
+    value: Tienda, admin, Android
+  - label: Mesh
+    value: 12 APIs Go, MySQL, Redis
+  - label: Pagos
+    value: PowerTranz 3DS
+  - label: Lealtad
+    value: Voucherify
+  - label: Local
+    value: Micros POS
 cover: '../../../assets/projects/barista-origin.png'
 gallery:
   - src: '../../../assets/projects/barista-origin.png'
@@ -43,6 +55,10 @@ Lo difícil no fue un servicio. Fue que el pedido, los granos y el
 monedero coincidieran entre web, Android y el POS sin una cola
 en el medio.
 
+## Spec
+
+Tienda en Next.js, admin en React, Android en Google y Huawei. Doce APIs en Go, MySQL, Redis. Lealtad por Voucherify. Tarjetas por PowerTranz con 3DS. El local habla con Micros POS. El push es OneSignal.
+
 ## Resultado
 
-La plataforma está armada. Producción todavía no es pública.
+La plataforma está armada. Producción todavía no es pública. Las capturas de arriba son del producto.

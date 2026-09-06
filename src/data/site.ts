@@ -21,50 +21,89 @@ export const links: Array<{
   { label: 'CV', href: '/Fernando-Arriondo-CV.pdf', newTab: true },
 ];
 
-/** Las herramientas se nombran igual en todos lados; sólo cambia la frase. */
-export const tools = ['React', 'TypeScript', 'Node', 'Postgres', 'GSAP', 'Docker', 'AWS', 'Sass'];
+/**
+ * El stack no es un inventario: es una frase donde las herramientas son las
+ * únicas palabras encendidas. Van entre corchetes para que el texto siga
+ * siendo legible en el archivo y el resaltado no dependa de una lista aparte.
+ */
+export function stackSegments(line: string): Array<{ text: string; tool: boolean }> {
+  return line
+    .split(/\[([^\]]+)\]/)
+    .map((text, i) => ({ text, tool: i % 2 === 1 }))
+    .filter((segment) => segment.text !== '');
+}
+
+/** Vista índice: las mismas ocho tools, agrupadas por el papel que cumplen. */
+export const stackGroups = [
+  { id: '01', name: 'Interface', tools: ['React', 'TypeScript', 'Sass'] },
+  { id: '02', name: 'Server', tools: ['Node', 'Postgres'] },
+  { id: '03', name: 'Motion', tools: ['GSAP'] },
+  { id: '04', name: 'Delivery', tools: ['Docker', 'AWS'] },
+] as const;
 
 export const primaryTool = 'TypeScript';
 
 const en = {
+  stackSentence: [
+    '[TypeScript] and [Node] hold the logic.',
+    '[Postgres] keeps it honest.',
+    '[React] and [Sass] build the surface.',
+    '[GSAP] moves it.',
+    '[Docker] and [AWS] ship it.',
+  ],
   stackStatement: 'Tools chosen for constraints, not for trends.',
-  contactHeadline: ['Let us build something', 'that actually ships.'],
+  contactHeadline: ['Write when something', 'has to ship.'],
   experience: [
     {
+      when: 'Now',
       dates: '2024 — Now (2026)',
       role: 'Full Stack Engineer',
+      place: 'Remote — Guatemala',
       company: 'Tribal Worldwide GT',
-      body: 'I ship client products end to end — frontend, backend, tests and deploy — when the hard part is making the site agree with payments, inventory or a CMS that already runs the business.',
+      body: 'I ship client products end to end at [Tribal Worldwide GT]. Agora, Hacienda, Kino, Barista and Bantrab are that work — when the hard part is making the site agree with payments, inventory or a CMS that already runs the business.',
       current: true,
     },
     {
-      dates: '2022 — 2024',
+      when: 'Jun — Sep 2023',
+      dates: 'Jun — Sep 2023',
       role: 'Full Stack Developer',
-      company: 'E-Commerce & Media Solutions',
-      body: 'Modular storefronts, custom checkout paths and headless CMS architectures for international commerce clients.',
+      place: 'Remote',
+      company: 'Alkemy',
+      body: 'Squad work at [Alkemy]: full stack on a real brief, with review and a delivery date measured in weeks.',
       current: false,
-    }
+    },
   ],
 };
 
 const es: typeof en = {
+  stackSentence: [
+    '[TypeScript] y [Node] sostienen la lógica.',
+    '[Postgres] la mantiene honesta.',
+    '[React] y [Sass] construyen la superficie.',
+    '[GSAP] la mueve.',
+    '[Docker] y [AWS] la ponen en producción.',
+  ],
   stackStatement: 'Herramientas elegidas por sus límites, no por su moda.',
-  contactHeadline: ['Construyamos algo', 'que llegue a producción.'],
+  contactHeadline: ['Escribime cuando algo', 'tenga que salir.'],
   experience: [
     {
+      when: 'Ahora',
       dates: '2024 — Hoy',
       role: 'Full Stack Engineer',
+      place: 'Remoto — Guatemala',
       company: 'Tribal Worldwide GT',
-      body: 'Llevo productos de cliente a producción — frontend, backend, testing y deploy — cuando lo difícil es que el sitio coincida con los pagos, el inventario o un CMS que ya corre la operación.',
+      body: 'Llevo productos de cliente a producción en [Tribal Worldwide GT]. Agora, Hacienda, Kino, Barista y Bantrab son ese trabajo — cuando lo difícil es que el sitio coincida con los pagos, el inventario o un CMS que ya corre la operación.',
       current: true,
     },
     {
-      dates: '2022 — 2024',
+      when: 'Jun — Sep 2023',
+      dates: 'Jun — Sep 2023',
       role: 'Full Stack Developer',
-      company: 'E-Commerce & Media Solutions',
-      body: 'Tiendas modulares, checkouts a medida y arquitecturas de CMS headless para clientes de comercio internacional.',
+      place: 'Remoto',
+      company: 'Alkemy',
+      body: 'Trabajo en squad en [Alkemy]: full stack sobre un brief real, con review y una fecha de entrega medida en semanas.',
       current: false,
-    }
+    },
   ],
 };
 

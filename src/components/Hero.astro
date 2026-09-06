@@ -42,7 +42,7 @@ const c = useCopy(lang);
   <!-- Capa de datos: presente pero en el contraste más bajo de la página. -->
   <p class="hero__telemetry" data-intro-fade>
     {
-      c.hero.telemetry.map((item, i) => (
+      c.hero.facts.map((item, i) => (
         <>
           {i > 0 && <span class="hero__telemetry-sep" aria-hidden="true">·</span>}
           <span>{item}</span>
@@ -51,7 +51,7 @@ const c = useCopy(lang);
     }
     <span class="hero__telemetry-sep" aria-hidden="true">·</span>
     <span class="hero__telemetry-build">
-      <span class="hero__telemetry-dot" aria-hidden="true"></span>{c.hero.build}
+      <span class="hero__telemetry-dot" aria-hidden="true"></span>{c.hero.availability}
     </span>
   </p>
 </section>

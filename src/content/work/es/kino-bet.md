@@ -8,6 +8,11 @@ duration: 2021 — 2026
 stack: ['Laravel', 'Angular', 'Flutter']
 summary: Una quiniela white-label para empresas, de la PWA del jugador al admin y el marcador.
 liveUrl: https://playkino.app
+specs:
+  - label: Superficies
+    value: PWA, admin, marcador
+  - label: Modelo
+    value: White-label multi-tenant
 cover: '../../../assets/projects/kino-home.png'
 gallery:
   - src: '../../../assets/projects/kino-home.png'

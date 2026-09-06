@@ -7,6 +7,18 @@ role: Full stack
 duration: 2025 — 2026
 stack: ['React', 'Laravel', 'Odoo', 'CyberSource']
 summary: A housing platform for Guatemala, from the lot map to the reservation and the owner portal.
+status: Not public yet
+specs:
+  - label: Surfaces
+    value: Public site, owner portal
+  - label: Inventory
+    value: Odoo, every 4h
+  - label: Payments
+    value: CyberSource / Neopay
+  - label: CMS
+    value: Laravel 11 + Filament
+  - label: Flow
+    value: Map, quote, finishes, reserve
 cover: '../../../assets/projects/hdf-home.jpg'
 gallery:
   - src: '../../../assets/projects/hdf-home.jpg'
@@ -43,6 +55,10 @@ The hard part was not the map or the payment. It was keeping Odoo
 stock, the CMS unit and the reservation on the same house
 without the map lying.
 
+## Spec
+
+Public site and owner portal. Inventory from Odoo every four hours. CMS in Laravel 11 and Filament. Purchase path: lot map, quote, finishes, reservation through CyberSource / Neopay. Receipts and statements as PDF from the API.
+
 ## Outcome
 
-The platform is built. Production is not public yet.
+The platform is built. Production is not public yet. The screens above are from the product itself.

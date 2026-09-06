@@ -33,6 +33,14 @@ export const REVEAL = {
   trigger: 'top 75%',
 } as const;
 
+/** Sólo los colores que GSAP necesita interpolar; el resto vive en el CSS. */
+export const COLOR = {
+  muted: '#a89c8c',
+  subtle: '#776c60',
+  creamBright: '#f7f0e5',
+  violet: '#7b61ff',
+} as const;
+
 export const CURTAIN = {
   in: 0.4,
   holdMax: 0.4,

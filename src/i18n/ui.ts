@@ -16,27 +16,30 @@ const en = {
   },
   intro: {
     hello: [
-      "Hello, I'm Fernando! A freelance",
-      'software engineer based',
-      'in Santa Fe.',
+      "Hello, I'm Fernando. A software",
+      'engineer based in Santa Fe,',
+      'remote with Tribal Worldwide GT.',
     ],
   },
   hero: {
     availability: 'Available for work',
-    role: 'Software Engineer',
+    role: 'Full Stack Engineer',
     scroll: 'Scroll',
-    telemetry: ['Uptime 99.98%', 'Latency 42ms', 'Last deploy 2h ago'],
-    build: 'Build passing',
+    facts: ['Santa Fe', 'Remote with Tribal Worldwide GT'],
     edition: 'Portfolio',
     year: '2026',
   },
   work: {
     kicker: 'Selected work',
     count: 'projects',
-    hint: 'Scroll · Click to open case',
+    hint: 'Click a case to open it',
   },
   stack: {
     kicker: 'Stack',
+    viewProse: 'Phrase',
+    viewIndex: 'Index',
+    switchToIndex: 'Show as index',
+    switchToProse: 'Show as phrase',
   },
   experience: {
     kicker: 'Experience',
@@ -48,7 +51,7 @@ const en = {
   },
   footer: {
     city: 'Santa Fe',
-    build: 'Build passing',
+    note: 'Open to selected work',
   },
   cursor: {
     view: 'View',
@@ -56,10 +59,10 @@ const en = {
   },
   about: {
     kicker: 'About',
-    headline: ['I build software', 'that holds up.'],
+    headline: ['I ship the product', 'through to deploy.'],
     prose: [
-      'I build web products end to end: frontend, backend, testing and deploy. I care about the quiet details: how something loads, how it answers, how it stays clear once it gets complex.',
-      'No handoff in the middle. That is usually where products lose the thread, and it is the part I like most.',
+      'I build web products end to end: frontend, backend, tests and deploy. The hard part is usually making the site agree with payments, inventory or a CMS that already runs the business.',
+      'No handoff in the middle. That is where products lose the thread, and it is the part I like most.',
     ],
     caption: 'Fig. 00 — The worm · WebGL · 60fps',
     facts: {
@@ -76,9 +79,9 @@ const en = {
       caption: 'Fig. 01 — Portrait',
       alt: 'Fernando Arriondo, portrait.',
       lines: [
-        'I build software that holds up.',
-        'I care about the quiet details.',
-        'No handoff in the middle.',
+        'Santa Fe. Remote with Tribal Worldwide GT.',
+        'Frontend, backend, tests and deploy.',
+        'The site has to match the operation.',
       ],
     },
   },
@@ -91,6 +94,7 @@ const en = {
     stack: 'Stack',
     live: 'Visit live site',
     next: 'Next',
+    status: 'Status',
   },
   lost: {
     line: 'This route does not exist.',
@@ -107,10 +111,10 @@ const en = {
   meta: {
     homeTitle: 'Fernando Arriondo — Software Engineer',
     homeDescription:
-      'Software engineer building web platforms with a focus on clarity, performance and long-term maintainability.',
+      'Software engineer in Santa Fe, remote with Tribal Worldwide GT. I ship client products end to end — frontend, backend, tests and deploy.',
     aboutTitle: 'About — Fernando Arriondo',
     aboutDescription:
-      'Software engineer working end to end: frontend, backend, tests and deploy.',
+      'Santa Fe. Remote with Tribal Worldwide GT. Frontend, backend, tests and deploy.',
     lostTitle: '404 — Fernando Arriondo',
     lostDescription: 'This route does not exist.',
     labTitle: 'Lab — Fernando Arriondo',
@@ -135,26 +139,29 @@ const es: typeof en = {
   intro: {
     hello: [
       'Hola, soy Fernando. Desarrollador',
-      'full stack freelance',
-      'en Santa Fe.',
+      'en Santa Fe, remoto',
+      'con Tribal Worldwide GT.',
     ],
   },
   hero: {
     availability: 'Disponible para trabajar',
-    role: 'Desarrollador de Software',
+    role: 'Full Stack Engineer',
     scroll: 'Scroll',
-    telemetry: ['Uptime 99.98%', 'Latencia 42ms', 'Último deploy hace 2h'],
-    build: 'Build en verde',
+    facts: ['Santa Fe', 'Remoto con Tribal Worldwide GT'],
     edition: 'Portfolio',
     year: '2026',
   },
   work: {
     kicker: 'Trabajo seleccionado',
     count: 'proyectos',
-    hint: 'Scroll · Clic para abrir el caso',
+    hint: 'Clic en un caso para abrirlo',
   },
   stack: {
     kicker: 'Stack',
+    viewProse: 'Frase',
+    viewIndex: 'Índice',
+    switchToIndex: 'Ver como índice',
+    switchToProse: 'Ver como frase',
   },
   experience: {
     kicker: 'Experiencia',
@@ -166,7 +173,7 @@ const es: typeof en = {
   },
   footer: {
     city: 'Santa Fe',
-    build: 'Build en verde',
+    note: 'Abierto a proyectos seleccionados',
   },
   cursor: {
     view: 'Ver',
@@ -174,10 +181,10 @@ const es: typeof en = {
   },
   about: {
     kicker: 'Sobre mí',
-    headline: ['Construyo software', 'que se sostiene.'],
+    headline: ['Llevo el producto', 'hasta el deploy.'],
     prose: [
-      'Armo productos web de punta a punta: frontend, backend, testing y deploy. Me importan los detalles callados: cómo carga algo, cómo responde, cómo sigue siendo claro cuando se vuelve complejo.',
-      'Sin traspaso en el medio. Ahí es donde los productos suelen perder el hilo, y es la parte que más me gusta.',
+      'Armo productos web de punta a punta: frontend, backend, testing y deploy. Lo difícil suele ser que el sitio coincida con los pagos, el inventario o un CMS que ya corre la operación.',
+      'Sin traspaso en el medio. Ahí es donde los productos pierden el hilo, y es la parte que más me gusta.',
     ],
     caption: 'Fig. 00 — El gusano · WebGL · 60fps',
     facts: {
@@ -194,9 +201,9 @@ const es: typeof en = {
       caption: 'Fig. 01 — Retrato',
       alt: 'Fernando Arriondo, retrato.',
       lines: [
-        'Construyo software que se sostiene.',
-        'Me importan los detalles callados.',
-        'Sin traspaso en el medio.',
+        'Santa Fe. Remoto con Tribal Worldwide GT.',
+        'Frontend, backend, testing y deploy.',
+        'El sitio tiene que coincidir con la operación.',
       ],
     },
   },
@@ -209,6 +216,7 @@ const es: typeof en = {
     stack: 'Stack',
     live: 'Ver el sitio',
     next: 'Siguiente',
+    status: 'Estado',
   },
   lost: {
     line: 'Esta ruta no existe.',
@@ -225,10 +233,10 @@ const es: typeof en = {
   meta: {
     homeTitle: 'Fernando Arriondo — Desarrollador Full Stack',
     homeDescription:
-      'Desarrollador full stack que construye plataformas web con foco en claridad, rendimiento y mantenimiento a largo plazo.',
+      'Desarrollador en Santa Fe, remoto con Tribal Worldwide GT. Llevo productos de cliente a producción: frontend, backend, testing y deploy.',
     aboutTitle: 'Sobre mí — Fernando Arriondo',
     aboutDescription:
-      'Desarrollador full stack de punta a punta: frontend, backend, testing y deploy.',
+      'Santa Fe. Remoto con Tribal Worldwide GT. Frontend, backend, testing y deploy.',
     lostTitle: '404 — Fernando Arriondo',
     lostDescription: 'Esta ruta no existe.',
     labTitle: 'Lab — Fernando Arriondo',

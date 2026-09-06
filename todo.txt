@@ -1,10 +1,6 @@
 seguir con:
 about hero mejorar espacios de layout y sombra como en captura
-para proyectos cambiar estilos para que sea como en capturas
 en mobile añadir el efecto en scroll del hero de about me como en captura
-estilos contacto como en capturas
--que aparezca el logo en loader de a poco como en captura
-layout detalle proyecto como en captura
 
 
 mover about me a home, entre experiencia y contacto

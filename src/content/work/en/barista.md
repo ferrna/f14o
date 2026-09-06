@@ -1,12 +1,24 @@
 ---
 title: Barista
 order: 4
-category: E-commerce
+category: Retail platform
 year: 2026
 role: Full stack
 duration: '2026'
 stack: ['Go', 'Next.js', 'Kotlin', 'Voucherify']
 summary: A coffee chain for Guatemala, from pickup and delivery to beans, wallet and the store POS.
+status: Not public yet
+specs:
+  - label: Surfaces
+    value: Store, admin, Android
+  - label: Mesh
+    value: 12 Go APIs, MySQL, Redis
+  - label: Payments
+    value: PowerTranz 3DS
+  - label: Loyalty
+    value: Voucherify
+  - label: Store
+    value: Micros POS
 cover: '../../../assets/projects/barista-origin.png'
 gallery:
   - src: '../../../assets/projects/barista-origin.png'
@@ -42,6 +54,10 @@ The hard part was not one service. It was making the order, the
 beans and the wallet agree across web, Android and the POS
 without a queue in the middle.
 
+## Spec
+
+Next.js store, React admin, Android on Google and Huawei. Twelve Go APIs, MySQL, Redis. Loyalty through Voucherify. Cards through PowerTranz with 3DS. The store talks to Micros POS. Push is OneSignal.
+
 ## Outcome
 
-The platform is built. Production is not public yet.
+The platform is built. Production is not public yet. The screens above are from the product itself.

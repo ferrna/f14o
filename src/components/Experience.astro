@@ -1,5 +1,5 @@
 ---
-import { useSite } from '../data/site';
+import { stackSegments, useSite } from '../data/site';
 import type { Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
 
@@ -12,22 +12,43 @@ const c = useCopy(lang);
 const { experience } = useSite(lang);
 ---
 
-<section class="xp" id="experience">
+<section class="xp" id="experience" data-experience>
   <p class="xp__kicker">
     <span class="xp__dot" aria-hidden="true"></span>04 / {c.experience.kicker}
   </p>
 
-  <ol class="xp__list" data-reveal-group>
+  <ol class="xp__list">
     {
       experience.map((item) => (
-        <li class="xp__item" data-reveal-item data-current={item.current ? 'true' : undefined}>
-          <p class="xp__dates">{item.dates}</p>
-          <span class="xp__marker" aria-hidden="true" />
-          <div class="xp__content">
-            <h3 class="xp__role">{item.role}</h3>
-            <p class="xp__body">{item.body}</p>
+        <li class="xp__item" data-xp-item data-current={item.current ? 'true' : undefined}>
+          <p class="xp__when">
+            {item.current && <span class="xp__dot" aria-hidden="true" />}
+            {item.when}
+          </p>
+
+          <div class="xp__copy">
+            <p class="xp__body">
+              {stackSegments(item.body).map((segment) =>
+                segment.tool ? (
+                  <b class="xp__firm">
+                    <span class="xp__firm-text" data-xp-firm>
+                      {segment.text}
+                    </span>
+                    <span class="xp__firm-rule" data-xp-rule aria-hidden="true" />
+                  </b>
+                ) : (
+                  segment.text
+                ),
+              )}
+            </p>
+            <p class="xp__meta">
+              {item.role}
+              <span class="xp__sep" aria-hidden="true">
+                ·
+              </span>
+              {item.place}
+            </p>
           </div>
-          <p class="xp__company">{item.company}</p>
         </li>
       ))
     }
@@ -40,7 +61,7 @@ const { experience } = useSite(lang);
   .xp {
     position: relative;
     z-index: $z-content;
-    padding: clamp(4rem, 10vh, 7rem) $space-page;
+    padding: clamp(5rem, 12vh, 9rem) $space-page;
   }
 
   .xp__kicker {
@@ -53,6 +74,7 @@ const { experience } = useSite(lang);
   }
 
   .xp__dot {
+    flex: 0 0 auto;
     width: 5px;
     height: 5px;
     border-radius: 50%;
@@ -60,104 +82,98 @@ const { experience } = useSite(lang);
   }
 
   .xp__item {
-    position: relative;
     display: grid;
-    grid-template-columns: minmax(7rem, 10rem) 1.5rem minmax(0, 1fr) minmax(8rem, auto);
-    align-items: start;
+    grid-template-columns: minmax(7rem, 14rem) minmax(0, 1fr);
     gap: clamp(1rem, 3vw, 2.5rem);
-    padding: clamp(1.5rem, 3.5vh, 2.5rem) 0;
-    @include hairline(top);
-
-    &:last-child {
-      @include hairline(bottom);
-    }
+    align-items: start;
   }
 
-  .xp__dates {
-    @include mono(0.68rem);
+  .xp__item + .xp__item {
+    margin-top: clamp(2.25rem, 5vh, 3.5rem);
+  }
+
+  .xp__when {
+    @include mono(0.64rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-top: 0.45em;
     color: $c-subtle;
-  }
-
-  // La línea recorre el alto completo de cada entrada, de modo que la serie
-  // se lee continua sin desbordar hacia las secciones vecinas.
-  .xp__marker {
-    position: relative;
-    align-self: stretch;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-      background-color: $c-hairline;
-      transform: translateX(-50%);
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0.4em;
-      left: 50%;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background-color: $c-subtle;
-      transform: translateX(-50%);
-    }
-  }
-
-  .xp__role {
-    @include display(clamp(1.05rem, 1.9vw, 1.5rem));
-    font-weight: 400;
-    color: $c-muted;
   }
 
   .xp__body {
-    margin-top: 0.5rem;
-    max-width: 46ch;
+    @include display(clamp(1.05rem, 2.1vw, 1.6rem));
+    max-width: 36ch;
     color: $c-subtle;
-    font-size: 0.9rem;
-    line-height: 1.7;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.015em;
   }
 
-  .xp__company {
-    @include mono(0.66rem);
-    color: $c-subtle;
-    text-align: right;
+  .xp__firm {
+    position: relative;
+    font-weight: 500;
+    color: $c-cream;
   }
 
-  // El puesto actual es lo único encendido de la serie.
+  .xp__firm-rule {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.08em;
+    height: 1px;
+    background-color: $c-violet;
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+  }
+
+  .xp__meta {
+    @include mono(0.62rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.85rem;
+    color: $c-subtle;
+  }
+
+  .xp__sep {
+    color: rgba(119, 108, 96, 0.7);
+  }
+
   .xp__item[data-current] {
-    .xp__role {
-      color: $c-cream;
-    }
-
-    .xp__body,
-    .xp__dates,
-    .xp__company {
+    .xp__when {
       color: $c-muted;
     }
 
-    .xp__marker::after {
-      background-color: $c-violet;
-      box-shadow: 0 0 0 4px rgba(123, 97, 255, 0.18);
+    .xp__body {
+      color: $c-cream;
+    }
+
+    .xp__meta {
+      color: $c-muted;
+    }
+  }
+
+  .xp__item:not([data-current]) {
+    .xp__firm {
+      color: $c-muted;
     }
   }
 
   @media (max-width: 900px) {
     .xp__item {
       grid-template-columns: 1fr;
-      gap: 0.5rem;
+      gap: 0.55rem;
     }
 
-    .xp__marker {
-      display: none;
+    .xp__when {
+      padding-top: 0;
     }
 
-    .xp__company {
-      text-align: left;
+    .xp__body {
+      max-width: none;
     }
   }
 </style>

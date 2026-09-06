@@ -8,6 +8,15 @@ duration: 2024 — 2025
 stack: ['WooCommerce', 'PHP', 'Algolia', 'AWS']
 summary: Una tienda de calzado para Guatemala, del sync de catálogo al pago y la factura.
 liveUrl: https://agorashop.com
+specs:
+  - label: Catálogo
+    value: Sync desde una API externa
+  - label: Pagos
+    value: PowerTranz, puntos, notas de crédito
+  - label: Factura
+    value: FEL / G4S
+  - label: Búsqueda
+    value: Algolia
 cover: '../../../assets/projects/agora-home.png'
 gallery:
   - src: '../../../assets/projects/agora-home.png'

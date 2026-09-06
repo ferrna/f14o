@@ -1,13 +1,18 @@
 ---
 title: Kino Bet
 order: 3
-category: Sports
+category: Quinielas
 year: 2026
 role: Full stack
 duration: 2021 — 2026
 stack: ['Laravel', 'Angular', 'Flutter']
-summary: A white-label sports pool for companies, from the player PWA to admin and live scoring.
+summary: A white-label quiniela for companies, from the player PWA to admin and live scoring.
 liveUrl: https://playkino.app
+specs:
+  - label: Surfaces
+    value: PWA, admin, scoring
+  - label: Model
+    value: Multi-tenant white-label
 cover: '../../../assets/projects/kino-home.png'
 gallery:
   - src: '../../../assets/projects/kino-home.png'

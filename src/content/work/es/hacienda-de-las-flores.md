@@ -7,6 +7,18 @@ role: Full stack
 duration: 2025 — 2026
 stack: ['React', 'Laravel', 'Odoo', 'CyberSource']
 summary: Una plataforma de viviendas para Guatemala, del mapa de lotes a la reserva y el portal del propietario.
+status: Todavía no es público
+specs:
+  - label: Superficies
+    value: Sitio público, portal
+  - label: Inventario
+    value: Odoo, cada 4h
+  - label: Pagos
+    value: CyberSource / Neopay
+  - label: CMS
+    value: Laravel 11 + Filament
+  - label: Flujo
+    value: Mapa, cotización, reserva
 cover: '../../../assets/projects/hdf-home.jpg'
 gallery:
   - src: '../../../assets/projects/hdf-home.jpg'
@@ -44,6 +56,10 @@ Lo difícil no fue el mapa ni el pago. Fue que el stock de Odoo, la
 unidad del CMS y la reserva hablaran de la misma vivienda sin que
 el mapa mintiera.
 
+## Spec
+
+Sitio público y portal del propietario. Inventario desde Odoo cada cuatro horas. CMS en Laravel 11 y Filament. Camino de compra: mapa de lotes, cotización, terminaciones, reserva por CyberSource / Neopay. Recibos y estados de cuenta en PDF desde la API.
+
 ## Resultado
 
-La plataforma está armada. Producción todavía no es pública.
+La plataforma está armada. Producción todavía no es pública. Las capturas de arriba son del producto.

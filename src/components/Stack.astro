@@ -1,5 +1,5 @@
 ---
-import { primaryTool, tools, useSite } from '../data/site';
+import { primaryTool, stackGroups, stackSegments, useSite } from '../data/site';
 import type { Lang } from '../i18n/config';
 import { useCopy } from '../i18n/ui';
 
@@ -10,26 +10,76 @@ interface Props {
 const { lang } = Astro.props;
 const c = useCopy(lang);
 const site = useSite(lang);
+const lines = site.stackSentence.map(stackSegments);
 ---
 
-<section class="stack" id="stack">
-  <div class="stack__head">
+<section class="stack" id="stack" data-stack data-view="prose">
+  <header class="stack__head">
     <p class="stack__kicker">
       <span class="stack__dot" aria-hidden="true"></span>03 / {c.stack.kicker}
     </p>
-    <p class="stack__statement" data-reveal>{site.stackStatement}</p>
+
+    <button
+      class="stack__switch"
+      type="button"
+      data-stack-switch
+      data-cursor-hover
+      data-to-index={c.stack.switchToIndex}
+      data-to-prose={c.stack.switchToProse}
+      aria-pressed="false"
+      aria-label={c.stack.switchToIndex}
+    >
+      <span class="stack__mode" data-mode="prose">{c.stack.viewProse}</span>
+      <span class="stack__mode-sep" aria-hidden="true">/</span>
+      <span class="stack__mode" data-mode="index">{c.stack.viewIndex}</span>
+    </button>
+  </header>
+
+  <div class="stack__prose" data-stack-prose>
+    <p class="stack__sentence" data-stack-sentence>
+      {
+        lines.map((segments) => (
+          <span class="stack__line" data-stack-line>
+            {segments.map((segment) =>
+              segment.tool ? (
+                <b class="stack__tool" data-stack-tool>
+                  {segment.text}
+                  <span class="stack__mark" data-stack-mark aria-hidden="true" />
+                </b>
+              ) : (
+                segment.text
+              ),
+            )}
+          </span>
+        ))
+      }
+    </p>
+    <p class="stack__statement" data-stack-statement>{site.stackStatement}</p>
   </div>
 
-  <ul class="stack__row" data-reveal-group>
-    {
-      tools.map((item, i) => (
-        <li class="stack__item" data-reveal-item>
-          {i > 0 && <span class="stack__sep" aria-hidden="true" />}
-          <span class:list={['stack__name', item === primaryTool && 'stack__name--primary']}>{item}</span>
-        </li>
-      ))
-    }
-  </ul>
+  <div class="stack__index" data-stack-index hidden>
+    <ul class="stack__cols">
+      {
+        stackGroups.map((group) => (
+          <li class="stack__col" data-stack-col>
+            <span class="stack__rule" data-stack-rule aria-hidden="true" />
+            <p class="stack__col-id">{group.id}</p>
+            <h3 class="stack__col-name" data-stack-col-name>{group.name}</h3>
+            <ul class="stack__col-tools">
+              {group.tools.map((tool) => (
+                <li
+                  class:list={['stack__col-tool', tool === primaryTool && 'stack__col-tool--on']}
+                  data-stack-col-tool
+                >
+                  {tool}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </section>
 
 <style lang="scss">
@@ -38,23 +88,24 @@ const site = useSite(lang);
   .stack {
     position: relative;
     z-index: $z-content;
-    padding: clamp(4rem, 10vh, 7rem) $space-page;
+    padding: clamp(5rem, 12vh, 9rem) $space-page;
   }
 
   .stack__head {
     display: flex;
     align-items: baseline;
-    gap: clamp(1.5rem, 6vw, 5rem);
-    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(2rem, 5vh, 3.5rem);
   }
 
-  .stack__kicker {
+  .stack__kicker,
+  .stack__switch {
     @include mono(0.68rem);
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
     color: $c-muted;
-    flex: 0 0 auto;
   }
 
   .stack__dot {
@@ -64,51 +115,132 @@ const site = useSite(lang);
     background-color: $c-violet;
   }
 
-  .stack__statement {
-    @include display(clamp(1.1rem, 2.2vw, 1.8rem));
+  .stack__switch {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .stack__mode {
+    color: $c-subtle;
+    transition: color $dur-micro $ease-micro;
+  }
+
+  .stack[data-view='prose'] .stack__mode[data-mode='prose'],
+  .stack[data-view='index'] .stack__mode[data-mode='index'] {
+    color: $c-cream;
+  }
+
+  .stack__mode-sep {
+    color: $c-subtle;
+    pointer-events: none;
+  }
+
+  .stack__prose {
+    @media (min-width: 901px) {
+      padding-left: calc(clamp(7rem, 18vw, 14rem) + clamp(1rem, 3vw, 2.5rem));
+    }
+  }
+
+  .stack__sentence {
+    @include display(clamp(1.35rem, 2.8vw, 2.15rem));
+    color: $c-subtle;
     font-weight: 400;
-    color: $c-cream;
+    line-height: 1.38;
+    letter-spacing: -0.02em;
   }
 
-  // Sin tarjetas ni logos: la sección se sostiene en tipografía y aire,
-  // que es lo que comunica criterio en vez de inventario.
-  .stack__row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.9rem;
-    margin-top: clamp(2rem, 5vh, 3.5rem);
+  .stack__line {
+    display: block;
+
+    @media (min-width: 901px) {
+      white-space: nowrap;
+    }
   }
 
-  .stack__item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.9rem;
+  .stack__tool {
+    position: relative;
+    font-weight: 500;
+    color: inherit;
   }
 
-  .stack__sep {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
+  .stack__mark {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.06em;
+    height: 1px;
     background-color: $c-violet;
-    opacity: 0.55;
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
   }
 
-  .stack__name {
-    @include mono(0.74rem);
-    color: $c-muted;
+  .stack__statement {
+    @include mono(0.66rem);
+    margin-top: clamp(1.75rem, 4vh, 2.75rem);
+    color: $c-subtle;
   }
 
-  .stack__name--primary {
-    padding: 0.5rem 1rem;
-    border: 1px solid $c-hairline-strong;
-    border-radius: 2px;
+  .stack__index[hidden] {
+    display: none;
+  }
+
+  .stack__cols {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+
+  .stack__col {
+    min-width: 0;
+  }
+
+  .stack__rule {
+    display: block;
+    height: 1px;
+    margin-bottom: 0.85rem;
+    background-color: $c-hairline-strong;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .stack__col-id {
+    @include mono(0.62rem);
+    color: $c-subtle;
+  }
+
+  .stack__col-name {
+    @include display(clamp(1.15rem, 2vw, 1.7rem));
+    margin-top: 0.55rem;
     color: $c-cream;
+    font-weight: 500;
+    text-transform: uppercase;
   }
 
-  @media (max-width: 760px) {
-    .stack__row {
-      gap: 0.7rem;
+  .stack__col-tools {
+    margin-top: 0.85rem;
+  }
+
+  .stack__col-tool {
+    @include mono(0.68rem);
+    color: $c-subtle;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  .stack__col-tool + .stack__col-tool {
+    margin-top: 0.35rem;
+  }
+
+  .stack__col-tool--on {
+    color: $c-cream-bright;
+  }
+
+  @media (max-width: 900px) {
+    .stack__cols {
+      grid-template-columns: 1fr 1fr;
     }
   }
 </style>

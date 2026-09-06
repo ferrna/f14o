@@ -22,9 +22,20 @@ const work = defineCollection({
       /** Una línea, la que se lee en la lista. */
       summary: z.string(),
       liveUrl: z.string().url().optional(),
+      /** Si no hay liveUrl, el aside muestra este estado en lugar del CTA. */
+      status: z.string().optional(),
       cover: image(),
       /** Métricas reales del proyecto: si no se pueden sostener, se omiten. */
       metrics: z
+        .array(
+          z.object({
+            label: z.string(),
+            value: z.string(),
+          })
+        )
+        .default([]),
+      /** Piezas e integraciones. No son métricas: son el mapa del sistema. */
+      specs: z
         .array(
           z.object({
             label: z.string(),

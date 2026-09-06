@@ -69,6 +69,10 @@ async function bootPage(): Promise<void> {
     const { initWorkList } = await import('./work-list');
     initWorkList();
   }
+  if (document.querySelector('[data-stack-sentence]')) {
+    const { initStack } = await import('./stack');
+    initStack();
+  }
   if (document.querySelector('[data-about-plate]')) {
     const { initAboutPlate } = await import('./about-plate');
     initAboutPlate();

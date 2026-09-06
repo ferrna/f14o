@@ -22,6 +22,7 @@ const meta = [
   { label: c.case.duration, value: project.data.duration ?? '—' },
   { label: c.case.stack, value: project.data.stack.join(', ') },
   { label: c.case.year, value: String(project.data.year) },
+  ...project.data.specs,
 ];
 
 /** Cover + galería, sin repetir la misma foto. */
@@ -66,7 +67,7 @@ for (const item of project.data.gallery) {
       </dl>
 
       {
-        project.data.liveUrl && (
+        project.data.liveUrl ? (
           <a
             class="case__live"
             href={project.data.liveUrl}
@@ -79,6 +80,13 @@ for (const item of project.data.gallery) {
             <Swap text={c.case.live} />
             <span class="sr-only">{c.case.live}</span>
           </a>
+        ) : (
+          project.data.status && (
+            <p class="case__closed" data-reveal-item>
+              <span class="case__dot" aria-hidden="true" />
+              {project.data.status}
+            </p>
+          )
         )
       }
     </aside>
@@ -89,7 +97,7 @@ for (const item of project.data.gallery) {
   </a>
 
   <p class="case__status">
-    {[...c.hero.telemetry, c.hero.build].join(' · ')}
+    {[...c.hero.facts, c.hero.availability].join(' · ')}
   </p>
   </div>
 </article>
@@ -214,7 +222,8 @@ for (const item of project.data.gallery) {
     background-color: $c-violet;
   }
 
-  .case__live {
+  .case__live,
+  .case__closed {
     @include mono(0.66rem);
     display: inline-flex;
     align-items: center;
@@ -224,11 +233,18 @@ for (const item of project.data.gallery) {
     border: 1px solid $c-hairline-strong;
     border-radius: 999px;
     color: $c-cream;
+  }
+
+  .case__live {
     transition: border-color $dur-micro $ease-micro;
 
     &:hover {
       border-color: $c-violet;
     }
+  }
+
+  .case__closed {
+    color: $c-muted;
   }
 
   .case__status {

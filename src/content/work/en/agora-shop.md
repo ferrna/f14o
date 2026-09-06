@@ -8,6 +8,15 @@ duration: 2024 — 2025
 stack: ['WooCommerce', 'PHP', 'Algolia', 'AWS']
 summary: A footwear store for Guatemala, from catalog sync to payments and invoicing.
 liveUrl: https://agorashop.com
+specs:
+  - label: Catalog
+    value: Sync from an external API
+  - label: Payments
+    value: PowerTranz, points, credit notes
+  - label: Invoicing
+    value: FEL / G4S
+  - label: Search
+    value: Algolia
 cover: '../../../assets/projects/agora-home.png'
 gallery:
   - src: '../../../assets/projects/agora-home.png'
